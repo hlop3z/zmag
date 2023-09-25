@@ -1,0 +1,15 @@
+[project]
+name = "zmag"
+version = "0.0.1"
+description = "."
+authors = [
+    {name = "hlop3z", email = "23062270+hlop3z@users.noreply.github.com"},
+]
+dependencies = []
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"

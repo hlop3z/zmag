@@ -1,0 +1,1 @@
+print("(ZMAG) Project INIT")
