@@ -1,15 +1,52 @@
 [project]
 name = "zmag"
-version = "0.0.1"
-description = "."
+version = "0.0.5"
+description = "Distributed Systems with GraphQL"
 authors = [
-    {name = "hlop3z", email = "23062270+hlop3z@users.noreply.github.com"},
+    { name = "hlop3z", email = "23062270+hlop3z@users.noreply.github.com" },
 ]
-dependencies = []
 requires-python = ">=3.11"
 readme = "README.md"
-license = {text = "MIT"}
+license = { text = "MIT" }
+dependencies = [
+    "pyzmq>=25.1.1",
+    "strawberry-graphql>=0.205.0",
+    "spoc>=0.1.10",
+    "click>=8.1.7",
+]
 
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
+
+[project.scripts]
+startproject = "zmag.scripts.start_project:cli"
+
+[tool.pdm.dev-dependencies]
+docs = ["mkdocs-material>=9.4.4", "mkdocs>=1.5.3"]
+
+[tool.pdm.scripts]
+debug = { shell = "cd tests/one && python manage.py run -d -p" }
+manage = { shell = "cd tests/one && python manage.py" }
+linter = { shell = "python scripts/linter.py" }
+
+# Testing
+test = { shell = "python client_tests/test_client.py" }
+
+# Docs
+docs-dev = { shell = "cd docs/ && python -m mkdocs serve --dev-addr 0.0.0.0:8055" }
+docs-build = { shell = "cd docs/ && python -m mkdocs build" }
+docs-gh = { shell = "cd docs/ && python -m mkdocs gh-deploy --force" }
+
+[project.optional-dependencies]
+mongo = ["dbcontroller[mongo]>=0.1.52"]
+sql = ["dbcontroller[sql]>=0.1.52"]
+testing = [
+    "starlette>=0.31.1",
+    "uvicorn>=0.23.2",
+    "dbcontroller[sqlite]>=0.1.52",
+    "watchgod>=0.8.2",
+    "black>=23.7.0",
+    "isort>=5.12.0",
+    "pylint>=2.17.5",
+]

@@ -1,0 +1,17 @@
+[spoc]
+mode = "custom"
+custom_mode = "development" # options: development, production, staging
+
+# Mode(s)
+[spoc.apps]
+production = []
+development = ["demo"]
+staging = []
+
+[spoc.api]
+max_depth = 4
+items_per_page = 50
+
+[spoc.extras]
+extensions = []
+permissions = []
