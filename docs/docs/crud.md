@@ -10,6 +10,27 @@ This documentation offers a comprehensive guide to working with GraphQL operatio
 
 By the end of this documentation, you'll be well-equipped to harness the power of GraphQL for your model-driven applications. Whether you're dealing with Books, Users, or any other data entities, the principles covered here will be applicable and adaptable to your specific needs.
 
+## Types
+
+```python title="types.py"
+# -*- coding: utf-8 -*-
+"""
+    { Types } for GraphQL's
+"""
+import zmag
+
+# Create your <types> here.
+@zmag.sql.model
+class Author:
+    name: str
+
+@zmag.sql.model
+class Book:
+    title: str
+    author: str
+    user_id: int
+```
+
 ## Operations (CRUD)
 
 ```python title="graphql.py"
