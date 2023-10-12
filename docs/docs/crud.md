@@ -112,8 +112,8 @@ import zmag
 from . import types
 
 # Create your <managers> here.
-@zmg.manager
-class Book(zmg.BaseManager):
+@zmag.manager
+class Book(zmag.BaseManager):
     """Book Manager"""
 
     model = types.Book
