@@ -161,3 +161,4 @@ cython_debug/
 .pdm-python
 pdm.lock
 .pdm-build/
+docs/site/
