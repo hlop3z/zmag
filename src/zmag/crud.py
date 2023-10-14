@@ -443,7 +443,7 @@ def crud(
 
                 # Return
                 try:
-                    results = await manager.delete(context, selectors)
+                    results = await manager.delete(context, selected=selectors)
                     if results:
                         response["deleted"] = results.count
                 except ValueError as e:
@@ -451,6 +451,6 @@ def crud(
                 except PermissionError as e:
                     response["error"] = request_perm_error(e)
 
-                return response
+                return zmag.mutation(**response)
 
     return GraphQL
