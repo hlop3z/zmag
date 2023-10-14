@@ -49,8 +49,8 @@ def form_to_namespace(form):
     if not form:
         return form
     if hasattr(form, "input"):
-        if hasattr(form, "data"):
-            return form.input.data.__dict__
+        if hasattr(form.input, "data"):
+            return form
     return SimpleNamespace(
         input=SimpleNamespace(
             data=SimpleNamespace(**asdict(form)),
