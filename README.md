@@ -17,7 +17,7 @@
 </p>
 
 <p align="center" style="font-size: 3em; letter-spacing: -2px; font-family: Georgia, sans-serif;">
-   <strong>GraphQL</strong> — Distributed Systems
+   <strong>Craft APIs for Databases</strong> —  with ZeroMQ and GraphQL
 </p>
 
 <p align="center" style="font-size: 2.5em; letter-spacing: -2px; font-family: Georgia, sans-serif;" >
