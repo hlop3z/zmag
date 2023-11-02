@@ -1,3 +1,12 @@
+fragment ErrorFields on Error {
+  meta
+  messages {
+    field
+    type
+    text
+  }
+}
+
 query Filter(
   $query: List
   $page: Int

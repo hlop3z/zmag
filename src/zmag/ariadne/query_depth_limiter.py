@@ -233,15 +233,19 @@ def determine_depth(
             )
         )
     elif isinstance(node, FragmentSpreadNode):
-        return determine_depth(
-            node=fragments[node.name.value],
-            fragments=fragments,
-            depth_so_far=depth_so_far,
-            max_depth=max_depth,
-            context=context,
-            operation_name=operation_name,
-            should_ignore=should_ignore,
-        )
+        current_fragment = fragments.get(node.name.value)
+        if current_fragment:
+            return determine_depth(
+                node=current_fragment,
+                fragments=fragments,
+                depth_so_far=depth_so_far,
+                max_depth=max_depth,
+                context=context,
+                operation_name=operation_name,
+                should_ignore=should_ignore,
+            )
+        else:
+            return max_depth + 1
     elif isinstance(
         node, (InlineFragmentNode, FragmentDefinitionNode, OperationDefinitionNode)
     ):
