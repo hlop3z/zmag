@@ -1,0 +1,86 @@
+query Filter(
+  $query: List
+  $page: Int
+  $limit: Int
+  $sort: String
+  $all: Boolean
+) {
+  filter(
+    model: "$MODEL"
+    query: $query
+    page: $page
+    limit: $limit
+    sort: $sort
+    all: $all
+  ) {
+    $MODEL {
+      ...ModelFields
+    }
+    page {
+      number
+      count
+      pages
+      hasNext
+      hasPrev
+    }
+  }
+}
+
+
+query Detail($id: ID) {
+  detail(model: "$MODEL", id: $id) {
+    $MODEL {
+      ...ModelFields
+    }
+  }
+}
+
+mutation Create($form: Form!) {
+  create(model: "$MODEL", form: $form) {
+    $MODEL {
+      ...ModelFields
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+mutation Update($form: Form!) {
+  update(model: "$MODEL", form: $form) {
+    $MODEL {
+      ...ModelFields
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+mutation CreateMany($forms: [Form!]) {
+  createMany(model: "$MODEL", forms: $forms) {
+    $MODEL {
+      ...ModelFields
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+mutation UpdateMany($ids: [ID!], $form: Form!) {
+  updateMany(model: "$MODEL", ids: $ids, form: $form) {
+    $MODEL {
+      ...ModelFields
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+mutation Delete($ids: [ID!]) {
+  delete(model: "$MODEL", ids: $ids) {
+    ids
+  }
+}

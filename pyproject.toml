@@ -1,52 +1,69 @@
 [project]
 name = "zmag"
-version = "0.0.7"
-description = "Distributed Systems with GraphQL"
+version = "0.0.8"
+description = "Craft APIs for Databases, with ZeroMQ and GraphQL"
 authors = [
     { name = "hlop3z", email = "23062270+hlop3z@users.noreply.github.com" },
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "MIT" }
-dependencies = [
-    "pyzmq>=25.1.1",
-    "strawberry-graphql>=0.205.0",
-    "spoc>=0.1.10",
-    "click>=8.1.7",
-]
+dependencies = ["pyzmq>=25.1.1"]
 
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
+
 [project.scripts]
 startproject = "zmag.scripts.start_project:cli"
 
+[project.optional-dependencies]
+debug = [
+    "ariadne>=0.20.1",
+    "spoc>=0.1.12",
+    "click>=8.1.7",
+    "dbcontroller[mongo,sql,sqlite]>=0.1.57",
+    "uvicorn[standard]>=0.23.2",
+    "watchdog>=3.0.0",
+]
+sqlite = [
+    "ariadne>=0.20.1",
+    "spoc>=0.1.12",
+    "click>=8.1.7",
+    "dbcontroller[sqlite]>=0.1.57",
+]
+postgresql = [
+    "ariadne>=0.20.1",
+    "spoc>=0.1.12",
+    "click>=8.1.7",
+    "dbcontroller[sql]>=0.1.57",
+    "databases[asyncpg]>=0.8.0",
+]
+mysql = [
+    "ariadne>=0.20.1",
+    "spoc>=0.1.12",
+    "click>=8.1.7",
+    "dbcontroller[sql]>=0.1.57",
+    "databases[aiomysql]>=0.8.0",
+]
+
+
+[tool]
+[tool.pdm]
 [tool.pdm.dev-dependencies]
-docs = ["mkdocs-material>=9.4.4", "mkdocs>=1.5.3"]
+devs = [
+    "notebook>=7.0.6",
+    "dbcontroller[mongo,sql,sqlite]>=0.1.57",
+    "uvicorn[standard]>=0.23.2",
+    "ariadne>=0.20.1",
+    "watchdog>=3.0.0",
+]
+service = ["spoc>=0.1.12", "click>=8.1.7"]
 
 [tool.pdm.scripts]
-debug = { shell = "cd tests/one && python manage.py run -d -p" }
-manage = { shell = "cd tests/one && python manage.py" }
-linter = { shell = "python scripts/linter.py" }
-
-# Testing
-test = { shell = "python client_tests/test_client.py" }
-
-# Docs
-docs-dev = { shell = "cd docs/ && python -m mkdocs serve --dev-addr 0.0.0.0:8055" }
-docs-build = { shell = "cd docs/ && python -m mkdocs build" }
-docs-gh = { shell = "cd docs/ && python -m mkdocs gh-deploy --force" }
-
-[project.optional-dependencies]
-mongo = ["dbcontroller[mongo]>=0.1.52"]
-sql = ["dbcontroller[sql]>=0.1.52"]
-testing = [
-    "starlette>=0.31.1",
-    "uvicorn>=0.23.2",
-    "dbcontroller[sqlite]>=0.1.52",
-    "watchgod>=0.8.2",
-    "black>=23.7.0",
-    "isort>=5.12.0",
-    "pylint>=2.17.5",
-]
+# Develop
+test = { shell = "cd tests && python main.py" }
+test-client = { shell = "cd client_tests && python test.py" }
+# Notebook
+notebook = { shell = "python -m jupyter notebook" }

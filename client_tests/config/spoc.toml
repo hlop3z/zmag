@@ -1,0 +1,13 @@
+
+[spoc]
+mode = "custom" # options: custom, development, production, staging
+custom_mode = "development"
+
+# Modes
+[spoc.apps]
+production = []
+development = []
+staging = []
+
+# Extras
+[spoc.extras]

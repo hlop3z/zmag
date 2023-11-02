@@ -1,0 +1,48 @@
+type Query {
+  info: ServerInfo
+  detail(model: String!, id: ID): DetailResponse
+  filter(
+    model: String!
+    query: List
+    page: Int
+    limit: Int
+    sort: String
+    all: Boolean
+  ): FilterResponse
+}
+
+type Mutation {
+  create(model: String!, form: Form!): EditorResponse
+  update(model: String!, form: Form!): EditorResponse
+  createMany(model: String!, forms: [Form!]): EditManyResponse
+  updateMany(model: String!, ids: [ID!], form: Form!): EditManyResponse
+  delete(model: String!, ids: [ID!]): DeleteResponse
+}
+
+type Page {
+  number: Int
+  count: Int
+  pages: Int
+  hasNext: Boolean
+  hasPrev: Boolean
+}
+
+type ErrorMessage {
+  field: String
+  type: String
+  text: String
+}
+
+type Error {
+  messages: [ErrorMessage]
+  meta: JSON
+}
+
+type ServerInfo {
+  models: [String]
+  fields: [String]
+  query: [String]
+  mutation: [String]
+  forms: JSON
+  objects: JSON
+}

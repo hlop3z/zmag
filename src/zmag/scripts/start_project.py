@@ -1,5 +1,5 @@
 """
-    Start A New ZMQ GraphQL Project
+    Start A New Fastberry Project
 """
 
 import os
@@ -14,7 +14,7 @@ TEMPLATES_DIR = pathlib.Path(__file__).parents[0] / "templates"
 
 @click.command()
 def cli():
-    """ZMQ GraphQL Start-Project."""
+    """Zmag Start-Project."""
 
     shell_print("""* Starting-Project! ...\n""")
     unzip(TEMPLATES_DIR / "project-template.zip", pathlib.Path(os.getcwd()))

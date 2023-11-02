@@ -1,0 +1,16 @@
+fragment ModelFields on Author {
+  # xid
+  id
+  firstName
+  lastName
+  fullName
+}
+
+fragment ErrorFields on Error {
+  meta
+  messages {
+    field
+    type
+    text
+  }
+}

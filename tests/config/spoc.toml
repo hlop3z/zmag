@@ -15,7 +15,7 @@ config = "sqlite:///example.db" # mongodb://localhost:59567/example_db
 
 # Modes
 [spoc.apps]
-development = []
+development = ["demo"]
 staging = []
 production = []
 

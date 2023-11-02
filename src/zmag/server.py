@@ -20,10 +20,6 @@ from zmq.devices import ProcessDevice
 from zmq import ssh
 
 
-# StrawBerry
-from strawberry.extensions import SchemaExtension as BaseExtension
-
-
 def api_data(body: dict = {}, head: dict = {}):
     return {"head": head, "body": body}
 
@@ -33,17 +29,6 @@ async def server(device=False):
     from .framework import Framework
 
     app = Framework()
-
-    # GraphQL Extensions
-    _extensions = [ContextExtension]
-    extensions = app.extras.get("extensions", [])
-    _extensions.extend(extensions)
-
-    # GraphQL Schema
-    schema = app.graphql.schema(extensions=_extensions)
-
-    # GraphQL Internal API
-    api = API(schema)
 
     proxy = app.zmq
 
@@ -58,86 +43,21 @@ async def server(device=False):
     while True:
         # Request
         request = await proxy.recv()
-        req_body = request.body
+        client_request_body = request.body
 
         # Store the request data in the thread-local storage
         thread_local.request = request
 
         # GraphQL
-        response = await api.run(
-            req_body.get("query", None),
-            req_body.get("operation", None),
-            **req_body.get("variables", {}),
+        response = await app.execute(
+            client_request_body.get("query"),
+            variables=client_request_body.get("variables"),
+            operation=client_request_body.get("operation"),
+            context=client_request_body.get("context"),
         )
 
         # Response
         await proxy.send(**response)
-
-
-class API:
-    def __init__(self, schema):
-        self.schema = schema
-
-    async def run(self, __query__: str = None, __op__: str = None, **kwargs):
-        """GraphQL Manager"""
-        try:
-            response = await self.schema.execute(
-                __query__, variable_values={**kwargs}, operation_name=__op__
-            )
-            # str(error.original_error)
-            errors = []
-            if response.errors:
-                errors = [
-                    dict(
-                        message=e.message,
-                        path=e.path,
-                    )
-                    for e in response.errors
-                ]
-            return {
-                "data": response.data,
-                "errors": errors,
-            }
-        except Exception as e:
-            return {
-                "data": None,
-                "errors": [
-                    dict(
-                        message=str(e),
-                        path=[],
-                    )
-                ],
-            }
-
-    def run_sync(self, __query__: str = None, __op__: str = None, **kwargs):
-        """GraphQL Manager"""
-        try:
-            response = self.schema.execute_sync(
-                __query__, variable_values={**kwargs}, operation_name=__op__
-            )
-            errors = []
-            if response.errors:
-                errors = [
-                    dict(
-                        message=e.message,
-                        path=e.path,
-                    )
-                    for e in response.errors
-                ]
-            return {
-                "data": response.data,
-                "errors": errors,
-            }
-        except Exception as e:
-            return {
-                "data": None,
-                "errors": [
-                    dict(
-                        message=str(e),
-                        path=[],
-                    )
-                ],
-            }
 
 
 class JSON:
@@ -197,20 +117,6 @@ class ZMQ:
         self.socket = self.context.socket(zmq.REP)
         self.socket.connect(self.uri_server)
 
-    def client(self):
-        """
-        Configure the client socket.
-        """
-        self.socket = self.context.socket(zmq.REQ)
-        if self.ssh_host:
-            # Tunnel Connect
-            ssh.tunnel_connection(
-                self.socket, self.uri_client, self.ssh_host, self.ssh_keyfile
-            )
-        else:
-            # Connect
-            self.socket.connect(self.uri_client)
-
     async def recv(self):
         """
         Receive Request (JSON).
@@ -228,19 +134,3 @@ class ZMQ:
         if self.socket:
             compressed = JSON.dumps(api_data(data, __head__))
             await self.socket.send_multipart([compressed])
-
-
-class ContextExtension(BaseExtension):
-    async def on_executing_start(self):
-        request_data = getattr(thread_local, "request", None)
-        context = {}
-
-        # Request Data
-        if request_data:
-            request_body = getattr(request_data, "body", {})
-            request_head = getattr(request_data, "head", {})
-            context["request"] = request_body
-            context["head"] = request_head
-
-        # Set Context
-        self.execution_context.context = context
