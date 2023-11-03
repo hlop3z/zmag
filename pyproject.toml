@@ -60,6 +60,7 @@ devs = [
     "watchdog>=3.0.0",
 ]
 service = ["spoc>=0.1.12", "click>=8.1.7"]
+docs = ["mkdocs>=1.5.3", "mkdocs-material>=9.4.7"]
 
 [tool.pdm.scripts]
 # Develop
@@ -67,3 +68,7 @@ test = { shell = "cd tests && python main.py" }
 test-client = { shell = "cd client_tests && python test.py" }
 # Notebook
 notebook = { shell = "python -m jupyter notebook" }
+# Docs
+docs-dev = { shell = "cd docs/ && python -m mkdocs serve --dev-addr 0.0.0.0:8055" }
+docs-build = { shell = "cd docs/ && python -m mkdocs build" }
+docs-gh = { shell = "cd docs/ && python -m mkdocs gh-deploy --force" }
