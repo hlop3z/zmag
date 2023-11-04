@@ -2,57 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://hlop3z.github.io/zmag/</loc>
-         <lastmod>2023-10-11</lastmod>
+         <lastmod>2023-11-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://hlop3z.github.io/zmag/crud/</loc>
-         <lastmod>2023-10-11</lastmod>
+         <loc>https://hlop3z.github.io/zmag/client/</loc>
+         <lastmod>2023-11-04</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/commands/</loc>
+         <lastmod>2023-11-04</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/manager/</loc>
+         <lastmod>2023-11-04</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/schema/</loc>
+         <lastmod>2023-11-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hlop3z.github.io/zmag/settings/</loc>
-         <lastmod>2023-10-11</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://hlop3z.github.io/zmag/applications/</loc>
-         <lastmod>2023-10-11</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://hlop3z.github.io/zmag/applications/application/</loc>
-         <lastmod>2023-10-11</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://hlop3z.github.io/zmag/applications/commands/</loc>
-         <lastmod>2023-10-11</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://hlop3z.github.io/zmag/applications/forms/</loc>
-         <lastmod>2023-10-11</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://hlop3z.github.io/zmag/applications/graphql/</loc>
-         <lastmod>2023-10-11</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://hlop3z.github.io/zmag/applications/manager/</loc>
-         <lastmod>2023-10-11</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://hlop3z.github.io/zmag/applications/types/</loc>
-         <lastmod>2023-10-11</lastmod>
+         <lastmod>2023-11-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hlop3z.github.io/zmag/databases/</loc>
-         <lastmod>2023-10-11</lastmod>
+         <lastmod>2023-11-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
