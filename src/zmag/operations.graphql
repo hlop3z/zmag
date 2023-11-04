@@ -7,6 +7,40 @@ fragment ErrorFields on Error {
   }
 }
 
+
+
+mutation Create($form: Form!) {
+  create(model: "$MODEL", form: $form) {
+    $MODEL {
+      ...Item
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+mutation Update($form: Form!) {
+  update(model: "$MODEL", form: $form) {
+    $MODEL {
+      ...Item
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+
+query Detail($id: ID) {
+  detail(model: "$MODEL", id: $id) {
+    $MODEL {
+      ...Item
+    }
+  }
+}
+
+
 query Filter(
   $query: List
   $page: Int
@@ -23,7 +57,7 @@ query Filter(
     all: $all
   ) {
     $MODEL {
-      ...ModelFields
+      ...List
     }
     page {
       number
@@ -36,40 +70,10 @@ query Filter(
 }
 
 
-query Detail($id: ID) {
-  detail(model: "$MODEL", id: $id) {
-    $MODEL {
-      ...ModelFields
-    }
-  }
-}
-
-mutation Create($form: Form!) {
-  create(model: "$MODEL", form: $form) {
-    $MODEL {
-      ...ModelFields
-    }
-    error {
-      ...ErrorFields
-    }
-  }
-}
-
-mutation Update($form: Form!) {
-  update(model: "$MODEL", form: $form) {
-    $MODEL {
-      ...ModelFields
-    }
-    error {
-      ...ErrorFields
-    }
-  }
-}
-
 mutation CreateMany($forms: [Form!]) {
   createMany(model: "$MODEL", forms: $forms) {
     $MODEL {
-      ...ModelFields
+      ...List
     }
     error {
       ...ErrorFields
@@ -80,7 +84,7 @@ mutation CreateMany($forms: [Form!]) {
 mutation UpdateMany($ids: [ID!], $form: Form!) {
   updateMany(model: "$MODEL", ids: $ids, form: $form) {
     $MODEL {
-      ...ModelFields
+      ...List
     }
     error {
       ...ErrorFields

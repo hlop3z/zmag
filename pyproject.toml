@@ -1,6 +1,6 @@
 [project]
 name = "zmag"
-version = "0.0.9"
+version = "0.0.10"
 description = "Craft APIs for Databases, with ZeroMQ and GraphQL"
 authors = [
     { name = "hlop3z", email = "23062270+hlop3z@users.noreply.github.com" },
