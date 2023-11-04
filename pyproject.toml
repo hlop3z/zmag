@@ -47,6 +47,12 @@ mysql = [
     "dbcontroller[sql]>=0.1.57",
     "databases[aiomysql]>=0.8.0",
 ]
+mongo = [
+    "ariadne>=0.20.1",
+    "spoc>=0.1.12",
+    "click>=8.1.7",
+    "dbcontroller[mongo]>=0.1.57",
+]
 
 
 [tool]
