@@ -1,6 +1,6 @@
 # Welcome to **Zmag**
 
-Zmag, is built with **Pyzmq (ZeroMQ)** and **Strawberry** this project is the sibling of [Fastberry](https://hlop3z.github.io/fastberry/)
+Zmag, is built with **Pyzmq (ZeroMQ)** and **Ariadne (GraphQL)** this project is the sibling of [Fastberry](https://hlop3z.github.io/fastberry/)
 
 The **`Command-Line-Interface` (CLI)** is built with **Click**.
 
@@ -24,7 +24,7 @@ A tool for building **`GraphQL — API(s)`** with **`Python`**.
 | Module                                                                                | Is Used To...                                                         |
 | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
 | <a href="https://pyzmq.readthedocs.io" target="_blank">**Pyzmq**</a>                  | **API**'s core **Universal Messaging** **`Library`**.                 |
-| <a href="https://strawberry.rocks/" target="_blank">**Strawberry**</a>                | **GraphQL** **`Library`**                                             |
+| <a href="https://ariadnegraphql.org/" target="_blank">**Ariadne**</a>                 | **GraphQL** **`Library`**                                             |
 | <a href="https://github.com/pallets/click/" target="_blank">**Click**</a>             | **Manage** the server, development process and custom **`Commands`**. |
 | <a href="https://pypi.org/project/spoc/" target="_blank">**SPOC**</a>                 | **FrameWork** tool for building this **`Framework`**.                 |
 | <a href="https://pypi.org/project/dbcontroller/" target="_blank">**DBController**</a> | **Database** Controller for **`SQL`** and **`Mongo`**.                |
@@ -32,10 +32,16 @@ A tool for building **`GraphQL — API(s)`** with **`Python`**.
 
 ---
 
-## Install **Zmag** (Demo)
+## Install **Zmag** (Development)
 
 ```sh
-python -m pip install "zmag[testing]"
+python -m pip install "zmag[debug]"
+```
+
+## Install **Zmag** (Client)
+
+```sh
+python -m pip install "zmag"
 ```
 
 ## Install Zmag **Mongo**
@@ -44,19 +50,23 @@ python -m pip install "zmag[testing]"
 python -m pip install "zmag[mongo]"
 ```
 
-## Install Zmag **SQL**
+## Install Zmag **SQLite**
 
 ```sh
-python -m pip install "zmag[sql]" "databases[sqlite]"
+python -m pip install "zmag[sqlite]"
 ```
 
-!!! info "SQL Options"
+## Install Zmag **PostgreSQL**
 
-    | Database   | Extra Installation(s)         |
-    | ---------- | ----------------------------- |
-    | PostgreSQL | **`"databases[postgresql]"`** |
-    | MySQL      | **`"databases[mysql]"`**      |
-    | Sqlite     | **`"databases[sqlite]"`**     |
+```sh
+python -m pip install "zmag[sqlite]"
+```
+
+## Install Zmag **MySQL**
+
+```sh
+python -m pip install "zmag[mysql]"
+```
 
 ---
 
@@ -68,37 +78,23 @@ root/                           --> <Directory> - Project's Root.
 |-- apps/                       --> <Directory> - Project's Apps.
 |
 |--  config/                    --> <Directory> - Configurations.
-|    |
-|    |-- .env/                  --> <Directory> - Environments.
-|    |   |-- development.toml   --> <File> - Development    | Settings.
-|    |   |-- production.toml    --> <File> - Production     | Settings.
-|    |   `-- staging.toml       --> <File> - Staging        | Settings.
-|    |
-|    |-- docs.md                --> <File> - API's Documentation in HERE.
 |    |-- settings.py            --> <File> - API (Pythonic) | Settings.
 |    `-- spoc.toml              --> <File> - API (TOML)     | Settings.
-|
-|-- pyproject.toml              --> <File> - Project (TOML) | Settings.
 |
 `-- etc...
 ```
 
 ---
 
-## Inspired By **Django**
-
-There are several things from Django that inspire this tool.
-
-Some of the commands and the installation of **modules** (aka: **INSTALLED_APPS**) inside a Django project.
-
 ### **Zmag** comes with a few key **commands**:
 
-| Command                     | Is Used To...                                             |
-| --------------------------- | --------------------------------------------------------- |
-| **`startproject`**          | Create a new **Zmag** project.                            |
-| **`./manage.py run`**       | Run **FastApi Server**.                                   |
-| **`./manage.py start-app`** | Create a **Zmag App** inside your "**`apps`**" directory. |
-| **`./manage.py --help`**    | For **more information**.                                 |
+| Command                   | Is Used To...                                             |
+| ------------------------- | --------------------------------------------------------- |
+| **`startproject`**        | Create a new **Zmag** project.                            |
+| **`./main.py run`**       | Run **Server**.                                           |
+| **`./main.py start-app`** | Create a **Zmag App** inside your "**`apps`**" directory. |
+| **`./main.py db`**        | **SQL** (only) Alembic **Migrations**.                    |
+| **`./main.py --help`**    | For **more information**.                                 |
 
 !!! warning "startproject"
 

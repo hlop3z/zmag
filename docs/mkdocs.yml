@@ -6,17 +6,10 @@ copyright: Copyright © Hlop3z
 nav:
   - Introduction: index.md
   - Settings: settings.md
-  - Applications:
-      - Introduction: applications/index.md
-      - Application: applications/application.md
-      - GraphQL: applications/graphql.md
-      - Types: applications/types.md
-      - Forms: applications/forms.md
-      - Manager: applications/manager.md
-      - Commands: applications/commands.md
-  - Simplified:
-      - CRUD: crud.md
-      - Client: client.md
+  - Commands: commands.md
+  - Schema: schema.md
+  - Manager: manager.md
+  - Client: client.md
   - SQL Database:
       - Migrations: databases/index.md
 

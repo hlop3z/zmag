@@ -3,7 +3,7 @@
     The tool used to create migrations for SQL is [**Alembic**](https://pypi.org/project/alembic/) for **`SQLAlchemy`**.
 
 ```
-python ./manage.py db {My-Command}
+python ./main.py db {My-Command}
 ```
 
 ## Available **Commands**
