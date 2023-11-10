@@ -43,7 +43,7 @@
   },
   "integer": {
     "database": "Integer",
-    "graphql": "Integer",
+    "graphql": "Int",
     "python": "int",
     "javascript": "Number"
   },
