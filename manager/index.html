@@ -381,8 +381,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#model-definition" class="md-nav__link">
-    Model Definition
+  <a href="#modeltype-definition" class="md-nav__link">
+    Model/Type Definition
   </a>
   
 </li>
@@ -549,8 +549,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#model-definition" class="md-nav__link">
-    Model Definition
+  <a href="#modeltype-definition" class="md-nav__link">
+    Model/Type Definition
   </a>
   
 </li>
@@ -617,7 +617,7 @@
 
 <h1 id="type-manager">Type Manager</h1>
 <p>This tool is designed for <strong>GraphQL Type(s)</strong> management and resolving. Type management encompasses structuring and managing relationships among GraphQL types, enabling the modeling of data hierarchies and connections with other types.</p>
-<h2 id="model-definition">Model Definition</h2>
+<h2 id="modeltype-definition">Model/Type Definition</h2>
 <p>This function defines a model with a specified <code>kebab-case-name</code>.</p>
 <h2 id="arguments">Arguments</h2>
 <ul>
@@ -626,7 +626,7 @@
 <p><strong>Model Example:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">zmag</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">Author</span> <span class="o">=</span> <span class="n">zmag</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="s2">&quot;book-author&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">Author</span> <span class="o">=</span> <span class="n">zmag</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="s2">&quot;book-author&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="field-decorator"><strong><code>field</code></strong> decorator</h2>
 <p>You can resolve a field for the model using the <code>@&lt;model_name&gt;.field</code> decorator.</p>
