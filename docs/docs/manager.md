@@ -2,7 +2,7 @@
 
 This tool is designed for **GraphQL Type(s)** management and resolving. Type management encompasses structuring and managing relationships among GraphQL types, enabling the modeling of data hierarchies and connections with other types.
 
-## Model Definition
+## Model/Type Definition
 
 This function defines a model with a specified `kebab-case-name`.
 
@@ -15,7 +15,7 @@ This function defines a model with a specified `kebab-case-name`.
 ```python
 import zmag
 
-Author = zmag.model("book-author")
+Author = zmag.type("book-author")
 ```
 
 ## **`field`** decorator
