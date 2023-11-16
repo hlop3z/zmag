@@ -63,6 +63,25 @@ def api_return_types():
     return SimpleNamespace(**output)
 
 
+def create_database_model(database, model):
+    allowed_keys = [
+        "table_name",
+        "primary_key",
+        "required",
+        "index",
+        "unique",
+        "unique_together",
+        "ignore",
+    ]
+    # dbcontroller_config_fixer
+    db_config = {}
+    for key, val in (model.config or {}).items():
+        if key in allowed_keys:
+            db_config[key] = val
+    # Build Model
+    return database.model(model.dataclass, **db_config)
+
+
 class Util:
     @staticmethod
     def slugify(input_string):
@@ -307,7 +326,7 @@ class JSQL:
                 model.type = gql_admin
 
             if database:
-                model.database = database.model(model.dataclass, **(model.config or {}))
+                model.database = create_database_model(database, model)
 
             # Register
             self.api_dict["models"][model.class_name] = model
@@ -340,9 +359,7 @@ class JSQL:
             else:
                 if database:
                     if model.engine != "virtual":
-                        model.database = database.model(
-                            model.dataclass, **(model.config or {})
-                        )
+                        model.database = create_database_model(database, model)
                         model.engine = database.engine
                         self.api_dict["models"][model.class_name] = model
                         database_loader.append(model.database)

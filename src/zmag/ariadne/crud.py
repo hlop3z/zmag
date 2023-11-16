@@ -70,11 +70,25 @@ def get_model_fields(table):
     return form_fields
 
 
-def query_input_to_snake_case(client_query):
+def query_input_to_snake_case(api, table, client_query):
+    table_config = table.config
+    related_config = table_config.get("related", {})
     if client_query and len(client_query) > 0:
         for item in client_query:
-            if isinstance(item, list) and len(item) > 1:
-                item[0] = Util.camel_to_snake(item[0])
+            if isinstance(item, list) and len(item) == 3:
+                query_key = Util.camel_to_snake(item[0])
+                query_value = item[2]
+                item[0] = query_key
+                related_class = related_config.get(query_key)
+                if related_class:
+                    related_name = Util.parse_class_name(related_class)
+                    related_type = api.types.get(related_name)
+                    if related_type.database:
+                        related_table = related_type.database.objects
+                        if query_value and isinstance(query_value, list):
+                            item[2] = [related_table.id_decode(x) for x in query_value]
+                        elif query_value and isinstance(query_value, str):
+                            item[2] = related_table.id_decode(query_value)
 
 
 def all_api_forms(core_api):
@@ -469,7 +483,7 @@ def create_graphql_app(
                 perms_filter = lambda object: check_filter_perms(object, info)
 
             # Parse Query
-            query_input_to_snake_case(client_query)
+            query_input_to_snake_case(API, table, client_query)
 
             # Database Run
             db_results = await database.filter(

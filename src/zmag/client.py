@@ -191,13 +191,16 @@ class Client:
         form: dict,
         context: dict | None = None,
     ):
-        query = self.graphql.model.get(model)
+        graphql_query = self.graphql.model.get(model)
         operation = "Create"
         variables = {
             "form": form,
         }
         return self.request(
-            query=query, operation=operation, variables=variables, context=context
+            query=graphql_query,
+            operation=operation,
+            variables=variables,
+            context=context,
         )
 
     def update(
@@ -206,13 +209,16 @@ class Client:
         form: dict,
         context: dict | None = None,
     ):
-        query = self.graphql.model.get(model)
+        graphql_query = self.graphql.model.get(model)
         operation = "Update"
         variables = {
             "form": form,
         }
         return self.request(
-            query=query, operation=operation, variables=variables, context=context
+            query=graphql_query,
+            operation=operation,
+            variables=variables,
+            context=context,
         )
 
     def delete(
@@ -221,13 +227,16 @@ class Client:
         ids: list[str],
         context: dict | None = None,
     ):
-        query = self.graphql.model.get(model)
+        graphql_query = self.graphql.model.get(model)
         operation = "Delete"
         variables = {
             "ids": ids,
         }
         return self.request(
-            query=query, operation=operation, variables=variables, context=context
+            query=graphql_query,
+            operation=operation,
+            variables=variables,
+            context=context,
         )
 
     def create_many(
@@ -236,13 +245,13 @@ class Client:
         forms: list[dict],
         context: dict | None = None,
     ):
-        query = self.graphql.model.get(model)
+        graphql_query = self.graphql.model.get(model)
         operation = "CreateMany"
         variables = {
             "forms": forms,
         }
         return self.request(
-            query=query,
+            query=graphql_query,
             operation=operation,
             variables=variables,
             context=context,
@@ -255,14 +264,14 @@ class Client:
         form: dict,
         context: dict | None = None,
     ):
-        query = self.graphql.model.get(model)
+        graphql_query = self.graphql.model.get(model)
         operation = "UpdateMany"
         variables = {
             "ids": ids,
             "form": form,
         }
         return self.request(
-            query=query,
+            query=graphql_query,
             operation=operation,
             variables=variables,
             context=context,
@@ -275,13 +284,16 @@ class Client:
         id: str,
         context: dict | None = None,
     ):
-        query = self.graphql.model.get(model)
+        graphql_query = self.graphql.model.get(model)
         operation = "Detail"
         variables = {
             "id": id,
         }
         return self.request(
-            query=query, operation=operation, variables=variables, context=context
+            query=graphql_query,
+            operation=operation,
+            variables=variables,
+            context=context,
         )
 
     def filter(
@@ -294,7 +306,7 @@ class Client:
         all: bool = False,
         context: dict | None = None,
     ):
-        query = self.graphql.model.get(model)
+        graphql_query = self.graphql.model.get(model)
         operation = "Filter"
         variables = {
             "page": page,
@@ -305,5 +317,8 @@ class Client:
         if query:
             variables["query"] = query
         return self.request(
-            query=query, operation=operation, variables=variables, context=context
+            query=graphql_query,
+            operation=operation,
+            variables=variables,
+            context=context,
         )
