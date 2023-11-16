@@ -41,6 +41,7 @@ def get_model_inputs(table):
     model_columns = []
     form_fields = {}
     if table.database:
+        related_columns = table.config.get("related", {})
         model_columns = table.database.objects.columns
         auto_list = table.config.get("auto", [])
         cols_inputs = [col for col in model_columns if col not in auto_list]
@@ -49,8 +50,11 @@ def get_model_inputs(table):
             if field:
                 field_name = field.get("name")
                 field_name = Util.snake_to_camel(field_name)
-                field_type = field.get("field_type")
-                form_fields[field_name] = field_type
+                if related_columns.get(field.get("name")):
+                    form_fields[field_name] = "string"
+                else:
+                    field_type = field.get("field_type")
+                    form_fields[field_name] = field_type
     return form_fields
 
 
