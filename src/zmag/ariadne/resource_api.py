@@ -36,9 +36,19 @@ class FunctionRegistry:
 
 
 class ResourcesAPI:
-    def __init__(self, *args, name=None):
-        self.name = kebab_case(name)
-        self._groups = set({})
+    _instances = {}
+
+    def __new__(cls, *args, name=None):
+        name = kebab_case(name)
+        if name not in cls._instances:
+            instance = super().__new__(cls)
+            instance.name = name
+            instance._groups = set({})
+            instance._initialize(*args)
+            cls._instances[name] = instance
+        return cls._instances[name]
+
+    def _initialize(self, *args):
         if args:
             for key in args:
                 if not isinstance(key, str):

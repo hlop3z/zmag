@@ -127,7 +127,7 @@ def all_api_forms(core_api):
 def get_model_control(admin, control_path):
     try:
         return admin.api(control_path)
-    except:
+    except:  # noqa: E722
         return None
 
 
@@ -214,7 +214,7 @@ def create_graphql_app(
             # After Method
             model_core = get_model_core_objects(model_name, table)
             computed_api = SimpleNamespace(model=model_core, data=results)
-            after_util = get_model_control(admin, f"after.create")
+            after_util = get_model_control(admin, "after.create")
             if after_util:
                 await after_util(computed_api, info)
 
@@ -238,9 +238,11 @@ def create_graphql_app(
         if table and table.database:
             database = DatabaseManager(table.database.objects)
 
-            check_object_perms = get_model_control(admin, f"perms.update")
+            check_object_perms = get_model_control(admin, "perms.update")
             if check_object_perms:
-                perms_method = lambda object: check_object_perms(object, info)
+
+                def perms_method(object):
+                    return check_object_perms(object, info)
 
             item_id = client_form.get("id")
             if item_id:
@@ -272,7 +274,7 @@ def create_graphql_app(
             # After Method
             model_core = get_model_core_objects(model_name, table)
             computed_api = SimpleNamespace(model=model_core, data=results)
-            after_util = get_model_control(admin, f"after.update")
+            after_util = get_model_control(admin, "after.update")
             if after_util:
                 await after_util(computed_api, info)
 
@@ -293,15 +295,17 @@ def create_graphql_app(
         if table and table.database:
             database = DatabaseManager(table.database.objects)
 
-            check_object_perms = get_model_control(admin, f"perms.delete")
+            check_object_perms = get_model_control(admin, "perms.delete")
             if check_object_perms:
-                perms_method = lambda object: check_object_perms(object, info)
+
+                def perms_method(object):
+                    return check_object_perms(object, info)
 
             results = await database.delete(selected_id, perms_method)
             # After Method
             model_core = get_model_core_objects(model_name, table)
             computed_api = SimpleNamespace(model=model_core, data=results)
-            after_util = get_model_control(admin, f"after.delete")
+            after_util = get_model_control(admin, "after.delete")
             if after_util:
                 await after_util(computed_api, info)
 
@@ -351,7 +355,7 @@ def create_graphql_app(
                 # After Method
                 model_core = get_model_core_objects(model_name, table)
                 computed_api = SimpleNamespace(model=model_core, data=results)
-                after_util = get_model_control(admin, f"after.create")
+                after_util = get_model_control(admin, "after.create")
                 if after_util:
                     await after_util(computed_api, info)
         if table and table.return_name:
@@ -395,9 +399,11 @@ def create_graphql_app(
             # Database Hit
             database = DatabaseManager(table.database.objects)
 
-            check_object_perms = get_model_control(admin, f"perms.update")
+            check_object_perms = get_model_control(admin, "perms.update")
             if check_object_perms:
-                perms_method = lambda object: check_object_perms(object, info)
+
+                def perms_method(object):
+                    return check_object_perms(object, info)
 
             results = await database.update(
                 selected_id, client_form, perms_method, is_many=True
@@ -408,7 +414,7 @@ def create_graphql_app(
             # After Method
             model_core = get_model_core_objects(model_name, table)
             computed_api = SimpleNamespace(model=model_core, data=results)
-            after_util = get_model_control(admin, f"after.update")
+            after_util = get_model_control(admin, "after.update")
             if after_util:
                 await after_util(computed_api, info)
         if table and table.return_name:
@@ -427,16 +433,19 @@ def create_graphql_app(
 
         if table and table.database:
             database = DatabaseManager(table.database.objects)
-            check_object_perms = get_model_control(admin, f"perms.detail")
+            check_object_perms = get_model_control(admin, "perms.detail")
             if check_object_perms:
-                perms_method = lambda object: check_object_perms(object, info)
+
+                def perms_method(object):
+                    return check_object_perms(object, info)
+
             results = await database.detail(item_id, perms_method)
             if results:
                 results["xid"] = results["_id"]
             # After Method
             model_core = get_model_core_objects(model_name, table)
             computed_api = SimpleNamespace(model=model_core, data=results)
-            after_util = get_model_control(admin, f"after.detail")
+            after_util = get_model_control(admin, "after.detail")
             if after_util:
                 await after_util(computed_api, info)
         if table and table.return_name:
@@ -482,9 +491,14 @@ def create_graphql_app(
             check_object_perms = get_model_control(admin, "perms.filter")
             check_filter_perms = get_model_control(admin, "filter.query")
             if check_object_perms:
-                perms_method = lambda object: check_object_perms(object, info)
+
+                def perms_method(object):
+                    return check_object_perms(object, info)
+
             if check_filter_perms:
-                perms_filter = lambda object: check_filter_perms(object, info)
+
+                def perms_filter(object):
+                    return check_filter_perms(object, info)
 
             # Parse Query
             query_input_to_snake_case(API, table, client_query)
@@ -524,7 +538,7 @@ def create_graphql_app(
             # Computed Values
             model_core = get_model_core_objects(model_name, table)
             computed_api = SimpleNamespace(model=model_core, data=results)
-            extra_util = get_model_control(admin, f"filter.computed")
+            extra_util = get_model_control(admin, "filter.computed")
             if extra_util:
                 extra = await extra_util(computed_api, info)
                 if extra:
@@ -532,7 +546,7 @@ def create_graphql_app(
                         Util.snake_to_camel(key): value for key, value in extra.items()
                     }
             # After Method
-            after_util = get_model_control(admin, f"after.filter")
+            after_util = get_model_control(admin, "after.filter")
             if after_util:
                 await after_util(computed_api, info)
         if table and table.return_name:

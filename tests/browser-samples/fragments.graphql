@@ -1,0 +1,114 @@
+fragment ModelFields on Author {
+  xid
+  id
+  firstName
+  lastName
+  fullName
+}
+
+fragment ErrorFields on Error {
+  meta
+  messages {
+    field
+    type
+    text
+  }
+}
+
+query Filter(
+  $model: String!
+  $query: List
+  $page: Int
+  $limit: Int
+  $sort: String
+  $all: Boolean
+) {
+  filter(
+    model: $model
+    query: $query
+    page: $page
+    limit: $limit
+    sort: $sort
+    all: $all
+  ) {
+    page {
+      number
+      count
+      pages
+      hasNext
+      hasPrev
+    }
+    Author {
+      ...ModelFields
+    }
+  }
+}
+
+query Detail($model: String!, $id: ID) {
+  detail(model: $model, id: $id) {
+    Author {
+      ...ModelFields
+    }
+  }
+}
+
+mutation Create($model: String!, $form: Form!) {
+  create(model: $model, form: $form) {
+    Author {
+      ...ModelFields
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+mutation Update($model: String!, $form: Form!) {
+  update(model: $model, form: $form) {
+    Author {
+      ...ModelFields
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+mutation CreateMany($model: String!, $forms: [Form!]) {
+  createMany(model: $model, forms: $forms) {
+    Author {
+      ...ModelFields
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+mutation UpdateMany($model: String!, $ids: [ID!], $form: Form!) {
+  updateMany(model: $model, ids: $ids, form: $form) {
+    Author {
+      ...ModelFields
+    }
+    error {
+      ...ErrorFields
+    }
+  }
+}
+
+mutation Delete($model: String!, $ids: [ID!]) {
+  delete(model: $model, ids: $ids) {
+    ids
+  }
+}
+
+query Info {
+  info {
+    models
+    fields
+    query
+    mutation
+    forms
+    objects
+  }
+}

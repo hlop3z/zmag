@@ -1,6 +1,6 @@
 [project]
 name = "zmag"
-version = "0.0.12"
+version = "0.0.13"
 description = "Craft APIs for Databases, with ZeroMQ and GraphQL"
 authors = [
     { name = "hlop3z", email = "23062270+hlop3z@users.noreply.github.com" },
@@ -70,8 +70,10 @@ docs = ["mkdocs>=1.5.3", "mkdocs-material>=9.4.7"]
 
 [tool.pdm.scripts]
 # Develop
-test = { shell = "cd tests && python main.py" }
+manage = { shell = "cd tests && python main.py" }
+test = { shell = "cd tests && python main.py run -d -p" }
 test-client = { shell = "cd client_tests && python test.py" }
+test-filter = { shell = "cd client_tests && python test_filter.py" }
 # Notebook
 notebook = { shell = "python -m jupyter notebook" }
 # Docs

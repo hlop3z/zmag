@@ -1,0 +1,12 @@
+{
+  "model": "Author",
+  "form": "{\"firstName\": \"Jane\",\"lastName\": \"Lopez\"}",
+  "forms": ["{\"firstName\": \"Jane\",\"lastName\": \"Doe\"}"],
+  "id": "NjUzZWJjN2ZkZDY4ODJmZTNmMjg2NDIxOjoxZjJjMjE2NDFmMzRiNTQ0",
+  "ids": [
+    "NjUzZWJjN2ZkZDY4ODJmZTNmMjg2NDIxOjoxZjJjMjE2NDFmMzRiNTQ0",
+    "NjUzZWJjNThkNmRhM2VkMmM1ZGYzNWEzOjo1ZmNlY2FlYTIwNzQ0NDIw",
+    "NjUzZWJjM2MwNTQ4ZDQyM2U3MmEwZTU1OjphMDJhMDZiM2QxYWNiODQw",
+    "NjUzYjA5YTZhZTA3MjlmOTcyZTYxNjM0OjpkNDk4N2Q1ZDQyODA3MTcz"
+  ]
+}

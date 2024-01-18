@@ -1,16 +1,14 @@
-fragment ModelFields on Author {
+# Used in: (filter, create_many, update_many)
+fragment List on Author {
   # xid
+  id
+  fullName
+}
+
+# Used in: (create, update, detail)
+fragment Item on Author {
   id
   firstName
   lastName
   fullName
-}
-
-fragment ErrorFields on Error {
-  meta
-  messages {
-    field
-    type
-    text
-  }
 }

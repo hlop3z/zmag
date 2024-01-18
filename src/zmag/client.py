@@ -26,6 +26,10 @@ query {
 """
 
 
+def tcp_port(port):
+    return f"tcp://127.0.0.1:{port}"
+
+
 class Data:
     @staticmethod
     def dumps(data):
@@ -59,6 +63,7 @@ class ClientZMQ:
     def __init__(
         self,
         client_uri: str = "tcp://127.0.0.1:5555",
+        timeout: int = 5000,
     ):
         """
         Initialize the ZMAG Manager.
@@ -68,6 +73,7 @@ class ClientZMQ:
         """
         # URI(s)
         self.uri_client = client_uri
+        self.timeout = timeout
 
         # ZMQ
         self.socket = None
@@ -75,6 +81,8 @@ class ClientZMQ:
     async def request(self, __head__=None, **data):
         context = zmq.asyncio.Context()
         socket = context.socket(zmq.REQ)
+        socket.setsockopt(zmq.RCVTIMEO, self.timeout)
+
         socket.connect(self.uri_client)
         return_value = SimpleNamespace(error=None, data=None)
 
@@ -139,9 +147,6 @@ class Operations:
             query += file.read()
         # Register
         self.model[model] = query
-
-
-tcp_port = lambda port: f"tcp://127.0.0.1:{port}"
 
 
 class Client:

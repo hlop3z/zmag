@@ -43,7 +43,7 @@ class DatabaseManager:
             if not items:
                 return None
             return self.table.query_list(items)
-        except:
+        except:  # noqa: E722
             return None
 
     def queryset_bind(self, current, next):
@@ -175,8 +175,6 @@ class DatabaseManager:
         if get_all:
             results = await self.table.find_all(
                 query,
-                page=page,
-                limit=limit,
                 sort_by=sort_by,
             )
         else:

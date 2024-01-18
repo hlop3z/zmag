@@ -59,7 +59,7 @@ python -m pip install "zmag[sqlite]"
 ## Install Zmag **PostgreSQL**
 
 ```sh
-python -m pip install "zmag[sqlite]"
+python -m pip install "zmag[postgresql]"
 ```
 
 ## Install Zmag **MySQL**

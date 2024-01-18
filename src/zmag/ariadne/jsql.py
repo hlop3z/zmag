@@ -139,7 +139,7 @@ class Util:
         type_defs += f"  type {model.class_name} {{\n"
         current_id_type = "Int" if model.engine == "sql" else "String"
         type_defs += f"    xid: {current_id_type}\n"
-        type_defs += f"    id: String\n"
+        type_defs += "    id: String\n"
         for field_name, setup in model.schema.items():
             type_defs += f"    {cls.create_graphql_field(field_name, setup)}\n"
         type_defs += "}\n"
@@ -147,7 +147,9 @@ class Util:
 
     @staticmethod
     def create_return_type(name, items: dict = {}, extra_types: dict | None = None):
-        return_type_base = lambda key, val: f"{key}: {val}"
+        def return_type_base(key, val):
+            return f"{key}: {val}"
+
         code_text = f"type {name}Response" + " {\n"
         # Database Models
         for key, val in items.items():
@@ -168,7 +170,7 @@ class Util:
             item = SimpleNamespace(**item)
             ignored_items = model.config.get("ignore", [])
             ignored_items = ignored_items or []
-            if not item.is_model and not item.name in ignored_items:
+            if not item.is_model and item.name not in ignored_items:
                 if item.is_list:
                     db_config[item.name] = list[item.python_type]
                 else:
