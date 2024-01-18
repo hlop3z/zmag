@@ -25,11 +25,10 @@ async def dataset_computed_value(response, info):
 
 
 # Methods
-"""
 @Author.after("filter")
 async def after_method(response, info):
-    print("Two")
-"""
+    print("after_filter")
+
 
 # Forms
 
