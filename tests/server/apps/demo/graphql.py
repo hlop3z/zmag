@@ -36,7 +36,8 @@ class Demo:
                     id="1",
                     title="The Great Gatsby",
                     author=types.Author(
-                        name="F. Scott Fitzgerald",
+                        first_name="F. Scott",
+                        last_name="Fitzgerald",
                     ),
                 )
             ]

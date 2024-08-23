@@ -338,7 +338,7 @@ def make_dataclass(base_class, form_name):
     return data_class
 
 
-def dataclass(
+def dataclass(  # pylint: disable=too-many-branches
     original_object: Any = None,
     *,
     name: str | None = None,

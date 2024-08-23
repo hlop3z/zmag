@@ -5,17 +5,18 @@
 
 import zmag
 
-# from zmag import settings
-
 
 # Create your <types> here.
-class Author(*zmag.model):
-    """(Type) Read The Docs"""
+class Author(zmag.Type):  # zmag.BaseType
+    first_name: str
+    last_name: str
 
-    name: str
+    @property
+    async def name(self):
+        return f"{self.first_name} {self.last_name}"
 
 
-class Book(*zmag.model):
+class Book(zmag.Model):
     """(Type) Read The Docs"""
 
     title: str = zmag.field(default="Hello World")

@@ -1,102 +1,106 @@
-# Welcome to **Zmag**
+# Welcome to **ZMAG**
 
-Zmag, is built with **Pyzmq (ZeroMQ)** and **Ariadne (GraphQL)** this project is the sibling of [Fastberry](https://hlop3z.github.io/fastberry/)
+---
 
-The **`Command-Line-Interface` (CLI)** is built with **Click**.
+**(Z)**eroMQ **(M)**anages — **(A)** — **(G)**raphql
+
+---
+
+**ZMAG** is a powerful tool designed for building **network** APIs rather than traditional web applications, leveraging the unique combination of **GraphQL** and **ZeroMQ**. By integrating **GraphQL's** flexible and efficient querying capabilities with **ZeroMQ's** high-performance messaging patterns, **ZMAG** enables developers to create robust and scalable network APIs. This approach allows for real-time communication, seamless data transfer, and efficient management of complex, distributed systems, making **ZMAG** an ideal choice for developers looking to build sophisticated network services that go beyond the capabilities of standard web applications.
 
 <div id="terminal-index" data-termynal></div>
 
 ---
 
-## **Description**
+## Description
 
-A tool for building **`GraphQL — API(s)`** with **`Python`**.
+**ZMAG** is a tool for building network **GraphQL APIs** with **Python**.
 
-!!! info "You can create . . ."
+**ZMAG** is built with **`pyzmq` (ZeroMQ)** and with **`strawberry-graphql` (GraphQL)**.
 
-    1. **`GraphQL`** — **`Query`**(s) and **`Mutation`**(s).
-    3. **`Commands`** — To create automated processes and more . . .
+The **Command-Line Interface (CLI)** is built with **`click`**.
 
----
+!!! info "Capabilities of Zmag"
 
-## **Built** With
-
-| Module                                                                                | Is Used To...                                                         |
-| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| <a href="https://pyzmq.readthedocs.io" target="_blank">**Pyzmq**</a>                  | **API**'s core **Universal Messaging** **`Library`**.                 |
-| <a href="https://ariadnegraphql.org/" target="_blank">**Ariadne**</a>                 | **GraphQL** **`Library`**                                             |
-| <a href="https://github.com/pallets/click/" target="_blank">**Click**</a>             | **Manage** the server, development process and custom **`Commands`**. |
-| <a href="https://pypi.org/project/spoc/" target="_blank">**SPOC**</a>                 | **FrameWork** tool for building this **`Framework`**.                 |
-| <a href="https://pypi.org/project/dbcontroller/" target="_blank">**DBController**</a> | **Database** Controller for **`SQL`** and **`Mongo`**.                |
-| <a href="https://www.starlette.io/" target="_blank">**Starlette**</a>                 | **Run** the server in **`Debug`** mode.                               |
+    1. Build **GraphQL** **Queries** and **Mutations** for flexible data interactions.
+    2. Develop **Request** and **Response** APIs for efficient communication.
+    3. Implement **Pub/Sub** and **Push/Pull** patterns for robust messaging and data distribution.
+    4. Leverage **Commands** to automate processes and streamline operations.
 
 ---
 
-## Install **Zmag** (Development)
+## Built With
+
+| Module                                         | Purpose                                                            |
+| ---------------------------------------------- | ------------------------------------------------------------------ |
+| [**Pyzmq**](https://pyzmq.readthedocs.io)      | Core **Universal Messaging Library** for the API.                  |
+| [**Strawberry**](https://strawberry.rocks/)    | **GraphQL Library**                                                |
+| [**Click**](https://github.com/pallets/click/) | Manage the server, development processes, and custom **Commands**. |
+| [**SPOC**](https://pypi.org/project/spoc/)     | **Framework tool** for building this framework.                    |
+
+## Debug Server Built With
+
+| Module                                                   | Purpose                               |
+| -------------------------------------------------------- | ------------------------------------- |
+| [**Starlette**](https://www.starlette.io/)               | Runs the server in **Debug** mode.    |
+| [**Uvicorn**](https://www.uvicorn.org/)                  | ASGI web server.                      |
+| [**Watchdog**](https://github.com/gorakhargosh/watchdog) | Restarts the debug server on changes. |
+
+---
+
+## Installation
+
+To install **Zmag** in different environments, use the following commands:
+
+### **Development** Environment
 
 ```sh
-python -m pip install "zmag[debug]"
+python -m pip install "zmag[debug,server]"
 ```
 
-## Install **Zmag** (Client)
+### **Server** Environment
+
+```sh
+python -m pip install "zmag[server]"
+```
+
+### **Client** Environment
 
 ```sh
 python -m pip install "zmag"
 ```
 
-## Install Zmag **Mongo**
-
-```sh
-python -m pip install "zmag[mongo]"
-```
-
-## Install Zmag **SQLite**
-
-```sh
-python -m pip install "zmag[sqlite]"
-```
-
-## Install Zmag **PostgreSQL**
-
-```sh
-python -m pip install "zmag[postgresql]"
-```
-
-## Install Zmag **MySQL**
-
-```sh
-python -m pip install "zmag[mysql]"
-```
-
 ---
 
-## **Core** Layout
+## Core **Layout**
 
 ```text
-root/                           --> <Directory> - Project's Root.
+root/                           --> <Directory> - Project's Root
 |
-|-- apps/                       --> <Directory> - Project's Apps.
+|-- apps/                       --> <Directory> - Project's Apps
 |
-|--  config/                    --> <Directory> - Configurations.
-|    |-- settings.py            --> <File> - API (Pythonic) | Settings.
-|    `-- spoc.toml              --> <File> - API (TOML)     | Settings.
+|-- config/                     --> <Directory> - Configurations
+|    |-- .env                   --> <Directory> - Environment Settings
+|    |-- ...
+|    |-- settings.py            --> <File> - Pythonic API Settings
+|    `-- spoc.toml              --> <File> - TOML API Settings
 |
 `-- etc...
 ```
 
 ---
 
-### **Zmag** comes with a few key **commands**:
+## Key Commands
 
-| Command                   | Is Used To...                                             |
-| ------------------------- | --------------------------------------------------------- |
-| **`startproject`**        | Create a new **Zmag** project.                            |
-| **`./main.py run`**       | Run **Server**.                                           |
-| **`./main.py start-app`** | Create a **Zmag App** inside your "**`apps`**" directory. |
-| **`./main.py db`**        | **SQL** (only) Alembic **Migrations**.                    |
-| **`./main.py --help`**    | For **more information**.                                 |
+**Zmag** comes with several key commands:
 
-!!! warning "startproject"
+| Command               | Purpose                                                 |
+| --------------------- | ------------------------------------------------------- |
+| `startproject`        | Create a new **ZMAG** project.                          |
+| `./main.py run`       | Run the **Server**.                                     |
+| `./main.py start-app` | Create a **Zmag App** inside your **`apps`** directory. |
+| `./main.py --help`    | Display more information about available commands.      |
 
-    Careful with the command `startproject`. Only **use it once** and make sure you are in a **new folder**.
-    It will write files and folders.
+!!! warning "Important: `startproject` Command"
+
+    Use the `startproject` command **only once** and make sure you are in a **new folder**. This command will write files and folders to the current directory.

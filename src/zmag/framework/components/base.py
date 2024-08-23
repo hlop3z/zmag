@@ -5,7 +5,6 @@ Components Base
 
 from ...external import spoc
 
-
 components = spoc.Components(
     # Click
     "command",

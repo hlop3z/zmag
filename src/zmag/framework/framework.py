@@ -46,27 +46,37 @@ if spoc:
 
     class Framework(spoc.Base):
         """Framework
-        - keys
         - base_dir
-        - component
-        - config
-        - environment
-        - extras
+        - cli
+        - context
+        - debug
+        - env
+        - events
+        - graphql
+        - graphql_settings
+        - info
         - mode
+        - publishers
+        - pushers
+        - pyproject
+        - schema
         - settings
+        - spoc
+        - zmq
         """
 
         base_dir: Any
         cli: Any
-        component: Any
+        context: Any
         debug: Any
         env: Any
         events: Any
-        extras: Any
         graphql: Any
+        graphql_settings: Any
         info: Any
         mode: Any
         publishers: Any
+        pushers: Any
         pyproject: Any
         schema: Any
         settings: Any
@@ -99,10 +109,11 @@ if spoc:
             self.spoc = spoc.settings.SPOC
             self.settings = spoc.settings
             self.pyproject = spoc.settings.CONFIG.get("pyproject", {})
+            self.graphql_settings = spoc.settings.SPOC.get("graphql", {})
 
             # Project
-            self.component = framework.components
-            self.extras = framework.extras
+            # self.component = framework.components
+            # self.extras = framework.extras
             self.info = SimpleNamespace(**get_project_info(framework))
             self.events = SimpleNamespace(
                 startup=framework.extras.get("on_startup", []),
@@ -122,10 +133,20 @@ if spoc:
             # GraphQL { Query & Mutation }
             self.graphql = handlers.graphql(
                 schemas=framework.components.graphql.values(),
-                permissions=framework.extras.get("permissions"),
+                permissions=framework.extras.get("permissions", []),
             )
 
             # GraphQL Schema
+            introspection = spoc.settings.DEBUG or self.graphql_settings.get(
+                "introspection", False
+            )
             self.schema = self.graphql.schema(
+                introspection=introspection,
+                max_depth=self.graphql_settings.get("max_depth", 4),
                 extensions=framework.extras.get("extensions", []),
             )
+
+            # Context
+            self.context = SimpleNamespace(schema=self.schema)
+
+            # raise ValueError("DON'T START")

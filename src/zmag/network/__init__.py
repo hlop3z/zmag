@@ -11,7 +11,7 @@ from .utils import Data
 
 
 class DeviceZMQ(ZeroMQ):
-    pass
+    """ZMQ Device"""
 
 
 class BackendZMQ(ZeroMQ):

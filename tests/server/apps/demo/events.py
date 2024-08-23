@@ -4,11 +4,11 @@
 # print("MODE", settings.MODE)
 
 
-def on_startup(app):
+def on_startup(context):
     print("Server Startup")
-    print(app.info)
+    print(context)
 
 
-def on_shutdown(app):
+def on_shutdown(context):
     print("Server Shutdown")
-    print(app.info)
+    print(context)

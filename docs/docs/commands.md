@@ -1,6 +1,4 @@
-> Your code **needs** to be in a **file** named **`commands.py`** or **folder** named **`commands`** inside your **Application**.
-
-> Your **`click.group`** **needs** to be named **`cli`**.
+The code **must** be placed in a **file** named **`commands.py`** or in a **folder** named **`commands`** within the **Application directory**.
 
 ## File or Folder **Layout**
 
@@ -31,6 +29,10 @@
     ```
 
 ## Python **Code**
+
+!!! note
+
+    The **`zmag.cli`** especial wrapper for (aka: **`click.group`**) **must** be named **`cli`**.
 
 === ":material-file: File"
 

@@ -4,8 +4,8 @@ Components Network
 """
 
 import functools
-import typing
 import inspect
+import typing
 
 from ...tools.timer import time_in_seconds
 from .base import components

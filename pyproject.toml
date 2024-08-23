@@ -8,11 +8,11 @@ authors = [
 requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "MIT" }
-dependencies = ["pyzmq>=26.2.0", "orjson>=3.10.7"] # "zmag"
+dependencies = ["pyzmq>=26.2.0", "orjson>=3.10.7"]
 
 [project.optional-dependencies]
-debug = ["uvicorn[standard]>=0.30.6", "starlette>=0.38.2"]
-server = ["spoc>=0.1.35", "strawberry-graphql>=0.237.3"]
+debug = ["uvicorn[standard]>=0.30.6", "starlette>=0.38.2", "watchdog>=4.0.2"]
+server = ["spoc>=0.1.35", "strawberry-graphql>=0.237.3", "click>=8.1.7"]
 
 [build-system]
 requires = ["hatchling"]
@@ -29,6 +29,8 @@ dev-dependencies = [
     "bandit>=1.7.9",
     "watchdog>=4.0.2",
     "ssort>=0.13.0",
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.5.32",
 ]
 
 [tool.uv.sources]

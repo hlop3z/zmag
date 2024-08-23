@@ -38,12 +38,26 @@ def is_bytes(value):
     return isinstance(value, bytes)
 
 
+class OrJSON:
+    """Wrapper for `orjson`"""
+
+    @staticmethod
+    def dumps(data: Any):
+        """Dump"""
+        return orjson.dumps(data)  # pylint: disable=maybe-no-member
+
+    @staticmethod
+    def loads(data: Any):
+        """Load"""
+        return orjson.loads(data)  # pylint: disable=maybe-no-member
+
+
 class SerializerJSON:
     """
     Serializes and Deserializes to a JSON byte string.
     """
 
-    _serializer: Any = orjson
+    _serializer: Any = OrJSON
 
     @classmethod
     def load_meta(cls, meta: Any) -> Any:

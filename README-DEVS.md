@@ -23,3 +23,9 @@ uv add httpx --optional network
 ```sh
 uv tool install
 ```
+
+## Building The Package
+
+```sh
+uvx --from build pyproject-build --installer uv
+```

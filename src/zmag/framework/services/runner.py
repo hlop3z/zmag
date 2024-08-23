@@ -4,6 +4,7 @@ ZMAG Server(s)
 """
 
 import asyncio
+import inspect
 import logging
 import os
 from functools import partial
@@ -11,15 +12,19 @@ from typing import Any
 
 from ...external import spoc, uvloop
 from ...network import BackendZMQ, DeviceZMQ
-from .queue import start_queue
-from .publisher import start_publisher
-from .pusher import start_pusher
-from .watcher import start_watcher
 from .debugger import DebugServer
+from .pub_push import start_publisher, start_pusher
+from .queue import start_queue
+from .watcher import start_watcher
 
 
 class Device(spoc.BaseThread):
+    """Device Service"""
+
+    options: Any
+
     def on_event(self, event_type: str):
+        """Device Events"""
         match event_type:
             case "startup":
                 logging.info("Starting Device (ZMQ). . .")
@@ -39,33 +44,31 @@ class Device(spoc.BaseThread):
 
 
 class ZMQBaseServer:
+    """Base ZMQ Server"""
+
     agent: Any = uvloop if uvloop else asyncio
+    options: Any
+    app: Any
+    node: BackendZMQ
 
     def before_async(self) -> None:
         """Loop Policy"""
         if os.name == "nt":
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-    async def on_event(self, event_type: str):
-        match event_type:
-            case "startup":
-                logging.info("Starting Server (ZMQ). . .")
-            case "shutdown":
-                logging.info("Stopping Server (ZMQ). . .")
-
-    async def server(self):
-        """ZMQ Server"""
         from ..framework import Framework  # pylint: disable=cyclic-import
 
         # My Application
-        app = Framework()
-        zmq_config = app.env.get("zmq", {})
+        self.app = Framework()
+
+        # ZMQ Settings
+        zmq_config = self.app.env.get("zmq", {})
 
         # Server Authentication
         with_auth = self.options.authentication
 
         # Server Node
-        node: BackendZMQ = BackendZMQ(
+        self.node = BackendZMQ(
             backend=self.options.backend,
             frontend=self.options.frontend,
             attach=self.options.attach,
@@ -74,10 +77,40 @@ class ZMQBaseServer:
             secretkey=zmq_config.get("secret_key") if with_auth else None,
         )
 
-        # Start Server
-        logging.info("Server ID: %s", node.name)
+    async def on_event(self, event_type: str):
+        """App Events"""
+        match event_type:
+            case "startup":
+                logging.info("Starting Server (ZMQ). . .")
+                logging.info("Server ID: %s", self.node.name)
+                # Events
+                await self.run_hooks(
+                    self.app.context,
+                    self.app.events.startup,
+                )
+            case "shutdown":
+                logging.info("Stopping Server (ZMQ). . .")
+                # Events
+                await self.run_hooks(
+                    self.app.context,
+                    self.app.events.shutdown,
+                )
 
-        # Loop
+    async def run_hooks(self, context, items):
+        """Run Event Methods"""
+        for method in items:
+            if inspect.iscoroutinefunction(method):
+                await method(context)
+            else:
+                method(context)
+
+    async def server(self):
+        """ZMQ Server"""
+
+        app = self.app
+        node = self.node
+
+        # Start Server (Loop)
         match self.options.mode:
             case "streamer":
                 await start_pusher(self, app, node)
@@ -96,10 +129,13 @@ class ZMQServerThread(ZMQBaseServer, spoc.BaseThread):
 
 
 class Server(spoc.BaseServer):
+    """Main Server"""
+
     services: list[Any] = []
 
     @classmethod
     def on_event(cls, event_type):
+        """Main Server Events"""
         match event_type:
             case "startup":
                 logging.info("Starting Application . . .")
@@ -108,6 +144,7 @@ class Server(spoc.BaseServer):
 
     @classmethod
     def start_server(cls, config):
+        """Start Main Server"""
         # Servers (Backend)
         server_type = ZMQServerThread if config.thread else ZMQServerProcess
 

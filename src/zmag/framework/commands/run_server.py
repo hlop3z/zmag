@@ -6,6 +6,7 @@ Run the API
 from dataclasses import dataclass
 from functools import partial
 from typing import Any
+
 from ...external import click
 from ..shell import shell_print
 from .utils import get_imports, shell_banner
@@ -13,6 +14,8 @@ from .utils import get_imports, shell_banner
 
 @dataclass
 class ServerConfig:
+    """Server Settings"""
+
     # Debug
     base_dir: Any
     debug: bool
@@ -39,7 +42,6 @@ class ServerConfig:
             self.server = self.client
 
         # Authentication (FOR NOW)
-        # TODO: Allow Authentication with Devices
         if self.authentication:
             self.proxy = False
             self.attach = False
@@ -99,7 +101,7 @@ def get_workers(config, workers, attach):
 )
 def run(server, client, mode, proxy, attach, workers, thread, debug, host, port):
     """
-    Configure the ZMQ server and debugging options.
+    Start ZMAG Server and/or Device
     """
 
     # Imports
@@ -122,7 +124,7 @@ def run(server, client, mode, proxy, attach, workers, thread, debug, host, port)
     # ZMQ Devices
     device_type = mode or zmq_config.get("device", "queue")
     use_thread = thread or zmq_config.get("thread", False)
-    is_thread = True if use_thread and not is_debug else False
+    is_thread = use_thread and not is_debug
 
     server_config = ServerConfig(
         base_dir=base_dir,

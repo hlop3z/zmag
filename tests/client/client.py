@@ -1,8 +1,8 @@
 # Python
-from pathlib import Path
 import asyncio
 import os
 import time
+from pathlib import Path
 
 # ZMAG
 from zmag import Frontend

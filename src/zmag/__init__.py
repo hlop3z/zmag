@@ -6,9 +6,9 @@ ZMAG
 import logging
 
 from .external import spoc, strawberry
-from .network import FrontendZMQ as Frontend
 from .network import BackendZMQ as Backend
 from .network import DeviceZMQ as Device
+from .network import FrontendZMQ as Frontend
 from .network.utils import Data
 
 # Logs
@@ -32,14 +32,12 @@ if spoc and strawberry:
 
         from .framework.components import pub  # ZMQ
         from .framework.components import push  # ZMQ
-        from .framework.components import Model
-        from .framework.components import Type as type  # pylint: disable=W
-        from .framework.components import cli
+        from .framework.components import BaseType, Model, Type, cli
         from .framework.components import graphql as gql
+        from .framework.components.objects import dataclass_field as field
 
         # Framework Core
         from .framework.framework import Framework as App
-        from .framework.objects import dataclass_field as field
 
         # GraphQL Forms
         from .graphql.forms import dataclass as form
@@ -58,8 +56,7 @@ if spoc and strawberry:
         from .tools import docs
 
         # Model
-        model = tuple([type, Model])
-
+        # model = tuple([type, Model])
         # Scalars
         ID = strawberry.ID
         json = JSON
@@ -91,8 +88,9 @@ __all__ = (
     "gql",
     "field",
     # Object Types
-    "type",
-    "model",
+    "BaseType",
+    "Type",
+    "Model",
     "form",
     # Form Tools
     "clean",

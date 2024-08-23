@@ -16,7 +16,7 @@ from typing import Any, Literal
 import zmq
 import zmq.asyncio
 import zmq.auth
-from zmq.devices import ProcessDevice, ThreadDevice, Device
+from zmq.devices import Device, ProcessDevice, ThreadDevice
 
 # https://pyzmq.readthedocs.io/en/latest/howto/ssh.html
 from zmq.ssh.tunnel import tunnel_connection

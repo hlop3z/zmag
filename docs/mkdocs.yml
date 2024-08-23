@@ -1,17 +1,27 @@
-site_name: Zmag
+site_name: ZMAG
 site_url: https://hlop3z.github.io/zmag
 repo_url: https://github.com/hlop3z/zmag
 copyright: Copyright © Hlop3z
 
 nav:
   - Introduction: index.md
-  - Settings: settings.md
-  - Commands: commands.md
-  - Schema: schema.md
-  - Manager: manager.md
-  - Client: client.md
-  - SQL Database:
-      - Migrations: databases/index.md
+  - Server:
+      - Settings: config/settings.md
+      - Environment: config/environment.md
+      - Variables: config/variables.md
+      - CLI:
+          - Commands: commands.md
+      - ZMQ:
+          - Devices: devices.md
+          - Pub/Push: pub-push.md
+          - Authentication: authentication.md
+      - GraphQL:
+          - Types: graphql/types.md
+          - Inputs: graphql/inputs.md
+          - Operations: graphql/operations.md
+  - Client:
+      - Requests: client/requests.md
+      - Sub/Pull: client/sub-pull.md
 
 # Configurations
 watch:
@@ -22,13 +32,13 @@ theme:
   name: material
   locale: en
   features:
-    # - navigation.tabs
+    - navigation.tabs
     - navigation.instant
     - navigation.tracking
     - navigation.sections
     - navigation.top
     - content.code.annotate
-    # - navigation.expand
+    - navigation.expand
   icon:
     logo: material/lan
 
@@ -61,7 +71,8 @@ markdown_extensions:
       alternate_style: true
   - attr_list
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
   - pymdownx.tasklist:
       custom_checkbox: true

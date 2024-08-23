@@ -9,7 +9,7 @@ from ...network.keypair import keypair
 
 @click.command()
 def gen_keys() -> None:
-    """Generate `CURVE` **Public** and **Private** Keys"""
+    """Generate Public and Private Keys (CURVE)."""
 
     x_public, x_secret = keypair()
 

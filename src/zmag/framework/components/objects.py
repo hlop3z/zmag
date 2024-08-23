@@ -9,7 +9,7 @@ from collections import OrderedDict, namedtuple
 from types import SimpleNamespace
 from typing import Annotated, Any, Optional, Type, get_origin, get_type_hints
 
-from ..external import strawberry
+from ...external import strawberry
 
 Field = namedtuple("Field", ["name", "type", "field"])
 
@@ -102,7 +102,7 @@ def extract_model_fields_properties(cls: Type, root_class) -> SimpleNamespace:
         properties[name] = strawberry.field(obj.fget)
 
     bases = list(cls.__bases__)
-    bases.pop(0)
+    # bases.pop(0)
     return SimpleNamespace(
         name=cls.__name__,
         type=cls,
@@ -123,7 +123,7 @@ def class_attributes(cls: Type, root_class) -> Any:
     return SimpleNamespace(root=_class, attributes=attributes, annotations=annotations)
 
 
-def create_class(cls: Type, root_class: Any) -> Any:
+def create_typed_class(cls: Type, root_class: Any) -> Any:
     """
     Create a class from a class, merging fields and properties.
 

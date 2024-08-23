@@ -1,21 +1,36 @@
+/* Tables */
 .md-typeset__table {
-    min-width: 100%;
- }
- 
- .md-typeset table:not([class]) {
-     display: table;
- }
- 
-.cool-text { 
-    color: #cc00cc;
+  min-width: 100%;
 }
 
+.md-typeset table:not([class]) {
+  display: table;
+}
+
+/* Layout */
+.md-grid {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+}
+.md-sidebar--primary {
+  width: 8rem;
+}
+.md-sidebar--secondary {
+  width: 10rem;
+}
+
+/* Terminal */
 [data-ty="progress"] {
-    width: 100% !important;
-    overflow-wrap: break-all;
-    overflow: hidden;
+  width: 100% !important;
+  overflow-wrap: break-all;
+  overflow: hidden;
 }
 
 [data-termynal] > span {
-    display: block;
+  display: block;
+}
+
+[data-termynal] {
+  width: 100% !important;
 }

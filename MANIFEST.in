@@ -1,0 +1,6 @@
+# Include README and LICENSE files
+include README.md
+include LICENSE
+
+# Typed
+global-include *.typed
