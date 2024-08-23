@@ -1,87 +1,131 @@
 # -*- coding: utf-8 -*-
-"""{ Core } Read The Docs"""
+"""
+Framework Core
+"""
 
-import spoc
-import dbcontroller as dbc
-from ..ariadne import create_graphql_app
-from .commands.shell import click_commands
+from types import SimpleNamespace
+from typing import Any
+
+from ..external import spoc
+from . import handlers
 from .commands.cli import cli
+from .shell import click_commands
 
-PLUGINS = ["schema", "manager", "commands"]
+PLUGINS = [
+    # Click
+    "commands",
+    # ZMQ
+    "publishers",
+    "pushers",
+    # GraphQL
+    "graphql",
+    "types",
+    "forms",
+]
 
 
-@spoc.singleton
-class Framework:
-    """Framework"""
+def get_project_info(framework):
+    """Get Name and Version"""
+    pyproject = framework.config.get("pyproject", {}).get("project", {})
+    spoc_info = framework.config.get("spoc", {}).get("spoc")
 
-    def keys(self):
-        """Finally: Collect { Keys }"""
-        return sorted(
-            [
-                x
-                for x in dir(self)
-                if not x.startswith("_") and x not in ["init", "keys"]
-            ]
-        )
+    # Pyproject
+    name = pyproject.get("name")
+    version = pyproject.get("version")
 
-    def init(
-        self,
-    ):
-        """Class __init__ Replacement"""
-        framework = spoc.App(plugins=PLUGINS)  #
+    # Spoc
+    if not name:
+        name = spoc_info.get("name")
+    if not version:
+        version = spoc_info.get("version")
 
-        # Core
-        self.base_dir = framework.base_dir
-        self.mode = framework.mode
+    return {"name": name, "version": version}
 
-        # Settings
-        self.env = framework.config["env"]
-        self.pyproject = framework.config["pyproject"]
-        self.spoc = framework.config["spoc"].get("spoc")
-        self.settings = framework.settings
 
-        # Project
-        self.component = framework.component  #
-        self.extras = framework.extras  #
-        self.zmq = None
+if spoc:
 
-        # Command-Line-Interface
-        self.cli = click_commands(cli, framework.component.commands.values())
+    class Framework(spoc.Base):
+        """Framework
+        - keys
+        - base_dir
+        - component
+        - config
+        - environment
+        - extras
+        - mode
+        - settings
+        """
 
-        # Database
-        database = self.spoc.get("database")
-        db_engine = database.get("engine", "")
-        db_config = database.get("config")
+        base_dir: Any
+        cli: Any
+        component: Any
+        debug: Any
+        env: Any
+        events: Any
+        extras: Any
+        graphql: Any
+        info: Any
+        mode: Any
+        publishers: Any
+        pyproject: Any
+        schema: Any
+        settings: Any
+        spoc: Any
+        zmq: Any
 
-        db_admin = None
-        match db_engine:
-            case "sql":
-                db_admin = dbc.Controller(sql=db_config)
-            case "mongo":
-                db_admin = dbc.Controller(mongo=db_config)
+        def keys(self):
+            """Collect { Keys }"""
+            return sorted(
+                [
+                    x
+                    for x in dir(self)
+                    if not x.startswith("_") and x not in ["init", "keys"]
+                ]
+            )
 
-        # Set Self Database
-        self.database = db_admin
+        def init(self):
+            """Class __init__ Replacement"""
+            framework: Any = spoc.init(plugins=PLUGINS)  #
 
-        # Ariadne Application
-        json_models = []
-        class_models = []
-        for item in self.component.schema.values():
-            json_models.extend(item.object.types)
+            # Core
+            self.base_dir = spoc.settings.BASE_DIR
+            self.mode = spoc.settings.MODE
 
-        for item in self.component.manager.values():
-            class_models.append(item.object)
+            # Debug
+            self.debug = spoc.settings.DEBUG
 
-        # Max (Depth & Limit)
-        graphql_config = self.spoc.get("graphql", {})
+            # Settings
+            self.env = spoc.settings.ENV
+            self.spoc = spoc.settings.SPOC
+            self.settings = spoc.settings
+            self.pyproject = spoc.settings.CONFIG.get("pyproject", {})
 
-        API = create_graphql_app(
-            self.database,
-            json_models=json_models,
-            class_models=class_models,
-            max_depth=graphql_config.get("max_depth", 4),
-            max_limit=graphql_config.get("max_limit", 10),
-        )
-        self.api = API
-        self.execute = API.execute
-        self.graphql_schema = API.graphql
+            # Project
+            self.component = framework.components
+            self.extras = framework.extras
+            self.info = SimpleNamespace(**get_project_info(framework))
+            self.events = SimpleNamespace(
+                startup=framework.extras.get("on_startup", []),
+                shutdown=framework.extras.get("on_shutdown", []),
+            )
+
+            # ZMQ
+            self.zmq = None
+            self.pushers = handlers.pushers(framework.components.pushers.values())
+            self.publishers = handlers.publishers(
+                framework.components.publishers.values()
+            )
+
+            # Command-Line-Interface
+            self.cli = click_commands(cli, framework.components.commands.values())
+
+            # GraphQL { Query & Mutation }
+            self.graphql = handlers.graphql(
+                schemas=framework.components.graphql.values(),
+                permissions=framework.extras.get("permissions"),
+            )
+
+            # GraphQL Schema
+            self.schema = self.graphql.schema(
+                extensions=framework.extras.get("extensions", []),
+            )

@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
-"""{ Module } Read The Docs"""
+"""
+{ Framework }
+"""
 
+from .components import components
 from .framework import Framework
-from .components import COMPONENTS
+
+__all__ = (
+    "components",
+    "Framework",
+)

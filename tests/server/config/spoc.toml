@@ -1,0 +1,29 @@
+[spoc]
+mode = "development"  # options: production, development, staging
+debug = true
+authentication = true
+
+# ZMQ
+[spoc.zmq]
+workers = 2
+proxy = true
+attach = true
+thread = true
+device = "forwarder"            # queue, forwarder, streamer
+server = "tcp://127.0.0.1:5556"
+client = "tcp://127.0.0.1:5555"
+
+# Mode 
+[spoc.apps]
+production = []
+development = []
+staging = []
+
+# Extras
+[spoc.extras]
+# permissions = ["demo.permissions.MyPermission"]
+# extensions = ["demo.extensions.MyExtension"]
+
+# Events
+on_startup = ["demo.events.on_startup"]
+on_shutdown = ["demo.events.on_shutdown"]

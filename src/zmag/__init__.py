@@ -1,48 +1,109 @@
-# Client
-from .client import Client
+# -*- coding: utf-8 -*-
+"""
+ZMAG
+"""
+
+import logging
+
+from .external import spoc, strawberry
+from .network import FrontendZMQ as Frontend
+from .network import BackendZMQ as Backend
+from .network import DeviceZMQ as Device
+from .network.utils import Data
+
+# Logs
+logging.basicConfig(format="%(levelname)s    -  %(message)s", level=logging.INFO)
+
 
 # Server
-try:
-    import spoc
-except ImportError:
-    spoc = None
+if spoc and strawberry:
+    try:
+        # Strawberry
+        # import strawberry
 
-try:
-    import ariadne
-except ImportError:
-    ariadne = None
+        # Spoc
+        from spoc import settings
+
+        # Strawberry
+        from strawberry.extensions import SchemaExtension as BaseExtension
+        from strawberry.permission import BasePermission
+        from strawberry.scalars import JSON
+        from strawberry.schema.config import StrawberryConfig as BaseConfig
+
+        from .framework.components import pub  # ZMQ
+        from .framework.components import push  # ZMQ
+        from .framework.components import Model
+        from .framework.components import Type as type  # pylint: disable=W
+        from .framework.components import cli
+        from .framework.components import graphql as gql
+
+        # Framework Core
+        from .framework.framework import Framework as App
+        from .framework.objects import dataclass_field as field
+
+        # GraphQL Forms
+        from .graphql.forms import dataclass as form
+        from .graphql.forms import form_cleaner as clean
+        from .graphql.forms import form_field as value
+        from .graphql.forms import graphql_input as input  # pylint: disable=W
+
+        # GraphQL Tools
+        from .graphql.types import Edge as edge
+        from .graphql.types import Error as errors
+        from .graphql.types import ErrorMessage as error
+        from .graphql.types import Mutation as mutation
+        from .graphql.types import page
+
+        # Object Tools
+        from .tools import docs
+
+        # Model
+        model = tuple([type, Model])
+
+        # Scalars
+        ID = strawberry.ID
+        json = JSON
+
+    # Ignores When Using Client (ONLY)
+    except ImportError:
+        pass
+    except TypeError:
+        pass
 
 
-try:
-    import dbcontroller as dbc
-
-    DBCONTROLLER = True
-except ImportError:
-    DBCONTROLLER = False
-
-if spoc and ariadne and DBCONTROLLER:
-    from dbcontroller import Controller
-    from dbcontroller import mongo_id
-
-    from .ariadne import type
-    from .ariadne.resource_api import ResourcesAPI
-    from .ariadne.query_depth_limiter import QueryDepthLimiter
-    from .framework import COMPONENTS
-    from .framework import Framework as App
-    from .framework.components import schema, cli
-
-    from .server import server, ZMQ
-
-    # Form Value
-    value = dbc.form.field
-    filters = dbc.form.filters
-
-    # Scalars
-    # ID = dbc.ID
-    # date = dbc.date
-    # datetime = dbc.datetime
-    # time = dbc.time
-    # decimal = dbc.decimal
-    # text = dbc.text
-    # time = dbc.time
-    # json = dbc.json
+__all__ = (
+    # Spoc,
+    "settings",
+    "App",
+    # ZMQ
+    "Frontend",
+    "Backend",
+    "Device",
+    "Data",
+    "pub",
+    "push",
+    # Strawberry
+    "BaseConfig",
+    "BaseExtension",
+    "BasePermission",
+    # Core
+    "cli",
+    "gql",
+    "field",
+    # Object Types
+    "type",
+    "model",
+    "form",
+    # Form Tools
+    "clean",
+    "input",
+    "value",
+    # Reponses
+    "edge",
+    "error",
+    "errors",
+    "mutation",
+    "page",
+    # Utils
+    "docs",
+)

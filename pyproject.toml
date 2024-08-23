@@ -1,82 +1,35 @@
 [project]
 name = "zmag"
 version = "0.0.13"
-description = "Craft APIs for Databases, with ZeroMQ and GraphQL"
+description = "Craft APIs with ZeroMQ and GraphQL"
 authors = [
     { name = "hlop3z", email = "23062270+hlop3z@users.noreply.github.com" },
 ]
 requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "MIT" }
-dependencies = ["pyzmq>=25.1.1"]
-
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
-
-[project.scripts]
-startproject = "zmag.scripts.start_project:cli"
+dependencies = ["pyzmq>=26.2.0", "orjson>=3.10.7"] # "zmag"
 
 [project.optional-dependencies]
-debug = [
-    "ariadne>=0.20.1",
-    "spoc>=0.1.12",
-    "click>=8.1.7",
-    "dbcontroller[mongo,sql,sqlite]>=0.1.57",
-    "uvicorn[standard]>=0.23.2",
-    "watchdog>=3.0.0",
-]
-sqlite = [
-    "ariadne>=0.20.1",
-    "spoc>=0.1.12",
-    "click>=8.1.7",
-    "dbcontroller[sqlite]>=0.1.57",
-]
-postgresql = [
-    "ariadne>=0.20.1",
-    "spoc>=0.1.12",
-    "click>=8.1.7",
-    "dbcontroller[sql]>=0.1.57",
-    "databases[asyncpg]>=0.8.0",
-]
-mysql = [
-    "ariadne>=0.20.1",
-    "spoc>=0.1.12",
-    "click>=8.1.7",
-    "dbcontroller[sql]>=0.1.57",
-    "databases[aiomysql]>=0.8.0",
-]
-mongo = [
-    "ariadne>=0.20.1",
-    "spoc>=0.1.12",
-    "click>=8.1.7",
-    "dbcontroller[mongo]>=0.1.57",
+debug = ["uvicorn[standard]>=0.30.6", "starlette>=0.38.2"]
+server = ["spoc>=0.1.35", "strawberry-graphql>=0.237.3"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pyright>=1.1.377",
+    "mypy>=1.11.1",
+    "isort>=5.13.2",
+    "black>=24.8.0",
+    "pylint>=3.2.6",
+    "ruff>=0.6.2",
+    "bandit>=1.7.9",
+    "watchdog>=4.0.2",
+    "ssort>=0.13.0",
 ]
 
-
-[tool]
-[tool.pdm]
-[tool.pdm.dev-dependencies]
-devs = [
-    "notebook>=7.0.6",
-    "dbcontroller[mongo,sql,sqlite]>=0.1.57",
-    "uvicorn[standard]>=0.23.2",
-    "ariadne>=0.20.1",
-    "watchdog>=3.0.0",
-]
-service = ["spoc>=0.1.12", "click>=8.1.7"]
-docs = ["mkdocs>=1.5.3", "mkdocs-material>=9.4.7"]
-
-[tool.pdm.scripts]
-# Develop
-manage = { shell = "cd tests && python main.py" }
-test = { shell = "cd tests && python main.py run -d -p" }
-test-client = { shell = "cd client_tests && python test.py" }
-test-filter = { shell = "cd client_tests && python test_filter.py" }
-# Notebook
-notebook = { shell = "python -m jupyter notebook" }
-# Docs
-docs-dev = { shell = "cd docs/ && python -m mkdocs serve --dev-addr 0.0.0.0:8055" }
-docs-build = { shell = "cd docs/ && python -m mkdocs build" }
-docs-gh = { shell = "cd docs/ && python -m mkdocs gh-deploy --force" }
+[tool.uv.sources]
+# zmag = { workspace = true }
