@@ -6,26 +6,16 @@
 
 ---
 
-**ZMAG** is a powerful tool designed for building **network** APIs rather than traditional web applications, leveraging the unique combination of **GraphQL** and **ZeroMQ**. By integrating **GraphQL's** flexible and efficient querying capabilities with **ZeroMQ's** high-performance messaging patterns, **ZMAG** enables developers to create robust and scalable network APIs. This approach allows for real-time communication, seamless data transfer, and efficient management of complex, distributed systems, making **ZMAG** an ideal choice for developers looking to build sophisticated network services that go beyond the capabilities of standard web applications.
+**ZMAG** is a powerful tool designed for building **network APIs** rather than traditional web applications, leveraging the unique combination of **GraphQL** and **ZeroMQ**. By integrating **GraphQL's** flexible and efficient querying capabilities with **ZeroMQ's** high-performance messaging patterns, **ZMAG** enables developers to create robust and scalable network APIs. This approach allows for real-time communication, seamless data transfer, and efficient management of complex, distributed systems, making **ZMAG** an ideal choice for developers looking to build sophisticated network services that go beyond the capabilities of standard web applications.
 
-<div id="terminal-index" data-termynal></div>
-
----
-
-## Description
-
-**ZMAG** is a tool for building network **GraphQL APIs** with **Python**.
-
-**ZMAG** is built with **`pyzmq` (ZeroMQ)** and with **`strawberry-graphql` (GraphQL)**.
-
-The **Command-Line Interface (CLI)** is built with **`click`**.
-
-!!! info "Capabilities of Zmag"
+!!! info "Capabilities of ZMAG"
 
     1. Build **GraphQL** **Queries** and **Mutations** for flexible data interactions.
     2. Develop **Request** and **Response** APIs for efficient communication.
     3. Implement **Pub/Sub** and **Push/Pull** patterns for robust messaging and data distribution.
     4. Leverage **Commands** to automate processes and streamline operations.
+
+<div id="terminal-index" data-termynal></div>
 
 ---
 

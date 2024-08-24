@@ -13,6 +13,6 @@ components = spoc.Components(
     "push",
     # GraphQL
     "graphql",
-    "form",
+    "input",
     "type",
 )

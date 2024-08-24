@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""
+Publishers
+"""
+
 import zmag
 
 QUERY_STRING = """query { demoBookList { id title } }"""
@@ -5,6 +10,7 @@ QUERY_STRING = """query { demoBookList { id title } }"""
 
 @zmag.pub(seconds=1)
 async def content(context):
+    """Content"""
     results = await context.schema.execute(QUERY_STRING)
     response = zmag.Data()
     response.meta["channel"] = "custom"
@@ -14,13 +20,15 @@ async def content(context):
 
 @zmag.pub(seconds=5)
 async def topic():
+    """Topic"""
     response = zmag.Data()
-    response.body = {"message": "hello world"}
+    response.body = {"message": "from my topic"}
     return response
 
 
 @zmag.pub(seconds=1)
 async def generic():
+    """Generic"""
     response = zmag.Data()
     response.body = {"message": "generic demo"}
     return response

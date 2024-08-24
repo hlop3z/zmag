@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-{ API - GraphQL }
+GraphQL API
 """
 
 import zmag
 
-from . import forms, types
+from . import inputs, types
 
 
 # Create your API (GraphQL) here.
 @zmag.gql
-class Demo:
+class Graphql:
     """Demo Api"""
 
     class Meta:
@@ -22,12 +22,12 @@ class Demo:
     class Query:
         """Query"""
 
-        async def detail(self, info) -> str:
+        async def detail(self) -> str:
             """Read the Docs"""
             # print(info)
             return "Detail"
 
-        async def list(self, info) -> list[types.Book | None]:
+        async def list(self) -> list[types.Book | None]:
             """Read the Docs"""
             # print(info)
             return [
@@ -45,15 +45,12 @@ class Demo:
     class Mutation:
         """Mutation"""
 
-        async def create(
-            self,
-            info,
-            form: forms.Point2D | None,
-        ) -> zmag.mutation[types.Book]:
+        async def create(self, form: inputs.Create | None) -> zmag.mutation[types.Book]:
             """Read the Docs"""
             if form:
+                # form.input.dict(True)
+                # form.input.clean()
                 print(form.input)
+                print(form.input.dict(True))
+                print(form.input.clean())
             return zmag.mutation()
-
-
-# {'one': [('x', strawberry.scalars.ID), ('email', typing.Optional[str], Field(name='email',type=typing.Optional[str],default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x0000023D05287B00>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD)), ('y', typing.Optional[float], Field(name='y',type=typing.Optional[float],default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x0000023D05287B00>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD)), ('z', typing.Optional[float], Field(name='z',type=typing.Optional[float],default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x0000023D05287B00>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD)), ('input', typing.Any, Field(name='input',type=typing.Any,default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x0000023D05287B00>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD))], 'two': [('email', typing.Optional[str], Field(name='email',type=typing.Optional[str],default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x0000023D05287B00>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD)), ('y', typing.Optional[float], Field(name='y',type=typing.Optional[float],default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x0000023D05287B00>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD)), ('z', typing.Optional[float], Field(name='z',type=typing.Optional[float],default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x0000023D05287B00>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD)), ('input', typing.Any, Field(name='input',type=typing.Any,default=None,default_factory=<dataclasses._MISSING_TYPE object at 0x0000023D05287B00>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD))]}

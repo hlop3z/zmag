@@ -20,7 +20,7 @@ PLUGINS = [
     # GraphQL
     "graphql",
     "types",
-    "forms",
+    "inputs",
 ]
 
 

@@ -9,7 +9,10 @@ from zmag import BaseExtension
 
 
 class MyExtension(BaseExtension):
+    """GraphQL Extension"""
+
     async def on_executing_start(self):
+        """On Start Executing"""
         user = self.execution_context.context.get("user")
         user = SimpleNamespace(**(user or {}))
 

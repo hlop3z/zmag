@@ -1,11 +1,19 @@
+# -*- coding: utf-8 -*-
+"""
+ZMAG Client
+"""
+
 # Python
 import asyncio
 import os
-import time
-from pathlib import Path
+from types import SimpleNamespace
 
 # ZMAG
 from zmag import Frontend
+
+# import time
+# from pathlib import Path
+
 
 IS_SYNC = True
 
@@ -42,7 +50,7 @@ query MyQuery {
 }
 """
 
-ARGS = dict(
+ARGS = SimpleNamespace(
     query=TEST_COMPLEX,
     variables={},
     operation="MyQuery",
@@ -65,24 +73,28 @@ ARGS = dict(
 
 
 def test_sync_subscribe():
+    """Subscribe Sync"""
     while True:
         message = client.subscribe("")
         print("Received:", message)
 
 
 def test_sync_pull():
+    """Pull Sync"""
     while True:
         work = client.pull()
         print("Received:", work)
 
 
 def test_sync_request():
-    for i in range(TEST_COUNT):
-        response = client.request(**ARGS)
+    """Request Sync"""
+    for _ in range(TEST_COUNT):
+        response = client.request(**ARGS.__dict__)
         print(response)
 
 
 def test_sync():
+    """Tests Sync"""
     match MODE:
         case "forwarder":
             test_sync_subscribe()
@@ -95,12 +107,14 @@ def test_sync():
 
 
 async def test_async():
-    for i in range(TEST_COUNT):
-        response = await client.request(**ARGS)
+    """Test Async"""
+    for _ in range(TEST_COUNT):
+        response = await client.request(**ARGS.__dict__)
         print(response)
 
 
 def main():
+    """Main"""
     if os.name == "nt":
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 

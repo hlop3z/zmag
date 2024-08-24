@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-{ Commands }
+Commands
 """
 
 import click

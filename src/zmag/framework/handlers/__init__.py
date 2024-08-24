@@ -7,13 +7,13 @@ from .graphql.base import graphql
 from .utils import generic_collector
 
 
-def forms(models: list):
-    """Collect (GraphQL) Return-Types"""
-    return generic_collector("form", models)
+def inputs(models: list):
+    """Collect (GraphQL) Input-Forms"""
+    return generic_collector("input", models)
 
 
 def types(models: list):
-    """Collect (GraphQL) Input-Forms"""
+    """Collect (GraphQL) Return-Types"""
     return generic_collector("type", models)
 
 
@@ -28,9 +28,11 @@ def publishers(models: list):
 
 
 __all__ = (
+    # GraphQL
     "graphql",
+    "inputs",
     "types",
-    "forms",
+    # ZeroMQ
     "publishers",
     "pushers",
 )

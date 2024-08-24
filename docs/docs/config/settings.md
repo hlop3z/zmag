@@ -33,7 +33,7 @@ Below is an example of a Python settings file (`settings.py`) used to configure 
 ```python title="config/settings.py"
 # -*- coding: utf-8 -*-
 """
-    { Settings }
+Settings
 """
 
 import pathlib
@@ -42,10 +42,10 @@ import pathlib
 BASE_DIR = pathlib.Path(__file__).parents[1]  # (1)
 
 # Installed APPS
-INSTALLED_APPS = ["app_one", "app_two"]  # (2)
+INSTALLED_APPS: list = ["app_one", "app_two"]  # (2)
 
 # Additional Components
-EXTRAS = {  # (3)
+EXTRAS: dict = {  # (3)
     "extensions": [],
     "permissions": [],
     "on_startup": [],

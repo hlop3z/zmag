@@ -10,10 +10,10 @@ BASE_DIR = pathlib.Path(__file__).parents[1]
 
 
 # Installed Apps
-INSTALLED_APPS = ["demo", "other"]
+INSTALLED_APPS: list = ["demo", "other"]
 
 # EXTRAS
-EXTRAS = {
+EXTRAS: dict = {
     "extensions": [],
     "permissions": [],
     "on_startup": [],

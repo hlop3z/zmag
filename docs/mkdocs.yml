@@ -19,9 +19,11 @@ nav:
           - Types: graphql/types.md
           - Inputs: graphql/inputs.md
           - Operations: graphql/operations.md
+          - Built-In: graphql/built-in.md
   - Client:
       - Requests: client/requests.md
       - Sub/Pull: client/sub-pull.md
+      - Authentication: client/authentication.md
 
 # Configurations
 watch:

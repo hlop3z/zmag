@@ -30,10 +30,10 @@ root/
 - **production.toml**: Holds settings tailored for the production environment, including optimized configurations for performance, security, and live data handling.
 - **staging.toml**: Used for staging environments to mimic the production environment as closely as possible while allowing for final testing and validation.
 
-### Key Sections
+## Key Sections
 
-- **`[env]`**: General environment settings that apply to the development environment.
-- **`[env.zmq]`**: Configuration specific to ZeroMQ, which may include keys and other settings necessary for development use cases.
+- **`[env]`**: General environment settings that apply to the current environment.
+- **`[env.zmq]`**: Configuration specific to ZeroMQ.
 
 ## Development
 

@@ -15,8 +15,11 @@ class MyPermission(BasePermission):
 
     message = "User is not authorized"  # Unauthorized
 
-    async def has_permission(
-        self, source: typing.Any, info: Info, **kwargs: typing.Any
+    def has_permission(
+        self,
+        source: typing.Any,
+        info: Info,
+        **kwargs: typing.Any,
     ) -> bool:
         """Check GraphQL's Info Context"""
 
