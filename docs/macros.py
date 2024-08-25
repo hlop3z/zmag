@@ -20,3 +20,9 @@ def define_env(env):
         from datetime import datetime
 
         return datetime.now().year
+
+    @env.macro
+    def url(url):
+        #  env.config.site_name
+        site_name = env.conf.get("site_name", "").lower()
+        return f"{site_name}{url}"

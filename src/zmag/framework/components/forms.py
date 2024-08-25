@@ -86,11 +86,11 @@ def value_cleaner(regex: list | None = None, rules: list | None = None) -> FormC
     Creates a value `clean` configuration with regex filters and custom rules.
 
     Args:
-        regex (list | None): A list of regex patterns for filtering form inputs.
-        rules (list | None): A list of custom rules (functions or lambdas) to apply to form inputs.
+        regex (list | None): A list of regex patterns for filtering input value.
+        rules (list | None): A list of rules (functions or lambdas) to apply to input value.
 
     Returns:
-        config: A dictionary containing `regex` and `rules` for form input cleaning.
+        config: A dictionary containing `regex` and `rules` for input value cleaning.
 
     Example:
 
@@ -130,9 +130,17 @@ def form_field(
     """
     Configuration options for `Input` **value**.
 
-    GraphQL: `(form: {x: "hello", email: "demo@helloworld.com"})`
+    Args:
+        default (Any): The default value for the field.
+        required (bool): Indicates whether the field is mandatory.
+        regex (dict | None): A dictionary defining regular expressions for field validation.
+        rules (list | None): A list of validation rules to apply to the field.
+        clean (FormCleaner | None): A callable used to configure preprocess of the value.
+        deprecation_reason (str | None): A message explaining why the field is deprecated.
 
     Example:
+
+    GraphQL: `(form: {x: "required_field", email: "demo@helloworld.com"})`
 
     ```python
     class MyForm(zmag.Input):

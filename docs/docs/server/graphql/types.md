@@ -4,20 +4,19 @@ The code **must** be placed in a **file** named **`types.py`** or within a **fol
 
 ---
 
-## Type Tools
+## Type Tools — [Reference](/{{ url("/api/graphql/#zmag.Type") }})
 
 - **`zmag.Type`** — Base class for defining types.
 - **`zmag.Model`** — Base class for defining types that include `_id` and `id`.
 - **`zmag.BaseType`** — Base class for abstract types.
 
+!!! note
+
+    Tools used for creating GraphQL `object` types.
+
 ---
 
 ```python title="types.py"
-# -*- coding: utf-8 -*-
-"""
-GraphQL Types
-"""
-
 import zmag
 
 

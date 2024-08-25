@@ -47,12 +47,10 @@ def graphql_input(
     Author = zmag.input("Author")
 
     @Author
-    class Create(zmag.Input): # AuthorCreate
-        ...
+    class Create(zmag.Input): ... # AuthorCreate
 
     @Author
-    class Update(zmag.Input): # AuthorUpdate
-        ...
+    class Update(zmag.Input): ... # AuthorUpdate
     ```
     """
     return functools.partial(
@@ -105,9 +103,8 @@ class BaseType(metaclass=TypeMeta):
         class Meta:
             abstract = True
 
-    # New Type
-    class MyType(MyBase):
-        ...
+    # New Type - Inheritor
+    class MyType(MyBase): ...
     ```
     """
 
@@ -135,7 +132,7 @@ class Type(BaseType):
         last_name: str
 
         @property
-        async def full_name(self):
+        async def full_name(self) -> str:
             return f"{self.first_name} {self.last_name}"
     ```
     """
@@ -156,12 +153,9 @@ class Model(BaseType):
     import zmag
 
     class Author(zmag.Type):
-        first_name: str
-        last_name: str
-
         @property
-        async def full_name(self):
-            return f"{self.first_name} {self.last_name}"
+        async def merged_ids(self) -> str:
+            return f"{self._id} and {self.id}"
     ```
     """
 
@@ -186,7 +180,7 @@ class Input:
     form = zmag.input()
 
     @form
-    class AuthorForm(zmag.Input):
+    class Form(zmag.Input):
         name: str
         ...
     ```

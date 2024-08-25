@@ -1,8 +1,24 @@
-# Welcome to **{{ config.site_name }}**
+#
+
+<div style="text-align:center; margin-top: -60px">
+ <img src="assets/images/title.png" alt="Alt text" class="title-image" />
+</div>
 
 ---
 
-**(Z)**eroMQ **(M)**anages — **(A)** — **(G)**raphQL
+<p align="center" class="name-acronym" >
+    (<strong>Z</strong>)eroMQ (<strong>M</strong>)anages — (<strong>A</strong>) — (<strong>G</strong>)raphQL
+</p>
+
+---
+
+<!-- termynal -->
+
+```
+$ python -m pip install "zmag[server]"
+---> 100%
+Successfully installed zmag!
+```
 
 ---
 
@@ -14,14 +30,6 @@
     2. Develop **Request** and **Response** APIs for efficient communication.
     3. Implement **Pub/Sub** and **Push/Pull** patterns for robust messaging and data distribution.
     4. Leverage **Commands** to automate processes and streamline operations.
-
-<!-- termynal -->
-
-```
-$ show progress
----> 100%
-Done!
-```
 
 ---
 
@@ -66,6 +74,61 @@ python -m pip install "zmag[server]"
 python -m pip install "zmag"
 ```
 
+!!! warning
+
+    ZMAG is currently in its early stages of development, so there may be some changes in the future. However, we aim to keep the public API stable.
+
+---
+
+## Project **Flowchart**
+
+| **(API)** Application Programming Interface | **(CLI)** Command-Line Interface     |
+| ------------------------------------------- | ------------------------------------ |
+| 1. Load all **`Settings`**.                 | 1. Load all **`Settings`**.          |
+| 2. Load **`Environment Variables`**.        | 2. Load **`Environment Variables`**. |
+| 3. Load all **`Apps` (Packages)**.          | 3. Load all **`Apps` (Packages)**.   |
+| 4. Start the **`ZMQ`** **Backend**          | 4. Start the **`CLI`** **Manager**.  |
+
+```mermaid
+flowchart LR;
+    A{Click};
+    A --> B[Settings & Apps];
+    A --> C[Settings & Apps];
+
+    B <--> D{API};
+    C <--> E{CLI};
+
+    D <--> F[Operations];
+    E <--> G[Commands];
+
+    F <--> |GraphQL|H
+    G <--> |GraphQL|H
+    H((Your Code));
+
+```
+
+### Explanation
+
+The flowchart illustrates how the project initializes and operates both the **API** and **CLI** interfaces:
+
+1.  **Initialization**: The process begins with **Click**, which is used to launch both the API (services) and CLI (commands).
+2.  **Configuration Loading**: For both the API and CLI interfaces, all **`Settings`**, **`Environment Variables`**, and **`Apps (Modules)`** are loaded. This ensures the environment is properly configured and all necessary modules are available.
+
+3.  **Starting Interfaces**:
+
+    !!! Note "Interfaces"
+
+         - **API** — the **ZeroMQ Backend** is started to manage backend processes and facilitate operations.
+         - **CLI** — the **CLI Manager** is initiated using Click, which handles command-line inputs and operations.
+
+4.  **Integration with GraphQL**: Both the **API** and **CLI** interfaces can connect to the **GraphQL**, allowing you to perform GraphQL operations through either the **API Backend** or the **CLI Commands**.
+
+5.  **Custom Extensions**: You have the flexibility to create custom **CLI** commands or **API** methods, which can leverage the underlying **GraphQL** capabilities integrated with both **`ZeroMQ`** and **`Click`**.
+
+!!! tip
+
+    The setup provides a versatile and unified framework, enabling you to manage backend processes and handle command-line operations effectively, with seamless integration of GraphQL functionalities across both interfaces.
+
 ---
 
 ## Core **Layout**
@@ -97,6 +160,6 @@ root/                           --> <Directory> - Project's Root
 | `./main.py start-app`                 | Create a **{{ config.site_name }} App** inside your **`apps`** directory. |
 | `./main.py --help`                    | Display more information about available commands.                        |
 
-!!! warning "Important: `startproject` Command"
+!!! warning "Important: `zmag-init` Command"
 
-    Use the `startproject` command **only once** and make sure you are in a **new folder**. This command will write files and folders to the current directory.
+    Use the `zmag-init` command **only once** and make sure you are in a **new folder**. This command will write files and folders to the current directory.

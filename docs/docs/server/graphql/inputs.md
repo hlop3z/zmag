@@ -2,81 +2,58 @@
 
 The code **must** be placed in a **file** named **`inputs.py`** or within a **folder** named **`inputs`** located in the **Application directory**.
 
-```python title="inputs.py"
-# -*- coding: utf-8 -*-
-"""
-GraphQL Inputs
-"""
-
-import zmag
-
-form = zmag.input("Form")
-
-@form
-class Create(zmag.Input):
-    """(Input) Read The Docs"""
-    ...
-
-@form
-class Update(zmag.Input):
-    """(Input) Read The Docs"""
-    ...
-```
-
 ---
 
-## Input Tools
+## Input Tools — [Reference](/{{ url("/api/graphql/#zmag.Input") }})
 
 - **`zmag.Input`** — Base class for defining inputs.
 - **`zmag.input`** — Initializes input group.
 - **`zmag.value`** — Configures input field settings.
 - **`zmag.clean`** — Defines cleaning functions or rules.
 
----
+!!! note
 
-## Args `zmag.value`
-
-| Field                | Description                                        |
-| -------------------- | -------------------------------------------------- |
-| `required`           | Indicates if the field is mandatory.               |
-| `regex`              | Dictionary of regex patterns for validation.       |
-| `rules`              | List of custom validation rules.                   |
-| `clean`              | Cleaning function or rules for processing input.   |
-| `deprecation_reason` | Reason why the field is deprecated, if applicable. |
-
-## Args `zmag.clean`
-
-| Field   | Description                                 |
-| ------- | ------------------------------------------- |
-| `regex` | List of regex patterns for cleaning values. |
-| `rules` | List of custom rules for processing values. |
+    Tools used for creating GraphQL `input` types.
 
 ---
+
+## Using **`zmag.Input`** and **`zmag.input`**
+
+```python title="inputs.py"
+import zmag
+
+form = zmag.input("Form")
+
+@form
+class Create(zmag.Input): ... # FormCreate
+
+@form
+class Update(zmag.Input): ... # FormUpdate
+```
 
 ## Examples
 
 ---
 
-### Required Field
+### **Required** Field
 
-```python title="inputs_required.py"
+A required field with no default value; the field must be filled.
+
+```python
 import zmag
 
 Author = zmag.input("Author")
 
 @Author
 class MyForm(zmag.Input):
-    """GraphQL Form with Required Field"""
-
-    # A required field with no default value; the field must be filled.
     x: str = zmag.value(required=True)
 ```
 
 ---
 
-### Dynamic Default Value
+### Dynamic **Default** Value
 
-```python title="inputs_default.py"
+```python
 import zmag
 
 Author = zmag.input("Author")
@@ -93,9 +70,9 @@ class MyForm(zmag.Input):
 
 ---
 
-### Deprecated Field
+### **Deprecated** Field
 
-```python title="inputs_deprecated.py"
+```python
 import zmag
 
 Author = zmag.input("Author")
@@ -110,9 +87,9 @@ class MyForm(zmag.Input):
 
 ---
 
-### Complex Field with Validation and Cleaning
+### Complex Field with **Validation** and **Cleaning**
 
-```python title="inputs_complex.py"
+```python
 import zmag
 
 Author = zmag.input("Author")
@@ -147,7 +124,7 @@ class MyForm(zmag.Input):
 
 ## Example **Usage**
 
-```python
+```python title="graphql.py"
 @zmag.gql
 class Graphql:
     ...

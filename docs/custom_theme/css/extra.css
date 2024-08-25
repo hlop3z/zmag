@@ -29,3 +29,25 @@
   color: cyan !important;
   /* font-size: 1em; */
 }
+
+/* Name Acronym */
+.name-acronym {
+  font-size: 32px;
+  letter-spacing: 2px;
+}
+@media only screen and (min-width: 0px) and (max-width: 540px) {
+  .name-acronym {
+    font-size: 20px;
+  }
+}
+
+/* Title Image */
+.title-image {
+  height: auto;
+  width: 768px;
+}
+@media only screen and (max-width: 768px) {
+  .title-image {
+    width: 100%;
+  }
+}

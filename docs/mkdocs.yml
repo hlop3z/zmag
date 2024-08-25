@@ -8,6 +8,7 @@ copyright: Copyright © Hlop3z
 nav:
   - ZMAG:
       - Introduction: index.md
+      - Use Cases: use-cases.md
       - Motivation: motivation.md
   - Server:
       - Settings: server/config/settings.md
@@ -28,7 +29,7 @@ nav:
       - Requests: client/requests.md
       - Sub/Pull: client/sub-pull.md
       - Authentication: client/authentication.md
-  - API Reference:
+  - Reference:
       - Demo: api/api.md
       - GraphQL: api/graphql.md
       - Client:
@@ -48,6 +49,8 @@ theme:
   custom_dir: custom_theme/
   name: material
   locale: en
+  logo: assets/images/logo.png
+  favicon: assets/images/logo.png
   features:
     - content.code.annotate
     - navigation.expand
@@ -57,10 +60,6 @@ theme:
     - navigation.top
     - navigation.tracking
     - navigation.footer
-
-  icon:
-    logo: material/lan
-
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -117,7 +116,7 @@ plugins:
           options:
             # Docstring Style
             docstring_style: google
-            docstring_section_style: table # list
+            docstring_section_style: list # table | list | spacy
 
             # Symbol
             show_symbol_type_toc: true

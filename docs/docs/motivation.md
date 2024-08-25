@@ -1,41 +1,9 @@
-# Motivation
+# Motivation — **The Reason Behind**
 
-Network applications are software programs that run on multiple computers and devices connected over a network (such as a local area network (LAN), a wide area network (WAN), or the internet). These applications are designed to interact with a network to provide specific functionalities, such as file sharing, messaging, database access, or remote management.
+The motivation behind creating this project stems from a gap I noticed in existing solutions: I could not find any projects that effectively combine ZeroMQ and GraphQL. I believe this combination offers a unique and powerful approach to building network applications, particularly for internal use within larger systems.
 
-!!! warning
+Unlike frameworks like Django, Flask, FastAPI, and others, which are typically designed for building APIs for end-users, ZMAG is tailored for internal projects and microservices. The idea is to create reusable components — such as an authentication system — that multiple projects can leverage. For example, you could develop a centralized authentication system with ZMAG and then integrate it with multiple FastAPI or Flask applications. This modular approach allows these components to communicate efficiently, whether they are on the same server, within a local network, or even across the internet.
 
-    ZMAG is currently in its early stages of development, so there may be some changes in the future. However, we aim to keep the public API stable.
+By leveraging ZeroMQ for efficient, low-latency messaging and GraphQL for flexible, self-documenting APIs, ZMAG enables developers to build sophisticated network applications that are both performant and maintainable. The goal is to provide a framework that simplifies the creation of internal services and allows seamless integration across various parts of a project or multiple projects.
 
-**Key Characteristics**:
-
-1. **Direct Communication**: Network applications often use protocols like TCP/IP to communicate directly over a network. Examples include FTP clients, email clients, and peer-to-peer (P2P) applications.
-2. **Low Latency**: Network applications typically have lower latency due to direct communication over the network, which is crucial for real-time applications such as video conferencing, online gaming, and financial trading systems.
-3. **Complex Configuration**: They often require more complex setup and configuration, especially when dealing with network security, firewalls, and access permissions.
-4. **Offline Capabilities**: Some network applications can work offline and synchronize data when a network connection is reestablished, making them reliable in scenarios where connectivity is intermittent.
-
-**Advantages**:
-
-- **Performance**: Faster communication and data transfer speeds due to direct network connections.
-- **Security**: Potentially more secure because they can operate within a private network environment.
-- **Control and Customization**: Greater control over the network environment and application customization based on specific organizational needs.
-
-**Example Use Cases**:
-
-- **Enterprise Resource Planning (ERP)** systems that require robust, secure internal network communications.
-- **Local Database Applications** where performance and data security are critical.
-
----
-
-### **`Network`** vs **`Web`** Applications — Comparison Summary
-
-| Feature                  | Network Applications                                                  | Web Applications                                             |
-| ------------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------ |
-| **Accessibility**        | Limited to network-connected devices                                  | Accessible from any device with a browser                    |
-| **Installation**         | Requires installation on each device                                  | No installation required                                     |
-| **Updates**              | May require individual updates or patches                             | Centralized updates on the server                            |
-| **Performance**          | Generally faster with lower latency due to direct network connections | Dependent on internet speed and server load                  |
-| **Security**             | Can be more secure within a private network                           | Security relies on web standards and protocols (HTTPS, etc.) |
-| **Offline Capabilities** | Often available                                                       | Limited (except for PWAs)                                    |
-| **Development**          | More complex setup and configuration                                  | Simpler to develop and deploy using web technologies         |
-| **Scalability**          | May require significant resources for scaling                         | Easily scalable on cloud infrastructure                      |
-| **Customization**        | Highly customizable within the network environment                    | Customization often limited to web technologies              |
+Additionally, I aimed to make the codebase as Pythonic as possible, minimizing the need to use GraphQL specific syntax. The intent is to create a natural development experience that feels like writing regular Python classes and functions while still benefiting from GraphQL’s automatic documentation and powerful querying capabilities. This approach ensures that developers can focus on building Python applications without needing to extensively learn the intricacies of GraphQL syntax.

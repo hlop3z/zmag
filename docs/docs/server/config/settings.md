@@ -31,11 +31,6 @@ root/
 Below is an example of a Python settings file (`settings.py`) used to configure your ZMAG project.
 
 ```python title="config/settings.py"
-# -*- coding: utf-8 -*-
-"""
-Settings
-"""
-
 import pathlib
 
 # Base Directory

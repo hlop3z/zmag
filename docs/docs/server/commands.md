@@ -1,49 +1,16 @@
 The code **must** be placed in a **file** named **`commands.py`** or in a **folder** named **`commands`** within the **Application directory**.
 
-## File or Folder **Layout**
-
-=== ":material-file: File"
-
-    ``` text
-    root/
-    |
-    |--  apps/
-    |    `--  MY_APP/
-    |         `-- commands.py          --> <File> - Your code in HERE!
-    |
-    `-- etc...
-    ```
-
-=== ":material-folder: Folder"
-
-    ``` text
-    root/
-    |
-    |--  apps/
-    |    `--  MY_APP/
-    |         `-- commands/           --> <Directory> - Your Commands in HERE!
-    |             |-- __init__.py     --> <File> - Your IMPORTS in HERE!
-    |             `-- etc...
-    |
-    `-- etc...
-    ```
-
-## Python **Code**
-
 !!! note
 
     The **`zmag.cli`** especial wrapper for (aka: **`click.group`**) **must** be named **`cli`**.
 
+## Examples
+
 === ":material-file: File"
 
     ```python title="commands.py"
-    # -*- coding: utf-8 -*-
-    """
-        Custom - Command-Line-Group
-    """
     import zmag
     import click
-
 
     # Init Group
     @zmag.cli
@@ -61,16 +28,10 @@ The code **must** be placed in a **file** named **`commands.py`** or in a **fold
 === ":material-folder: Folder"
 
     ```python title="__init__.py"
-    # -*- coding: utf-8 -*-
-    """
-        Custom - Command-Line-Group
-    """
-
     import zmag
 
     # Import <Commands> Here
     from .hello_world import hello_world
-
 
     # Init Group
     @zmag.cli
@@ -82,11 +43,6 @@ The code **must** be placed in a **file** named **`commands.py`** or in a **fold
     ```
 
     ```python title="hello_world.py"
-    # -*- coding: utf-8 -*-
-    """
-        Command - Hello World
-    """
-
     import click
 
 

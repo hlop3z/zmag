@@ -2,7 +2,7 @@
 
 ---
 
-## GraphQL Types
+## GraphQL Types — [Examples](/{{ url("/server/graphql/types/") }})
 
 ---
 
@@ -25,7 +25,7 @@
 
 ---
 
-## GraphQL Inputs
+## GraphQL Inputs — [Examples](/{{ url("/server/graphql/inputs/") }})
 
 ---
 
