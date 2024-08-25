@@ -45,7 +45,7 @@ class Graphql:
     class Mutation:
         """Mutation"""
 
-        async def create(self, form: inputs.Create | None) -> zmag.mutation[types.Book]:
+        async def create(self, form: inputs.Create | None) -> zmag.Mutation[types.Book]:
             """Read the Docs"""
             if form:
                 # form.input.dict(True)
@@ -53,4 +53,4 @@ class Graphql:
                 print(form.input)
                 print(form.input.dict(True))
                 print(form.input.clean())
-            return zmag.mutation()
+            return zmag.Mutation()

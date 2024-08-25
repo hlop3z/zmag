@@ -7,8 +7,9 @@ import functools
 import typing
 
 from ...external import StrawberryID, StrawberryPrivate, strawberry
+from ...types import Callable
 from .base import components
-from .forms import form_dataclass
+from .forms import Form, form_dataclass
 from .objects import create_typed_class
 
 
@@ -27,32 +28,32 @@ def input_middleware(cls):
 def graphql_input(
     prefix: str | list[str] | None = None,
     suffix: str | list[str] | None = None,
-):
+) -> Callable:
     """
-    Creates a partial function for a GraphQL `Input-Type` with a common prefix or suffix.
+    Creates a `decorator` for `Inputs`, optionally adding a common **prefix** or **suffix**.
 
     Args:
-        prefix (str | list[str] | None): The `prefix` to be added to each field in the dataclass.
-        suffix (str | list[str] | None): The `suffix` to be added to each field in the dataclass.
+        prefix (str | list[str] | None): The **prefix** to be added to each field in the class.
+        suffix (str | list[str] | None): The **suffix** to be added to each field in the class.
 
     Returns:
-        functools.partial: A partial function that creates a dataclass with the specified
-        prefix, suffix, for GraphQL representation.
+        decorator: To wrap GraphQL `Input` types.
 
     Example:
-    ::
 
-        import zmag
+    ```python
+    import zmag
 
-        Author = zmag.input("Author")
+    Author = zmag.input("Author")
 
-        @Author
-        class Create(zmag.Input): # AuthorCreate
-            ...
+    @Author
+    class Create(zmag.Input): # AuthorCreate
+        ...
 
-        @Author
-        class Update(zmag.Input): # AuthorUpdate
-            ...
+    @Author
+    class Update(zmag.Input): # AuthorUpdate
+        ...
+    ```
     """
     return functools.partial(
         form_dataclass,
@@ -89,23 +90,25 @@ class TypeMeta(type):
 
 class BaseType(metaclass=TypeMeta):
     """
-    GraphQL Abstract `Type` to create common fields.
+    GraphQL Abstract `Type` for defining common fields and creating a base `class` for other types.
 
     Example:
-    ::
 
-        import zmag
+    ```python
 
-        # Abstract Class
-        class MyBase(zmag.BaseType):
-            shared_key: str
+    import zmag
 
-            class Meta:
-                abstract = True
+    # Abstract Class
+    class MyBase(zmag.BaseType):
+        shared_key: str
 
-        # New Type
-        class MyType(MyBase):
-            ...
+        class Meta:
+            abstract = True
+
+    # New Type
+    class MyType(MyBase):
+        ...
+    ```
     """
 
     class _Meta:
@@ -120,20 +123,21 @@ class BaseType(metaclass=TypeMeta):
 
 class Type(BaseType):
     """
-    GraphQL `Type` base.
+    GraphQL `Type` base class.
 
     Example:
-    ::
 
-        import zmag
+    ```python
+    import zmag
 
-        class Author(zmag.Type):
-            first_name: str
-            last_name: str
+    class Author(zmag.Type):
+        first_name: str
+        last_name: str
 
-            @property
-            async def full_name(self):
-                return f"{self.first_name} {self.last_name}"
+        @property
+        async def full_name(self):
+            return f"{self.first_name} {self.last_name}"
+    ```
     """
 
     class Meta:
@@ -144,20 +148,21 @@ class Type(BaseType):
 
 class Model(BaseType):
     """
-    GraphQL `Model` type that includes both a **private** `_id` field and a **public** `id` field.
+    GraphQL `Model` type with a **private `_id`** field and a **public `id`** field included.
 
     Example:
-    ::
 
-        import zmag
+    ```python
+    import zmag
 
-        class Author(zmag.Type):
-            first_name: str
-            last_name: str
+    class Author(zmag.Type):
+        first_name: str
+        last_name: str
 
-            @property
-            async def full_name(self):
-                return f"{self.first_name} {self.last_name}"
+        @property
+        async def full_name(self):
+            return f"{self.first_name} {self.last_name}"
+    ```
     """
 
     class Meta:
@@ -167,3 +172,24 @@ class Model(BaseType):
 
     _id: StrawberryPrivate[object]  # type: ignore
     id: StrawberryID  # type: ignore
+
+
+class Input:
+    """
+    Base class for GraphQL `Input` types, must be used with `zmag.input` function.
+
+    Example:
+
+    ```python
+    import zmag
+
+    form = zmag.input()
+
+    @form
+    class AuthorForm(zmag.Input):
+        name: str
+        ...
+    ```
+    """
+
+    input: Form

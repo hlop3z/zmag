@@ -5,7 +5,7 @@ Components INIT
 
 from .base import components
 from .commands import cli
-from .graphql import BaseType, Model, Type, graphql, graphql_input
+from .graphql import BaseType, Input, Model, Type, graphql, graphql_input
 from .network import pub, push
 
 # Model
@@ -21,6 +21,7 @@ __all__ = (
     "push",
     # GraphQL
     "BaseType",
+    "Input",
     "Type",
     "Model",
     "graphql",

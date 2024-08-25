@@ -28,27 +28,26 @@ def pub(
     Returns:
         (zmag.Data | None): Return `zmag.Data` if updates, `None` otherwise.
 
-    Examples:
-    ::
+    Example:
+    ```python
+    @zmag.pub # or zmag.pub(seconds=5)
+    async def topic(): # `topic` is the channel
+        response = zmag.Data()
+        response.body = {"message": "hello world"}
+        return response
 
-        @zmag.pub # or zmag.pub(seconds=5)
-        async def topic(): # `topic` is the channel
-            response = zmag.Data()
-            response.body = {"message": "hello world"}
-            return response
+    @zmag.pub(seconds=5)
+    async def generic(): # Custom `channel`
+        response = zmag.Data()
+        response.meta["channel"] = "custom"
+        ...
 
-        @zmag.pub(seconds=5)
-        async def generic(): # Custom `channel`
-            response = zmag.Data()
-            response.meta["channel"] = "custom"
-            ...
-
-        @zmag.pub
-        async def graphql(context): # GraphQL
-            gql_query = "query { books { id title } }"
-            results = await context.schema.execute(gql_query)
-            ...
-
+    @zmag.pub
+    async def graphql(context): # GraphQL
+        gql_query = "query { books { id title } }"
+        results = await context.schema.execute(gql_query)
+        ...
+    ```
     """
     if obj is None:
         return functools.partial(
@@ -88,24 +87,23 @@ def push(
 
     This function pushes `Data` to the `frontend`.
 
-
     Returns:
         (zmag.Data | None): Return `zmag.Data` if workload, `None` otherwise.
 
-    Examples:
-    ::
+    Example:
+    ```python
+    @zmag.push # or zmag.push(seconds=5)
+    async def push_method(): #
+        response = zmag.Data()
+        response.body = {"message": "hello world"}
+        return response
 
-        @zmag.push # or zmag.push(seconds=5)
-        async def push_method(): #
-            response = zmag.Data()
-            response.body = {"message": "hello world"}
-            return response
-
-        @zmag.push
-        async def push_graphql(context): # GraphQL
-            gql_query = "query { books { id title } }"
-            results = await context.schema.execute(gql_query)
-            ...
+    @zmag.push
+    async def push_graphql(context): # GraphQL
+        gql_query = "query { books { id title } }"
+        results = await context.schema.execute(gql_query)
+        ...
+    ```
     """
     if obj is None:
         return functools.partial(

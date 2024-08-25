@@ -8,47 +8,41 @@ Functions:
 
 import asyncio
 from functools import wraps
+from typing import Any
+
+from ..types import Callable, Coroutine
 
 
-def coro(func):
+def coro(function: Coroutine) -> Callable:
     """
-    Transform a regular synchronous function into an asynchronous function.
-
-    This decorator enables a regular function to be executed asynchronously
-    by running it within an asyncio event loop.
+    Transform an **asynchronous** function into a **synchronous** function.
 
     Args:
-        func (function): The regular function to be transformed.
+        function (Coroutine): The regular function to be transformed.
 
     Returns:
         function: An async function that runs the original function using asyncio.run().
 
-    Example:
-        >>> @coro
-        ... def sync_function(x, y):
-        ...     return x + y
-        ...
-        >>> result = sync_function(3, 4)
-        >>> print(result)
-        7
+    Tip: CLI
+        Wrap your commands with `coro` to run async commands with click.
 
-    Note:
-        This decorator is suitable for use when you want to run a synchronous function
-        within an async environment without manually handling asyncio event loops.
+    Example:
+
+    ```python
+    @coro
+    async def sync_function(x, y):
+            return x + y
+
+    result = sync_function(3, 4)
+    print(result)
+    ```
     """
 
-    @wraps(func)
-    def wrapper(*args, **kwargs):
+    @wraps(function)
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         """
         Wrap the original function to run it asynchronously.
-
-        Args:
-            *args: Positional arguments to pass to the original function.
-            **kwargs: Keyword arguments to pass to the original function.
-
-        Returns:
-            The result of the original function executed within an asyncio event loop.
         """
-        return asyncio.run(func(*args, **kwargs))
+        return asyncio.run(function(*args, **kwargs))
 
     return wrapper

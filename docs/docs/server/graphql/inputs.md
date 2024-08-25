@@ -27,8 +27,8 @@ class Update(zmag.Input):
 
 ## Input Tools
 
-- **`zmag.input`** — Initializes input group.
 - **`zmag.Input`** — Base class for defining inputs.
+- **`zmag.input`** — Initializes input group.
 - **`zmag.value`** — Configures input field settings.
 - **`zmag.clean`** — Defines cleaning functions or rules.
 

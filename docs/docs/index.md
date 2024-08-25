@@ -1,21 +1,27 @@
-# Welcome to **ZMAG**
+# Welcome to **{{ config.site_name }}**
 
 ---
 
-**(Z)**eroMQ **(M)**anages — **(A)** — **(G)**raphql
+**(Z)**eroMQ **(M)**anages — **(A)** — **(G)**raphQL
 
 ---
 
-**ZMAG** is a powerful tool designed for building **network APIs** rather than traditional web applications, leveraging the unique combination of **GraphQL** and **ZeroMQ**. By integrating **GraphQL's** flexible and efficient querying capabilities with **ZeroMQ's** high-performance messaging patterns, **ZMAG** enables developers to create robust and scalable network APIs. This approach allows for real-time communication, seamless data transfer, and efficient management of complex, distributed systems, making **ZMAG** an ideal choice for developers looking to build sophisticated network services that go beyond the capabilities of standard web applications.
+**{{ config.site_name }}** is a tool designed for building **network APIs** rather than traditional web applications, leveraging the unique combination of **GraphQL** and **ZeroMQ**. By integrating **GraphQL's** flexible and efficient querying capabilities with **ZeroMQ's** high-performance messaging patterns, **{{ config.site_name }}** enables developers to create robust and scalable network APIs. This approach allows for real-time communication, seamless data transfer, and efficient management of complex, distributed systems, making **{{ config.site_name }}** an ideal choice for developers looking to build sophisticated network services that go beyond the capabilities of standard web applications.
 
-!!! info "Capabilities of ZMAG"
+!!! info "Capabilities of {{ config.site_name }}"
 
     1. Build **GraphQL** **Queries** and **Mutations** for flexible data interactions.
     2. Develop **Request** and **Response** APIs for efficient communication.
     3. Implement **Pub/Sub** and **Push/Pull** patterns for robust messaging and data distribution.
     4. Leverage **Commands** to automate processes and streamline operations.
 
-<div id="terminal-index" data-termynal></div>
+<!-- termynal -->
+
+```
+$ show progress
+---> 100%
+Done!
+```
 
 ---
 
@@ -40,7 +46,7 @@
 
 ## Installation
 
-To install **Zmag** in different environments, use the following commands:
+To install **{{ config.site_name }}** in different environments, use the following commands:
 
 ### **Development** Environment
 
@@ -82,14 +88,14 @@ root/                           --> <Directory> - Project's Root
 
 ## Key Commands
 
-**Zmag** comes with several key commands:
+**{{ config.site_name }}** comes with several key commands:
 
-| Command               | Purpose                                                 |
-| --------------------- | ------------------------------------------------------- |
-| `startproject`        | Create a new **ZMAG** project.                          |
-| `./main.py run`       | Run the **Server**.                                     |
-| `./main.py start-app` | Create a **Zmag App** inside your **`apps`** directory. |
-| `./main.py --help`    | Display more information about available commands.      |
+| Command                               | Purpose                                                                   |
+| ------------------------------------- | ------------------------------------------------------------------------- |
+| `{{ config.site_name.lower() }}-init` | Create a new **{{ config.site_name }}** project.                          |
+| `./main.py run`                       | Run the **Server**.                                                       |
+| `./main.py start-app`                 | Create a **{{ config.site_name }} App** inside your **`apps`** directory. |
+| `./main.py --help`                    | Display more information about available commands.                        |
 
 !!! warning "Important: `startproject` Command"
 

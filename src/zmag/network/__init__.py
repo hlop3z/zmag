@@ -79,7 +79,9 @@ class BackendZMQ(ZeroMQ):
 
 
 class FrontendZMQ(ZeroMQ):
-    """ZMQ Client"""
+    """
+    ZMQ `Frontend` Client
+    """
 
     def __init__(
         self,
@@ -96,6 +98,15 @@ class FrontendZMQ(ZeroMQ):
     ):
         """
         Initialize ZeroMQ `Frontend`.
+
+        Args:
+            host (str, optional): _description_. Defaults to tcp_string(5555).
+            timeout (int, optional): _description_. Defaults to `5000`.
+            is_sync (bool, optional): _description_. Defaults to False.
+            ssh (ConfigSSH | None, optional): _description_. Defaults to None.
+            publickey (str | None, optional): _description_. Defaults to None.
+            secretkey (str | None, optional): _description_. Defaults to None.
+            serverkey (str | None, optional): _description_. Defaults to None.
         """
         super().__init__(
             backend=host,

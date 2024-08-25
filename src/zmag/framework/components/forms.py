@@ -81,33 +81,34 @@ class Form:
         )
 
 
-def form_cleaner(regex: list | None = None, rules: list | None = None) -> FormCleaner:
+def value_cleaner(regex: list | None = None, rules: list | None = None) -> FormCleaner:
     """
-    Creates a FormCleaner configuration with regex filters and custom rules.
+    Creates a value `clean` configuration with regex filters and custom rules.
 
     Args:
         regex (list | None): A list of regex patterns for filtering form inputs.
         rules (list | None): A list of custom rules (functions or lambdas) to apply to form inputs.
 
     Returns:
-        FormCleaner: A dictionary containing `regex` and `rules` for form input cleaning.
+        config: A dictionary containing `regex` and `rules` for form input cleaning.
 
-    Examples:
-    ::
+    Example:
 
-        import zmag
+    ```python
+    import zmag
 
-        zmag.clean(
-            regex=[
-                # Replace text using regex in the cleaning phase.
-                (r"^hello", "hola"),
-                (r"com", "api"),
-            ],
-            rules=[
-                # Apply further custom rules after regex replacements.
-                (lambda v: v.upper())
-            ],
-        )
+    zmag.clean(
+        regex=[
+            # Replace text using regex in the cleaning phase.
+            (r"^hello", "hola"),
+            (r"com", "api"),
+        ],
+        rules=[
+            # Apply further custom rules after regex replacements.
+            (lambda v: v.upper())
+        ],
+    )
+    ```
     """
     regex = regex or []
     rules = rules or []
@@ -127,51 +128,51 @@ def form_field(
     deprecation_reason: str | None = None,
 ) -> Any:
     """
-    Form Input `Value`
+    Configuration options for `Input` **value**.
 
     GraphQL: `(form: {x: "hello", email: "demo@helloworld.com"})`
 
-    Examples:
-    ::
+    Example:
 
-        class MyForm(zmag.Input):
-            # A required field with no default value,
-            # ensuring the field must be filled.
-            x: str = zmag.value(required=True)
+    ```python
+    class MyForm(zmag.Input):
+        # A required field with no default value,
+        # ensuring the field must be filled.
+        x: str = zmag.value(required=True)
 
-            # A field with a dynamic default value,
-            # optionally using a function for initialization.
-            y: str = zmag.value(default="Some Value")
-            y: str = zmag.value(default=lambda: "Some Value")
+        # A field with a dynamic default value,
+        # optionally using a function for initialization.
+        y: str = zmag.value(default="Some Value")
+        y: str = zmag.value(default=lambda: "Some Value")
 
-            # A deprecated field "not for use",
-            # in the near future or at all.
-            z: str = zmag.value(deprecation_reason="Value is deprecated")
+        # A deprecated field "not for use",
+        # in the near future or at all.
+        z: str = zmag.value(deprecation_reason="Value is deprecated")
 
-            # A complex field setup demonstrating validation,
-            # cleaning, and transformation of input data.
-            email: str = zmag.value(
-                regex={
-                    # A field with regex validation.
-                    r"[\w\.-]+@[\w\.-]+": "Invalid email address"
-                },
-                rules=[
-                    # Additional custom validation rules.
-                    (lambda v: v.startswith("demo") or "Invalid input")
+        # A complex field setup demonstrating validation,
+        # cleaning, and transformation of input data.
+        email: str = zmag.value(
+            regex={
+                # A field with regex validation.
+                r"[\w\.-]+@[\w\.-]+": "Invalid email address"
+            },
+            rules=[
+                # Additional custom validation rules.
+                (lambda v: v.startswith("demo") or "Invalid input")
+            ],
+            clean=zmag.clean(
+                regex=[
+                    # Replace using regex in the cleaning phase.
+                    (r"^hello", "hola"),
+                    (r"com", "api"),
                 ],
-                clean=zmag.clean(
-                    regex=[
-                        # Replace using regex in the cleaning phase.
-                        (r"^hello", "hola"),
-                        (r"com", "api"),
-                    ],
-                    rules=[
-                        # Apply custom rules after regex replacements.
-                        (lambda v: v.upper())
-                    ],
-                ),
-            )
-
+                rules=[
+                    # Apply custom rules after regex replacements.
+                    (lambda v: v.upper())
+                ],
+            ),
+        )
+    ```
     """
 
     def field(_, kind) -> Any:
@@ -181,7 +182,7 @@ def form_field(
             required=required,
             regex=regex or {},
             rules=rules or [],
-            clean=clean or form_cleaner(),
+            clean=clean or value_cleaner(),
             deprecation_reason=deprecation_reason,
         )
 
@@ -537,26 +538,3 @@ def form_dataclass(  # pylint: disable=too-many-branches
 
     # Create Component
     return data_class
-
-
-class BaseForm:
-    """
-    Base `Input` Form
-
-    Example:
-    ::
-
-        import zmag
-
-        Author = zmag.input("Author")
-
-        @Author
-        class Create(zmag.Input): # AuthorCreate
-            ...
-
-        @Author
-        class Update(zmag.Input): # AuthorUpdate
-            ...
-    """
-
-    input: Form

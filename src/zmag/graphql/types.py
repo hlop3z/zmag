@@ -71,7 +71,7 @@ class Mutation(Generic[T]):
     deleted: int = 0
 
 
-def page(
+def edge(
     edges: list[Edge] | None = None,
     count: int = 0,
     pages: int = 0,

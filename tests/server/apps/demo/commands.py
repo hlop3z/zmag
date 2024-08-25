@@ -16,7 +16,8 @@ def cli():
 
 # Create <Commands> here.
 @cli.command()
-def hello_world():
+@zmag.coro
+async def hello_world():
     """Demo CLI Function"""
 
     click.echo("Hello World")

@@ -50,6 +50,8 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
         event_name(self, event): Do something < After > the event happens.
 
     Example:
+    .. code-block:: python
+
         def on_modified(self, event):
             path_to_watch = event.src_path
             # After Event - Do Something ...

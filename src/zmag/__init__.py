@@ -11,9 +11,11 @@ from .network import DeviceZMQ as Device
 from .network import FrontendZMQ as Frontend
 from .network.utils import Data
 
+# Version
+__version__ = "0.0.13"
+
 # Logs
 logging.basicConfig(format="%(levelname)s    -  %(message)s", level=logging.INFO)
-
 
 # Server
 if spoc and strawberry:
@@ -33,14 +35,13 @@ if spoc and strawberry:
         # Components
         from .framework.components import pub  # ZMQ
         from .framework.components import push  # ZMQ
-        from .framework.components import BaseType, Model, Type, cli
+        from .framework.components import BaseType, Input, Model, Type, cli
         from .framework.components import graphql as gql
         from .framework.components import graphql_input as input  # pylint: disable=W
 
         # GraphQL Forms
         from .framework.components.forms import UNSET
-        from .framework.components.forms import BaseForm as Input
-        from .framework.components.forms import form_cleaner as clean
+        from .framework.components.forms import value_cleaner as clean
         from .framework.components.forms import form_field as value
         from .framework.components.objects import dataclass_field as field
 
@@ -48,14 +49,14 @@ if spoc and strawberry:
         from .framework.framework import Framework as App
 
         # GraphQL Tools
-        from .graphql.types import Edge as edge
-        from .graphql.types import Error as errors
-        from .graphql.types import ErrorMessage as error
-        from .graphql.types import Mutation as mutation
-        from .graphql.types import page
+        from .graphql.types import Edge
+        from .graphql.types import Error as Errors
+        from .graphql.types import ErrorMessage as Error
+        from .graphql.types import Mutation, edge
 
-        # Object Tools
-        from .tools import docs
+        # Other Tools
+        from .tools.coro import coro
+        from .tools.generic import docs
 
         # Scalars
         ID = strawberry.ID
@@ -98,11 +99,12 @@ __all__ = (
     "input",
     "value",
     # Reponses
+    "Edge",
+    "Error",
+    "Errors",
+    "Mutation",
     "edge",
-    "error",
-    "errors",
-    "mutation",
-    "page",
     # Utils
     "docs",
+    "coro",
 )

@@ -1,66 +1,85 @@
+# Configurations
 site_name: ZMAG
-site_url: https://hlop3z.github.io/zmag
-repo_url: https://github.com/hlop3z/zmag
+site_url: https://hlop3z.github.io/zmag/
+repo_url: https://github.com/hlop3z/zmag/
 copyright: Copyright © Hlop3z
 
+# Navigation
 nav:
-  - Introduction: index.md
+  - ZMAG:
+      - Introduction: index.md
+      - Motivation: motivation.md
   - Server:
-      - Settings: config/settings.md
-      - Environment: config/environment.md
-      - Variables: config/variables.md
+      - Settings: server/config/settings.md
+      - Environment: server/config/environment.md
+      - Variables: server/config/variables.md
       - CLI:
-          - Commands: commands.md
+          - Commands: server/commands.md
       - ZMQ:
-          - Devices: devices.md
-          - Pub/Push: pub-push.md
-          - Authentication: authentication.md
+          - Devices: server/devices.md
+          - Pub/Push: server/pub-push.md
+          - Authentication: server/authentication.md
       - GraphQL:
-          - Types: graphql/types.md
-          - Inputs: graphql/inputs.md
-          - Operations: graphql/operations.md
-          - Built-In: graphql/built-in.md
+          - Types: server/graphql/types.md
+          - Inputs: server/graphql/inputs.md
+          - Operations: server/graphql/operations.md
+          - Built-In: server/graphql/built-in.md
   - Client:
       - Requests: client/requests.md
       - Sub/Pull: client/sub-pull.md
       - Authentication: client/authentication.md
+  - API Reference:
+      - Demo: api/api.md
+      - GraphQL: api/graphql.md
+      - Client:
+          - Demo: api/api.md
 
-# Configurations
+# Path Watch
 watch:
   - custom_theme
+  - ../src
 
+# Extras
+extra:
+  generator: false
+
+# Theme
 theme:
   custom_dir: custom_theme/
   name: material
   locale: en
   features:
-    - navigation.tabs
-    - navigation.instant
-    - navigation.tracking
-    - navigation.sections
-    - navigation.top
     - content.code.annotate
     - navigation.expand
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - navigation.footer
+
   icon:
     logo: material/lan
 
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: teal
+      primary: cyan
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: teal
+      primary: cyan
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
 
+# Extensions
 markdown_extensions:
   - admonition
   - tables
+  - attr_list
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.snippets
@@ -71,10 +90,69 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
-  - attr_list
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
   - pymdownx.tasklist:
       custom_checkbox: true
+
+# Plugins
+plugins:
+  - search
+
+  # Macros
+  - macros:
+      modules:
+        - macros
+
+  # termynal
+  - termynal
+
+  # mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [..] # search packages in the src folder
+          options:
+            # Docstring Style
+            docstring_style: google
+            docstring_section_style: table # list
+
+            # Symbol
+            show_symbol_type_toc: true
+            show_symbol_type_heading: false
+
+            # Headings
+            show_root_heading: true
+            separate_signature: false
+
+            # Generic
+            allow_inspection: true
+            group_by_category: true
+            show_bases: false
+            show_labels: true
+            show_source: false
+            unwrap_annotated: true
+
+            # Members
+            members_order: source
+            inherited_members: false
+
+            # Object Paths
+            show_root_members_full_path: false
+            show_object_full_path: false
+
+            # Init
+            merge_init_into_class: true
+            docstring_options:
+              ignore_init_summary: true
+
+            # Docstring Include
+            show_docstring_functions: false
+            show_docstring_examples: false
+            show_if_no_docstring: false
+
+            # Filters
+            filters:
+              - "!^_"
