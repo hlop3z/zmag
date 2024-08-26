@@ -5,7 +5,7 @@ Pre-Schema
 
 import typing
 
-from ....external import strawberry
+from .....external import strawberry
 
 
 def create_schema(**kwargs) -> typing.Any:  # type: ignore

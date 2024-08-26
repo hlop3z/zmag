@@ -7,9 +7,9 @@ import functools
 import typing
 from collections import namedtuple
 
-from ....external import spoc, strawberry
-from ....tools.text import pascal_to_snake
-from ...components import components
+from .....external import spoc, strawberry
+from .....tools.text import pascal_to_snake
+from ....components import components
 from .schema import create_schema
 
 if strawberry:
@@ -111,7 +111,9 @@ def graphql(schemas: list, permissions: list | None = None) -> GraphQL:
             # Metadata
             if hasattr(current.object, "Meta"):
                 meta = current.object.Meta
-                root_app = getattr(meta, "app", root_app)
+                app_name = getattr(meta, "app", root_app)
+                if app_name is not True:
+                    root_app = app_name
                 root_model = getattr(meta, "model", None)
                 if root_model:
                     root_model = get_model_name(root_model)

@@ -4,6 +4,7 @@
 """
 
 import logging
+import os
 
 from .external import spoc, strawberry
 from .network import BackendZMQ as Backend
@@ -17,8 +18,11 @@ __version__ = "0.0.13"
 # Logs
 logging.basicConfig(format="%(levelname)s    -  %(message)s", level=logging.INFO)
 
+# Client Mode
+ZMAG_CLIENT = os.getenv("ZMAG_CLIENT")
+
 # Server
-if spoc and strawberry:
+if spoc and strawberry and not ZMAG_CLIENT:
     try:
         # Strawberry
         # import strawberry
@@ -36,13 +40,13 @@ if spoc and strawberry:
         from .framework.components import pub  # ZMQ
         from .framework.components import push  # ZMQ
         from .framework.components import BaseType, Input, Model, Type, cli
-        from .framework.components import graphql as gql
+        from .framework.components import graphql_decorator as gql
         from .framework.components import graphql_input as input  # pylint: disable=W
 
         # GraphQL Forms
-        from .framework.components.forms import UNSET
-        from .framework.components.forms import value_cleaner as clean
+        from .framework.components.forms import UNSET, Form
         from .framework.components.forms import form_field as value
+        from .framework.components.forms import value_cleaner as clean
         from .framework.components.objects import dataclass_field as field
 
         # Framework Core
@@ -63,11 +67,8 @@ if spoc and strawberry:
         json = JSON
 
     # Ignores When Using Client (ONLY)
-    except ImportError:
+    finally:
         pass
-    except TypeError:
-        pass
-
 
 __all__ = (
     # Spoc,
@@ -95,6 +96,7 @@ __all__ = (
     "Input",
     # Form Tools
     "UNSET",
+    "Form",
     "clean",
     "input",
     "value",

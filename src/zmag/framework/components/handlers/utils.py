@@ -4,7 +4,7 @@ Utils for Handlers
 """
 
 # from ...external import spoc
-from ..components import components
+from ...components import components
 
 
 def error_message(group, one, two):

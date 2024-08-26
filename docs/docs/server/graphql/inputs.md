@@ -10,10 +10,11 @@ The code **must** be placed in a **file** named **`inputs.py`** or within a **fo
 - **`zmag.input`** — Initializes input group.
 - **`zmag.value`** — Configures input field settings.
 - **`zmag.clean`** — Defines cleaning functions or rules.
+- **`zmag.Form`** — Represents an input response.
 
-!!! note
+!!! tip
 
-    Tools used for creating GraphQL `input` types.
+    Tools used for creating GraphQL `INPUT` types.
 
 ---
 
@@ -30,6 +31,8 @@ class Create(zmag.Input): ... # FormCreate
 @form
 class Update(zmag.Input): ... # FormUpdate
 ```
+
+---
 
 ## Examples
 
@@ -53,6 +56,8 @@ class MyForm(zmag.Input):
 
 ### Dynamic **Default** Value
 
+A field with a default value, optionally using a function for initialization.
+
 ```python
 import zmag
 
@@ -62,7 +67,6 @@ Author = zmag.input("Author")
 class MyForm(zmag.Input):
     """GraphQL Form with Dynamic Default Value"""
 
-    # A field with a dynamic default value, optionally using a function for initialization.
     y: str = zmag.value(default="Some Value")
     # OR
     y: str = zmag.value(default=lambda: "Some Value")
@@ -71,6 +75,8 @@ class MyForm(zmag.Input):
 ---
 
 ### **Deprecated** Field
+
+A deprecated field, indicating it should no longer be used.
 
 ```python
 import zmag
@@ -81,13 +87,14 @@ Author = zmag.input("Author")
 class MyForm(zmag.Input):
     """GraphQL Form with Deprecated Field"""
 
-    # A deprecated field, indicating it should no longer be used.
     z: str = zmag.value(deprecation_reason="This field is deprecated.")
 ```
 
 ---
 
 ### Complex Field with **Validation** and **Cleaning**
+
+A complex field setup demonstrating validation, cleaning, and transformation of input data.
 
 ```python
 import zmag
@@ -98,7 +105,6 @@ Author = zmag.input("Author")
 class MyForm(zmag.Input):
     """GraphQL Form with Complex Field Setup"""
 
-    # A complex field setup demonstrating validation, cleaning, and transformation of input data.
     email: str = zmag.value(
         regex={
             # Regex pattern for email validation.
@@ -124,16 +130,18 @@ class MyForm(zmag.Input):
 
 ## Example **Usage**
 
+The built-in `input: Form` **attribute** provides flexible access to the input data, allowing you to manipulate and retrieve it in various formats.
+
 ```python title="graphql.py"
 @zmag.gql
 class Graphql:
     ...
 
     class Mutation:
-        async def create(self, form: MyForm | None):
+        async def create(self, form: MyForm | None) -> None:
             if form and form.input.is_valid:
                 print(form.input)
-                print(form.input.dict(True))
                 print(form.input.clean())
-            return zmag.mutation()
+                print(form.input.dict(True))
+            return None
 ```

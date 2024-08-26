@@ -62,6 +62,7 @@ class ZMQBaseServer:
         self.app = Framework()
 
         # ZMQ Settings
+        node_name = self.app.spoc.get("zmq", {}).get("node")
         zmq_config = self.app.env.get("zmq", {})
 
         # Server Authentication
@@ -69,6 +70,7 @@ class ZMQBaseServer:
 
         # Server Node
         self.node = BackendZMQ(
+            name=node_name,
             backend=self.options.backend,
             frontend=self.options.frontend,
             attach=self.options.attach,

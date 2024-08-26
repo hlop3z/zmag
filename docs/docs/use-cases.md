@@ -6,20 +6,22 @@
 
 ---
 
-## **Network Applications**:
+## **Network Applications**
 
 Network applications are software programs that run on multiple computers and devices connected over a network (such as a local area network (LAN), a wide area network (WAN), or the internet). These applications are designed to interact with a network to provide specific functionalities, such as messaging, database access, or remote management.
 
 ---
 
-## **Key Characteristics**:
+## **Key Characteristics**
 
 1. **Direct Communication**: Network applications often use protocols like TCP/IP to communicate directly over a network.
 2. **Low Latency**: Network applications typically have lower latency due to direct communication over the network.
 3. **Offline Capabilities**: Some network applications can work offline and synchronize data when a network connection is reestablished.
 4. **Complex Configuration**: They often require more complex setup and configuration, especially when dealing with network security, firewalls, and access permissions.
 
-## **Advantages**:
+---
+
+## **Advantages**
 
 - **Performance**: Faster communication and data transfer speeds due to direct network connections.
 - **Security**: Potentially more secure because they can operate within a private network environment.

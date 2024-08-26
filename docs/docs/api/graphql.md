@@ -30,6 +30,12 @@
 ---
 
 ::: zmag.Input
+    options:
+        members: ["input"]
+
+---
+
+::: zmag.Form
 
 ---
 
@@ -43,3 +49,11 @@
 ---
 
 ::: zmag.clean
+
+---
+
+## GraphQL Operations — [Examples](/{{ url("/server/graphql/operations/") }})
+
+---
+
+::: zmag.gql

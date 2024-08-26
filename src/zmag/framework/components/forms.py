@@ -27,7 +27,7 @@ def dc_field(**kwargs):
     return dc.field(**kwargs)  # pylint: disable=invalid-field-call
 
 
-class FormCleaner(TypedDict):
+class ValueCleaner(TypedDict):
     """Form Cleaner"""
 
     regex: list
@@ -60,30 +60,66 @@ class FormError:
 
 @dc.dataclass
 class Form:
-    """DataClass -> Form Response"""
+    """
+    Represents an `Input` response.
+
+    This class extends `zmag.Input` and provides methods to handle form data,
+    including cleaning and converting it to a dictionary format.
+
+    Attributes:
+        data (Any): The input data stored in a `SimpleNamespace`.
+        errors (list): A list of errors associated with the form.
+        is_valid (bool): Indicates whether the form data is valid.
+
+    Example:
+
+    ```python
+    class Form(zmag.Input): ...
+
+    async def mutation(form: Form):
+        print(form.input)
+        print(form.input.clean())
+        print(form.input.dict(True))
+    ```
+    """
 
     data: Any = dc.field(default_factory=SimpleNamespace)
     errors: list = dc.field(default_factory=list)
     is_valid: bool = False
     next: Any = None
 
-    def dict(self, clean: bool = False):
-        """Form as a `dict`."""
+    def dict(self, clean: bool = False) -> dict:
+        """
+        Convert the form data to a `dict`.
+
+        Args:
+            clean (bool, optional): If `True`, exclude keys with `UNSET` values from the dictionary.
+
+        Returns:
+            data: The input data as a dictionary, optionally cleaned of `UNSET` values.
+        """
         kwargs = self.data.__dict__
         if not clean:
             return kwargs
         return {k: v for k, v in kwargs.items() if v is not UNSET}
 
-    def clean(self):
-        """Clean form without `UNSET` values."""
+    def clean(self) -> SimpleNamespace:
+        """
+        Convert the form data to a `SimpleNamespace`, excluding `UNSET` values.
+
+        Returns:
+            data: The input data as a `SimpleNamespace`, cleaned of `UNSET` values.
+        """
         return SimpleNamespace(
             **{k: v for k, v in self.data.__dict__.items() if v is not UNSET}
         )
 
 
-def value_cleaner(regex: list | None = None, rules: list | None = None) -> FormCleaner:
+def value_cleaner(regex: list | None = None, rules: list | None = None) -> ValueCleaner:
     """
-    Creates a value `clean` configuration with regex filters and custom rules.
+    Creates a `ValueCleaner` configuration with regex filters and custom rules.
+
+    This function extends `zmag.value`.
 
     Args:
         regex (list | None): A list of regex patterns for filtering input value.
@@ -112,7 +148,7 @@ def value_cleaner(regex: list | None = None, rules: list | None = None) -> FormC
     """
     regex = regex or []
     rules = rules or []
-    output: FormCleaner = {
+    output: ValueCleaner = {
         "regex": regex,
         "rules": rules,
     }
@@ -124,18 +160,20 @@ def form_field(
     required: bool = False,
     regex: dict | None = None,
     rules: list | None = None,
-    clean: FormCleaner | None = None,
+    clean: ValueCleaner | None = None,
     deprecation_reason: str | None = None,
 ) -> Any:
     """
-    Configuration options for `Input` **value**.
+    Configuration options for the `Input` **value**.
+
+    This function extends `zmag.Input`.
 
     Args:
         default (Any): The default value for the field.
         required (bool): Indicates whether the field is mandatory.
         regex (dict | None): A dictionary defining regular expressions for field validation.
         rules (list | None): A list of validation rules to apply to the field.
-        clean (FormCleaner | None): A callable used to configure preprocess of the value.
+        clean (ValueCleaner | None): A callable used to configure preprocess of the value.
         deprecation_reason (str | None): A message explaining why the field is deprecated.
 
     Example:
@@ -148,7 +186,7 @@ def form_field(
         # ensuring the field must be filled.
         x: str = zmag.value(required=True)
 
-        # A field with a dynamic default value,
+        # A field with a default value,
         # optionally using a function for initialization.
         y: str = zmag.value(default="Some Value")
         y: str = zmag.value(default=lambda: "Some Value")

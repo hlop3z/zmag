@@ -16,7 +16,7 @@ class Graphql:
     class Meta:
         """GQL-Class Metadata"""
 
-        # app = None
+        app = True
         model = types.Book
 
     class Query:
@@ -50,7 +50,7 @@ class Graphql:
             if form:
                 # form.input.dict(True)
                 # form.input.clean()
-                print(form.input)
+                print(form.input.data)
                 print(form.input.dict(True))
                 print(form.input.clean())
             return zmag.Mutation()

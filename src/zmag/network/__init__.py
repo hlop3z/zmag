@@ -24,6 +24,7 @@ class BackendZMQ(ZeroMQ):
         self,
         backend: str = tcp_string(5556),  # inproc://workers
         frontend: str = tcp_string(5555),  # inproc://clients
+        name: str | None = None,
         mode: str = "queue",
         attach: bool = False,
         # SSH
@@ -39,6 +40,7 @@ class BackendZMQ(ZeroMQ):
         super().__init__(
             backend=backend,
             frontend=frontend,
+            name=name,
             mode=mode,
             attach=attach,
             ssh=ssh,

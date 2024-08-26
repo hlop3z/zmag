@@ -5,18 +5,17 @@ The code **must** be placed in a **file** named **`graphql.py`** or within a **f
 ```python title="graphql.py"
 import zmag
 
-
 # Create your API (GraphQL) here.
 @zmag.gql
 class Graphql:
+    class Meta: ...
     class Query: ...
-
     class Mutation: ...
 ```
 
 ---
 
-## GraphQL `class` Sections
+## Operations Tools — [Reference](/{{ url("/api/graphql/#zmag.gql") }})
 
 - **`Meta`**
 - **`Query`**
@@ -26,10 +25,14 @@ class Graphql:
 
 ## Meta (Optional)
 
-The `Meta` class allows you to customize the behavior and configuration of your GraphQL.
+The `Meta` class can be used to customize the naming and behavior of these GraphQL operations.
 
-- **`app`** (`str | None`): Specifies the application name or identifier.
+- **`app`** (`str | bool | None`): Specifies the application name or identifier.
 - **`model`** (`str | type | None`): Associates the GraphQL operations with a model. This can be a string representing the model name or an actual `type` class.
+
+---
+
+## Examples
 
 ---
 
@@ -114,3 +117,24 @@ customDetail
 ```
 
 **Explanation:** The GraphQL field name is automatically generated based on the **method** name `detail` and provided **app** name `custom`.
+
+### Full Example
+
+```python
+import zmag
+
+@zmag.gql
+class Graphql:
+
+    class Meta:
+        app = True
+        model = "Book"
+
+    class Query:
+        async def detail(self) -> str:
+            return "Detail (Query)"
+
+    class Mutation:
+        async def create(self) -> str::
+            return "Create (Mutation)"
+```

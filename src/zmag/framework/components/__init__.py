@@ -5,11 +5,8 @@ Components INIT
 
 from .base import components
 from .commands import cli
-from .graphql import BaseType, Input, Model, Type, graphql, graphql_input
+from .graphql import BaseType, Input, Model, Type, graphql_decorator, graphql_input
 from .network import pub, push
-
-# Model
-# Model = tuple([Type, BaseModel])
 
 __all__ = (
     # Framework
@@ -24,6 +21,6 @@ __all__ = (
     "Input",
     "Type",
     "Model",
-    "graphql",
+    "graphql_decorator",
     "graphql_input",
 )

@@ -13,8 +13,51 @@ from .forms import Form, form_dataclass
 from .objects import create_typed_class
 
 
-def graphql(cls: typing.Any = None) -> typing.Any:
-    """Strawberry `GraphQL` Creator"""
+def graphql_decorator(cls: typing.Any = None) -> typing.Any:
+    """
+    This class decorator transforms a Python class into GraphQL operations.
+
+    When applied to a class, `@zmag.gql` interprets inner classes named `Query`
+    and `Mutation` as containers for GraphQL query and mutation methods, respectively.
+    These methods can then be invoked as part of a GraphQL API.
+
+    Attributes:
+        Meta (class): Defines metadata for the GraphQL class,
+            such as the associated `app` and `model`.
+        Query (class): Contains methods that represent GraphQL queries. Each method
+            should be an `async` function and can return various data types.
+        Mutation (class): Contains methods that represent GraphQL mutations. Each method
+            should be an `async` function and can accept input data for modifying server-side state.
+
+    Note: **Meta** class Attributes:
+        - **`app`** (`str | bool | None`): Specifies a custom prefix for the generated GraphQL field names.
+        If set to `None`, the prefix is omitted, and the field names are based
+        directly on the method names.
+
+        - **`model`** (`str | type | None`): When specified, prefixes the generated GraphQL field names
+        with the model name. This helps in creating more descriptive and
+        structured GraphQL schemas.
+
+    Tip:
+        This decorator allows you to seamlessly integrate Python classes with a GraphQL API.
+
+    Example:
+
+    ```python
+    import zmag
+
+    @zmag.gql
+    class Graphql:
+
+        class Meta:
+            app = True
+            model = "Book"
+
+        class Query: ...
+
+        class Mutation: ...
+    ```
+    """
     components.register("graphql", cls)
     return cls
 
@@ -31,6 +74,8 @@ def graphql_input(
 ) -> Callable:
     """
     Creates a `decorator` for `Inputs`, optionally adding a common **prefix** or **suffix**.
+
+    This function extends `zmag.Input`.
 
     Args:
         prefix (str | list[str] | None): The **prefix** to be added to each field in the class.
@@ -177,9 +222,9 @@ class Input:
     ```python
     import zmag
 
-    form = zmag.input()
+    input = zmag.input()
 
-    @form
+    @input
     class Form(zmag.Input):
         name: str
         ...

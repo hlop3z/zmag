@@ -7,8 +7,8 @@ from types import SimpleNamespace
 from typing import Any
 
 from ..external import spoc
-from . import handlers
 from .commands.cli import cli
+from .components import handlers
 from .shell import click_commands
 
 PLUGINS = [

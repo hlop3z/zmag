@@ -8,8 +8,11 @@ import asyncio
 import os
 from types import SimpleNamespace
 
+# Set Env for Client Mode
+os.environ["ZMAG_CLIENT"] = "1"
+
 # ZMAG
-from zmag import Frontend
+from zmag import Frontend  # pylint: disable=C
 
 # import time
 # from pathlib import Path

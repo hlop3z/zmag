@@ -22,5 +22,5 @@ class Author(zmag.Type):  # zmag.BaseType
 class Book(zmag.Model):
     """(Type) Read The Docs"""
 
-    title: str = zmag.field(default="Hello World")
+    title: str
     author: Author
