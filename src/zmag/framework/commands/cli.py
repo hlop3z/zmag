@@ -8,7 +8,7 @@ from ...external import click
 if click:
     # Import Commands Here
     from .certificates import gen_keys
-    from .run_server import run
+    from .run_server import run, device
 
     @click.group
     def cli():
@@ -16,4 +16,5 @@ if click:
 
     # Register Commands
     cli.add_command(run)
+    cli.add_command(device)
     cli.add_command(gen_keys)

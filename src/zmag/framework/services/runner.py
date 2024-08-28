@@ -9,6 +9,7 @@ import logging
 import os
 from functools import partial
 from typing import Any
+import time
 
 from ...external import spoc, uvloop
 from ...network import BackendZMQ, DeviceZMQ
@@ -34,13 +35,13 @@ class Device(spoc.BaseThread):
     def server(self):
         """ZMQ Device"""
         node: DeviceZMQ = DeviceZMQ(
-            backend=self.options.backend,
-            frontend=self.options.frontend,
-            mode=self.options.mode,
+            backend=self.options.server,
+            frontend=self.options.client,
+            mode=self.options.device,
+            publickey=self.options.publickey,
+            secretkey=self.options.secretkey,
         )
         node.device()
-        while self.active:
-            pass
 
 
 class ZMQBaseServer:
@@ -63,20 +64,17 @@ class ZMQBaseServer:
 
         # ZMQ Settings
         node_name = self.app.spoc.get("zmq", {}).get("node")
-        zmq_config = self.app.env.get("zmq", {})
-
-        # Server Authentication
-        with_auth = self.options.authentication
 
         # Server Node
         self.node = BackendZMQ(
             name=node_name,
-            backend=self.options.backend,
-            frontend=self.options.frontend,
+            backend=self.options.server,
+            frontend=self.options.client,
+            mode=self.options.device,
             attach=self.options.attach,
-            mode=self.options.mode,
-            publickey=zmq_config.get("public_key") if with_auth else None,
-            secretkey=zmq_config.get("secret_key") if with_auth else None,
+            publickey=self.options.publickey,
+            secretkey=self.options.secretkey,
+            serverkey=self.options.serverkey or self.options.publickey,
         )
 
     async def on_event(self, event_type: str):
@@ -113,7 +111,7 @@ class ZMQBaseServer:
         node = self.node
 
         # Start Server (Loop)
-        match self.options.mode:
+        match node.mode:
             case "streamer":
                 await start_pusher(self, app, node)
             case "forwarder":
@@ -143,6 +141,8 @@ class Server(spoc.BaseServer):
                 logging.info("Starting Application . . .")
             case "shutdown":
                 logging.info("Stopping Application . . .")
+            case "before_shutdown":
+                logging.info("Waiting for Application to Shut Down. . .")
 
     @classmethod
     def start_server(cls, config):
@@ -152,23 +152,13 @@ class Server(spoc.BaseServer):
 
         # Device
         if config.proxy:
-            cls.services.append(
-                partial(
-                    Device,
-                    mode=config.device,
-                    backend=config.server,
-                    frontend=config.client,
-                )
-            )
+            cls.services.append(partial(Device, **config.__dict__))
 
         # Workers
         service_class = partial(
             server_type,
-            mode=config.device,
-            backend=config.server,
-            frontend=config.client,
+            **{k: v for k, v in config.__dict__.items() if k not in ["attach"]},
             attach=config.attach or config.proxy,
-            authentication=config.authentication,
         )
         # Workers Range
         for _ in range(0, config.workers):

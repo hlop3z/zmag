@@ -5,6 +5,24 @@ Mkdocs-Macros Module
 https://mkdocs-macros-plugin.readthedocs.io/en/latest/macros/
 """
 
+from markupsafe import Markup
+
+
+def format_acronym(text):
+    """
+    Formats acronyms by wrapping each first letter in parentheses and <strong> tags.
+    """
+
+    # Extract the first letter and the rest of the word
+    first_letter = text[0]
+    rest_of_text = text[1:]
+
+    # Construct the formatted acronym
+    formatted_text = f"(<strong>{first_letter}</strong>){rest_of_text}"
+
+    # Markup to mark the string as safe HTML
+    return Markup(formatted_text)
+
 
 def define_env(env):
     """
@@ -26,3 +44,7 @@ def define_env(env):
         #  env.config.site_name
         site_name = env.conf.get("site_name", "").lower()
         return f"{site_name}{url}"
+
+    @env.macro
+    def acronym(text):
+        return format_acronym(text)

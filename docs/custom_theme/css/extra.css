@@ -7,6 +7,15 @@
   display: table;
 }
 
+/* Side Bar */
+label.md-nav__title {
+  text-align: center;
+}
+.md-nav__title .md-logo img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Layout */
 .md-grid {
   margin-left: 0;
@@ -14,7 +23,8 @@
   max-width: 100%;
 }
 .md-sidebar--primary {
-  width: 8rem;
+  /* width: 8rem; */
+  width: 10rem;
 }
 .md-sidebar--secondary {
   width: 10rem;
@@ -35,7 +45,7 @@
   font-size: 32px;
   letter-spacing: 2px;
 }
-@media only screen and (min-width: 0px) and (max-width: 540px) {
+@media only screen and (min-width: 0px) and (max-width: 720px) {
   .name-acronym {
     font-size: 20px;
   }

@@ -13,7 +13,7 @@ BASE_DIR = pathlib.Path(__file__).parents[1]
 INSTALLED_APPS: list = ["demo", "other"]
 
 # EXTRAS
-EXTRAS: dict = {
+PLUGINS: dict = {
     "extensions": [],
     "permissions": [],
     "on_startup": [],

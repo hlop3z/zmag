@@ -7,8 +7,8 @@ import typing
 
 try:
     import spoc
-except ImportError:
-    spoc = None
+except ImportError as e:
+    raise e
 
 try:
     import uvloop  # type: ignore

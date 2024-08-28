@@ -3,35 +3,68 @@
 ZMQ Network
 """
 
-# import logging
+import logging
 from typing import Any
+import signal
 
 from .base import ConfigSSH, ZeroMQ, tcp_string
 from .utils import Data
 
 
 class DeviceZMQ(ZeroMQ):
-    """ZMQ Device"""
+    """ZeroMQ `Proxy` Device"""
+
+    def __init__(
+        self,
+        mode: str = "queue",
+        backend: str = tcp_string(5556),  # inproc://workers
+        frontend: str = tcp_string(5555),  # inproc://clients
+        # Authenticator
+        publickey: str | None = None,
+        secretkey: str | None = None,
+    ):
+        """
+        Initialize ZeroMQ `Device`.
+        """
+
+        super().__init__(
+            backend=backend,
+            frontend=frontend,
+            mode=mode,
+            publickey=publickey,
+            secretkey=secretkey,
+        )
+
+    def start(self):
+        """Run Device"""
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
+        logging.info("Press <CTRL + C> to Quit")
+        logging.info("Starting Device (ZMQ). . .")
+        try:
+            self.device()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            logging.info("Stopping Device (ZMQ). . .")
 
 
 class BackendZMQ(ZeroMQ):
-    """ZMQ Server"""
+    """ZeroMQ `Backend` Server"""
 
     app: Any
     data: Any = Data
 
     def __init__(
         self,
+        mode: str = "queue",
         backend: str = tcp_string(5556),  # inproc://workers
         frontend: str = tcp_string(5555),  # inproc://clients
         name: str | None = None,
-        mode: str = "queue",
         attach: bool = False,
-        # SSH
-        ssh: ConfigSSH | None = None,
         # Authenticator
         publickey: str | None = None,
         secretkey: str | None = None,
+        serverkey: str | None = None,
     ):
         """
         Initialize ZeroMQ `Backend`.
@@ -43,9 +76,9 @@ class BackendZMQ(ZeroMQ):
             name=name,
             mode=mode,
             attach=attach,
-            ssh=ssh,
             publickey=publickey,
             secretkey=secretkey,
+            serverkey=serverkey,
         )
         # Backend Only
         self.socket = self.backend()
@@ -57,38 +90,80 @@ class BackendZMQ(ZeroMQ):
         response = await self.socket.recv_multipart()
         return Data.recv(response)
 
-    async def send(self, __head__: dict, **data: Any):
+    async def send(self, __head__: dict | None = None, **kwargs: Any):
         """
         Send `Response` (JSON).
+
+        Args:
+            __head__ (dict | None): Request headers.
+            body (**kwargs): Request body.
+
+        Example:
+
+        ```python
+        import zmag
+
+        backend = zmag.Backend(...)
+
+        backend.send({"token":"secret"}, message = "hello world")
+        ```
         """
-        serialized = Data(head=__head__, body=data)
+        serialized = Data(head=__head__, body=kwargs)
         message = serialized.send(command="response", node=self.name)
         await self.socket.send_multipart(message)
 
-    async def publish(self, channel, serialized: Data):
+    async def publish(self, channel, data: Data):
         """
         Send `Pub` (JSON).
+
+        Args:
+            data (Data): _description_
+
+        Example:
+
+        ```python
+        import zmag
+
+        backend = zmag.Backend(...)
+        data = zmag.Data(body={"message": "hello world"})
+
+        backend.publish("channel", data)
+        ```
         """
-        message = serialized.send(channel, command="pub", node=self.name)
+        message = data.send(channel, command="pub", node=self.name)
         await self.socket.send_multipart(message)
 
-    async def push(self, serialized: Data):
+    async def push(self, data: Data):
         """
         Send `Push` Work (JSON).
+
+        Args:
+            data (Data): _description_
+
+        Example:
+
+        ```python
+        import zmag
+
+        backend = zmag.Backend(...)
+        data = zmag.Data(body={"message": "hello world"})
+
+        backend.push(data)
+        ```
         """
-        message = serialized.send(command="push", node=self.name)
+        message = data.send(command="push", node=self.name)
         await self.socket.send_multipart(message)
 
 
 class FrontendZMQ(ZeroMQ):
     """
-    ZMQ `Frontend` Client
+    ZeroMQ `Frontend` Client
     """
 
     def __init__(
         self,
-        host: str = tcp_string(5555),  # inproc://clients
         mode: str = "queue",
+        host: str = tcp_string(5555),  # inproc://clients
         timeout: int = 5000,
         is_sync: bool = False,
         # SSH
@@ -102,13 +177,13 @@ class FrontendZMQ(ZeroMQ):
         Initialize ZeroMQ `Frontend`.
 
         Args:
-            host (str, optional): _description_. Defaults to tcp_string(5555).
-            timeout (int, optional): _description_. Defaults to `5000`.
-            is_sync (bool, optional): _description_. Defaults to False.
-            ssh (ConfigSSH | None, optional): _description_. Defaults to None.
-            publickey (str | None, optional): _description_. Defaults to None.
-            secretkey (str | None, optional): _description_. Defaults to None.
-            serverkey (str | None, optional): _description_. Defaults to None.
+            host (str, optional): _description_.
+            timeout (int, optional): _description_.
+            is_sync (bool, optional): _description_.
+            ssh (ConfigSSH | None, optional): _description_.
+            publickey (str | None, optional): _description_.
+            secretkey (str | None, optional): _description_.
+            serverkey (str | None, optional): _description_.
         """
         super().__init__(
             backend=host,
@@ -155,8 +230,26 @@ class FrontendZMQ(ZeroMQ):
         context: dict | None = None,
     ) -> Any:
         """
-        Send a `Request` to the server.
+        Sends a `Request` to the server.
+
+        Args:
+            query (str | None, optional): _description_.
+            operation (str | None, optional): _description_.
+            variables (dict | None, optional): _description_.
+            context (dict | None, optional): _description_.
+
+        Example:
+
+        ```python
+        from zmag import Frontend
+
+        client = Frontend(...)
+
+        response = await client.request(...)
+        print(response)
+        ```
         """
+
         head = {
             "context": context,
         }
@@ -171,7 +264,7 @@ class FrontendZMQ(ZeroMQ):
 
     async def __subscribe_async(self, channel: str = "") -> Any:
         """
-        Subscribes to a ZMQ channel asynchronously.
+        Subscribes to a ZeroMQ channel asynchronously.
         """
         response = None
         with self.connect(channel) as socket:
@@ -181,7 +274,7 @@ class FrontendZMQ(ZeroMQ):
 
     def __subscribe_sync(self, channel: str = "") -> Any:
         """
-        Subscribes to a ZMQ channel synchronously.
+        Subscribes to a ZeroMQ channel synchronously.
         """
         response = None
         with self.connect(channel) as socket:
@@ -191,15 +284,43 @@ class FrontendZMQ(ZeroMQ):
 
     def subscribe(self, channel: str = "") -> Any:
         """
-        Subscribe to ZMQ Channel
+        Subscribes to a ZeroMQ channel to receive messages and updates in real-time.
+
+        Args:
+            channel (str): _description_.
+
+        Example:
+
+        ```python
+        from zmag import Frontend
+
+        client = Frontend(...)
+
+        while True:
+            message = await client.subscribe("") # or "some_channel"
+            print("Received:", message)
+        ```
         """
+
         if self.is_sync:
             return self.__subscribe_sync(channel)
         return self.__subscribe_async(channel)
 
     def pull(self) -> Any:
         """
-        Consume from ZMQ Producer
+        Consumes data from a ZeroMQ producer, processing incoming workloads.
+
+        Example:
+
+        ```python
+        from zmag import Frontend
+
+        client = Frontend(...)
+
+        while True:
+            work = await client.pull()
+            print("Received:", work)
+        ```
         """
         if self.is_sync:
             return self.__subscribe_sync("")

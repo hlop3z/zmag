@@ -11,20 +11,21 @@ nav:
       - Use Cases: use-cases.md
       - Motivation: motivation.md
   - Server:
+      - Constant: server/config/variables.md
       - Settings: server/config/settings.md
       - Environment: server/config/environment.md
-      - Variables: server/config/variables.md
       - CLI:
           - Commands: server/commands.md
-      - ZMQ:
-          - Devices: server/devices.md
-          - Pub/Push: server/pub-push.md
-          - Authentication: server/authentication.md
       - GraphQL:
           - Types: server/graphql/types.md
           - Inputs: server/graphql/inputs.md
           - Operations: server/graphql/operations.md
           - Built-In: server/graphql/built-in.md
+      - ZMQ:
+          - Request/Response: server/req-rep.md
+          - Publishers/Pushers: server/pub-push.md
+          - Authentication: server/authentication.md
+          - Proxy Device: server/devices.md
   - Client:
       - Requests: client/requests.md
       - Sub/Pull: client/sub-pull.md
@@ -32,8 +33,8 @@ nav:
   - Reference:
       - Demo: api/api.md
       - GraphQL: api/graphql.md
-      - Client:
-          - Demo: api/api.md
+      - ZeroMQ: api/zeromq.md
+      - Client: api/client.md
 
 # Path Watch
 watch:
@@ -129,7 +130,7 @@ plugins:
             # Generic
             allow_inspection: true
             group_by_category: true
-            show_bases: true
+            show_bases: false
             show_labels: true
             show_source: false
             unwrap_annotated: true

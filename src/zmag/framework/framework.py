@@ -11,7 +11,7 @@ from .commands.cli import cli
 from .components import handlers
 from .shell import click_commands
 
-PLUGINS = [
+MODULES = [
     # Click
     "commands",
     # ZMQ
@@ -95,7 +95,7 @@ if spoc:
 
         def init(self):
             """Class __init__ Replacement"""
-            framework: Any = spoc.init(plugins=PLUGINS)  #
+            framework: Any = spoc.init(MODULES)  #
 
             # Core
             self.base_dir = spoc.settings.BASE_DIR
@@ -113,11 +113,11 @@ if spoc:
 
             # Project
             # self.component = framework.components
-            # self.extras = framework.extras
+            # self.plugins = framework.plugins
             self.info = SimpleNamespace(**get_project_info(framework))
             self.events = SimpleNamespace(
-                startup=framework.extras.get("on_startup", []),
-                shutdown=framework.extras.get("on_shutdown", []),
+                startup=framework.plugins.get("on_startup", []),
+                shutdown=framework.plugins.get("on_shutdown", []),
             )
 
             # ZMQ
@@ -133,7 +133,7 @@ if spoc:
             # GraphQL { Query & Mutation }
             self.graphql = handlers.graphql(
                 schemas=framework.components.graphql.values(),
-                permissions=framework.extras.get("permissions", []),
+                permissions=framework.plugins.get("permissions", []),
             )
 
             # GraphQL Schema
@@ -143,7 +143,7 @@ if spoc:
             self.schema = self.graphql.schema(
                 introspection=introspection,
                 max_depth=self.graphql_settings.get("max_depth", 4),
-                extensions=framework.extras.get("extensions", []),
+                extensions=framework.plugins.get("extensions", []),
             )
 
             # Context

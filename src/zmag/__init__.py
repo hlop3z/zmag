@@ -11,18 +11,16 @@ from .network import BackendZMQ as Backend
 from .network import DeviceZMQ as Device
 from .network import FrontendZMQ as Frontend
 from .network.utils import Data
-
-# Version
-__version__ = "0.0.13"
+from .network.base import ConfigSSH
 
 # Logs
 logging.basicConfig(format="%(levelname)s    -  %(message)s", level=logging.INFO)
 
-# Client Mode
-ZMAG_CLIENT = os.getenv("ZMAG_CLIENT")
+# Client or Device - Mode
+ZMAG_TYPE = os.getenv("ZMAG_TYPE")
 
 # Server
-if spoc and strawberry and not ZMAG_CLIENT:
+if spoc and strawberry and not ZMAG_TYPE:
     try:
         # Strawberry
         # import strawberry
@@ -79,6 +77,7 @@ __all__ = (
     "Backend",
     "Device",
     "Data",
+    "ConfigSSH",
     "pub",
     "push",
     # Strawberry

@@ -16,4 +16,4 @@
 
 - zmag.Device
 
-::: zmag
+- zmag

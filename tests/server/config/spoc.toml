@@ -1,7 +1,7 @@
 # Application Configuration
 [spoc]
 mode = "development"  # options: production, development, staging
-debug = true
+debug = false
 authentication = true
 
 # GraphQL Configuration
@@ -28,7 +28,7 @@ development = []
 staging = []
 
 # Additional Components
-[spoc.extras]
+[spoc.plugins]
 # Plugins
 # permissions = ["demo.permissions.MyPermission"]
 # extensions = ["demo.extensions.MyExtension"]

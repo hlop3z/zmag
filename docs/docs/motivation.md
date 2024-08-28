@@ -1,6 +1,6 @@
 # Motivation — **The Reason Behind**
 
-The motivation behind creating this project stems from a gap I noticed in existing solutions: I could not find any projects that effectively combine ZeroMQ and GraphQL. I believe this combination offers a unique and powerful approach to building network applications, particularly for internal use within larger systems.
+The motivation behind creating this project stems from a gap I noticed in existing solutions: I could not find any projects that combine ZeroMQ and GraphQL. I believe this combination offers a unique and powerful approach to building network applications, particularly for internal use within larger systems.
 
 Unlike frameworks like Django, Flask, FastAPI, and others, which are typically designed for building APIs for end-users, ZMAG is tailored for internal projects and microservices. The idea is to create reusable components — such as an authentication system — that multiple projects can leverage. For example, you could develop a centralized authentication system with ZMAG and then integrate it with multiple FastAPI or Flask applications. This modular approach allows these components to communicate efficiently, whether they are on the same server, within a local network, or even across the internet.
 

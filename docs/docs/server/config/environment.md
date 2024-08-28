@@ -45,6 +45,7 @@ The `development.toml` file is used to configure settings for the development en
 [env.zmq] # ZeroMQ Configuration
 public_key = "public-key-x7i+CS<BVZMJyXEX)H8?31k5o)?mQ"
 secret_key = "secret-key-x(<$ES*$pZ3UmIPEIy+lt1qNY!!Kn"
+server_key = "server-key-QAvkkf}^Y5OVu=R?S<V9Xi-Y!Zm4q"
 ```
 
 ## Staging

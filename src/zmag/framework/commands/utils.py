@@ -30,14 +30,14 @@ def shell_banner(conf):
     if conf.debug:
         # Debug
         banner += divider
-        banner += "[Hot-Reload] . . . (Press CTRL+C to quit)\n"
+        banner += "[Hot-Reload] . . . (Press <CTRL + C> to quit)\n"
         banner += divider
         banner += f"* Debug Mode        : {text_debug}\n"
         banner += f"* Debug Server      : {text_host}\n"
     else:
         # Production
         banner += divider
-        banner += "Starting ZMAG. . . (Press CTRL+C to quit)\n"
+        banner += "Starting ZMAG. . . (Press <CTRL + C> to quit)\n"
 
     # Shared
     banner += divider

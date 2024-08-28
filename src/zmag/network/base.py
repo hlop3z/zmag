@@ -10,13 +10,13 @@ import uuid
 from collections import namedtuple
 from contextlib import contextmanager
 from types import SimpleNamespace
-from typing import Any, Literal
+from typing import Any, Tuple  # Literal
 
 # ZMQ
 import zmq
 import zmq.asyncio
 import zmq.auth
-from zmq.devices import Device, ProcessDevice, ThreadDevice
+from zmq.devices import Device
 
 # https://pyzmq.readthedocs.io/en/latest/howto/ssh.html
 from zmq.ssh.tunnel import tunnel_connection
@@ -24,9 +24,51 @@ from zmq.ssh.tunnel import tunnel_connection
 Mesh = namedtuple("Mesh", ["device", "backend", "frontend"], module="ZeroMQ")
 
 
+class CustomDevice(Device):
+    """Device with Authentication"""
+
+    def set_auth(self, auth):
+        self.auth = auth
+
+    def _setup_sockets(self) -> Tuple[zmq.Socket, zmq.Socket]:
+        ctx: zmq.Context[zmq.Socket] = self.context_factory()  # type: ignore
+        self._context = ctx
+
+        # create the sockets
+        ins = ctx.socket(self.in_type)
+        self._sockets.append(ins)
+        if self.out_type < 0:
+            outs = ins
+        else:
+            outs = ctx.socket(self.out_type)
+            self._sockets.append(outs)
+
+        # set Authentication
+        self.auth(ins)
+        self.auth(outs)
+
+        # set sockopts (must be done first, in case of zmq.IDENTITY)
+        for opt, value in self._in_sockopts:
+            ins.setsockopt(opt, value)
+        for opt, value in self._out_sockopts:
+            outs.setsockopt(opt, value)
+
+        for iface in self._in_binds:
+            ins.bind(iface)
+        for iface in self._out_binds:
+            outs.bind(iface)
+
+        for iface in self._in_connects:
+            ins.connect(iface)
+        for iface in self._out_connects:
+            outs.connect(iface)
+
+        return ins, outs
+
+
 @dc.dataclass
 class ConfigSSH:
-    """ZQM SSH"""
+    """ZeroMQ SSH Configuration"""
 
     host: Any
     keyfile: Any | None = None
@@ -37,7 +79,7 @@ class ConfigSSH:
 
 @dc.dataclass
 class Authenticator:
-    """ZQM Authenticator (Certificates)"""
+    """ZeroMQ Authenticator"""
 
     # Server
     publickey: bytes | str | None = None
@@ -83,31 +125,18 @@ def tcp_string(port: int = 5555, host: str = "127.0.0.1"):
 
 def zmq_context(is_sync: bool = False):
     """
-    Get ZMQ `Context`.
+    Get ZeroMQ `Context`.
     """
     if is_sync:
-        context = zmq.Context.instance()
+        context = zmq.Context()
     else:
         context = zmq.asyncio.Context()  # type: ignore
     return context
 
 
-def zmq_device(agent: str):
-    """
-    Get ZMQ `Device`.
-    """
-    match agent:
-        case "process":
-            return ProcessDevice
-        case "thread":
-            return ThreadDevice
-        case _:
-            return Device
-
-
 def network_types(type_name: str = "queue") -> Any:
     """
-    Get **ZMQ Types** for `Device` and `Socket`.
+    Get **ZeroMQ Types** for `Device` and `Socket`.
 
     Options:
         - `queue`       for (`Request` and `Response`)
@@ -181,12 +210,15 @@ class ZeroMQ:
         """
         return zmq_context(self.is_sync)
 
-    def device(self, agent: Literal["thread", "process", "default"] = "thread"):
+    def device(self):
         """
-        Start the ZMQ `Device`.
+        Start the ZeroMQ `Device`.
         """
-        broker = zmq_device(agent)
-        proxy: Any = broker(*tuple(self.mesh.device))
+        proxy: Any = CustomDevice(*tuple(self.mesh.device))
+
+        # Authentication
+        proxy.set_auth(self.auth.backend)
+
         # Binding
         if self.mode == "queue":
             proxy.bind_in(self.url.frontend)
@@ -194,25 +226,30 @@ class ZeroMQ:
         else:
             proxy.bind_in(self.url.backend)
             proxy.bind_out(self.url.frontend)
+
         # Pub/Sub
         if self.mode == "forwarder":
             proxy.setsockopt_in(zmq.SUBSCRIBE, b"")
+
         # Start
         proxy.start()
         return proxy
 
     def backend(self):
         """
-        ZMQ backend `Server` establishes a `bind` or `connection` to the ZMQ socket.
+        ZeroMQ backend `Server` establishes a `bind` or `connection` to the ZeroMQ socket.
         """
         # Context & Socket
         context: Any = self.get_context()
         socket: Any = context.socket(self.mesh.backend)
         # Connect
         if self.attach:
+            # Authentication
+            self.auth.frontend(socket)
+            # Connect
             socket.connect(self.url.backend)
         else:
-            # Authenticator
+            # Authentication
             self.auth.backend(socket)
             # Bind
             socket.bind(self.url.backend)
@@ -223,7 +260,7 @@ class ZeroMQ:
         self, socket: Any, send_timeout: bool | int, receive_timeout: bool | int
     ):
         """
-        Connection to the ZMQ socket.
+        Connect to the ZeroMQ socket.
         """
         if self.ssh:
             tunnel_connection(
@@ -258,12 +295,12 @@ class ZeroMQ:
         log_errors: bool = False,
     ):
         """
-        ZMQ `Frontend` establishes a `connection` to the ZMQ socket.
+        ZeroMQ `Frontend` establishes a `connection` to the ZMQ socket.
         """
         # Context & Socket
         context: Any = self.get_context()
         socket: Any = context.socket(self.mesh.frontend)
-        # Authenticator
+        # Authentication
         self.auth.frontend(socket)
         # Request
         try:

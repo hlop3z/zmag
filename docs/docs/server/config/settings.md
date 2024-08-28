@@ -64,6 +64,7 @@ The `spoc.toml` file provides a declarative way to configure different aspects o
 | **`max_depth`**               | `graphql` | Sets the maximum allowed depth for nested objects in a GraphQL query to control query complexity.            |
 | **`introspection`**           | `graphql` | Enables querying of the current API schema to discover available resources and their structures.             |
 | **`items_per_page`**          | `graphql` | Defines the maximum number of items returned per page in paginated GraphQL responses.                        |
+| **`node`**                    | `zmq`     | Name for the ZeroMQ `node`.                                                                                  |
 | **`workers`**                 | `zmq`     | Specifies the number of worker processes or threads to handle ZeroMQ messaging tasks.                        |
 | **`proxy`**                   | `zmq`     | Indicates whether to start a ZMQ proxy/broker `device` for message routing.                                  |
 | **`attach`**                  | `zmq`     | Determines if the server should be attached to a ZMQ proxy/broker `device` for message forwarding.           |
@@ -93,6 +94,7 @@ items_per_page = 100
 
 # ZeroMQ Configuration
 [spoc.zmq]
+node = "node-name"
 workers = 1
 proxy = true
 attach = true
@@ -108,7 +110,7 @@ development = ["app_two", "app_three"]
 staging = ["app_four"]
 
 # Additional Components
-[spoc.extras]
+[spoc.plugins]
 # Plugins
 extensions = ["my_app.extensions.MyExtension"]
 permissions = ["my_app.permissions.MyPermission"]

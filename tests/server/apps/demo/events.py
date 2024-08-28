@@ -12,12 +12,12 @@ Events
 def on_startup(context):
     """On Startup Event"""
 
-    print("Server Startup")
+    print("demo.events: Server Startup")
     print(context)
 
 
 def on_shutdown(context):
     """On Shutdown Event"""
 
-    print("Server Shutdown")
+    print("demo.events: Server Shutdown")
     print(context)

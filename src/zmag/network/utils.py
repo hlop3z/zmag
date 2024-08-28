@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-ZMQ Data Tools
+ZeroMQ Data Tools
 """
 
 import binascii
@@ -13,7 +13,7 @@ import orjson
 
 
 class Command(Enum):
-    """ZMQ Socket Commands"""
+    """ZeroMQ Socket Commands"""
 
     HEARTBEAT = b"\x01"
     PING = b"\x02"
@@ -165,7 +165,7 @@ class Data:
     @classmethod
     def recv(cls, message: Optional[List[bytes]]) -> Any:
         """
-        Receives and deserializes a ZMQ message.
+        Receives and deserializes a ZeroMQ message.
         """
         # Data(meta, head, body)
         # message.pop(0)
@@ -187,7 +187,7 @@ class Data:
         node: str = "",
     ) -> List[bytes]:
         """
-        Serializes and compresses data to send as a ZMQ message.
+        Serializes and compresses data to send as a ZeroMQ message.
         """
         command_name = command.upper()
         command_type = COMMAND_NAME.get(command_name, COMMAND_NAME.get("REQUEST"))

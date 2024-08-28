@@ -9,7 +9,7 @@ import os
 from types import SimpleNamespace
 
 # Set Env for Client Mode
-os.environ["ZMAG_CLIENT"] = "1"
+os.environ["ZMAG_TYPE"] = "1"
 
 # ZMAG
 from zmag import Frontend  # pylint: disable=C
@@ -20,22 +20,25 @@ from zmag import Frontend  # pylint: disable=C
 
 IS_SYNC = True
 
+MODE = "forwarder"
 TEST_COUNT = 2
 PORT = 5555
 
-MODE = "forwarder"
 DEMO_PUBLICKEY = "2x.Y>2(J]I:$7i+CS<BVZMJyXEX)H8?31k5o)?mQ"
+AUTHENTICATION = SimpleNamespace(
+    publickey="1oQj?Q{i3#54qr)EZDx^:9O]jkCf9rfFWrhX(Ilg",
+    secretkey="KQ}<GYmCZna=jmL8!REG1k)JMzJ7OTGu)j<*Xdp?",
+    serverkey=DEMO_PUBLICKEY,
+)
 
 
 client = Frontend(
     is_sync=IS_SYNC,
     host=f"tcp://127.0.0.1:{PORT}",
     mode=MODE,
+    **AUTHENTICATION.__dict__,
     # base_dir=CURRENT_PATH,
     # fragments={"Author": "fragments/author.graphql"},
-    publickey="1oQj?Q{i3#54qr)EZDx^:9O]jkCf9rfFWrhX(Ilg",
-    secretkey="KQ}<GYmCZna=jmL8!REG1k)JMzJ7OTGu)j<*Xdp?",
-    serverkey=DEMO_PUBLICKEY,
 )
 
 
@@ -46,7 +49,6 @@ query MyQuery {
     id
     title
     author {
-      id
       name
     }
   }

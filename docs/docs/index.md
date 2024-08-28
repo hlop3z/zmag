@@ -7,7 +7,10 @@
 ---
 
 <p align="center" class="name-acronym" >
-    (<strong>Z</strong>)eroMQ (<strong>M</strong>)anages — (<strong>A</strong>) — (<strong>G</strong>)raphQL
+    {{ acronym("ZeroMQ") }} — 
+    {{ acronym("Manages") }} — 
+    {{ acronym("A") }} — 
+    {{ acronym("GraphQL") }}
 </p>
 
 ---
@@ -22,11 +25,11 @@ Successfully installed zmag!
 
 ---
 
-**{{ config.site_name }}** is a tool designed for building **network APIs** rather than traditional web applications, leveraging the unique combination of **GraphQL** and **ZeroMQ**. By integrating **GraphQL's** flexible and efficient querying capabilities with **ZeroMQ's** high-performance messaging patterns, **{{ config.site_name }}** enables developers to create robust and scalable network APIs. This approach allows for real-time communication, seamless data transfer, and efficient management of complex, distributed systems, making **{{ config.site_name }}** an ideal choice for developers looking to build sophisticated network services that go beyond the capabilities of standard web applications.
+**ZMAG** is a tool designed for building **network APIs** rather than traditional web applications, leveraging the unique combination of **GraphQL** and **ZeroMQ**. By integrating **GraphQL's** flexible and efficient querying capabilities with **ZeroMQ's** high-performance messaging patterns, **ZMAG** enables developers to create robust and scalable network APIs. This approach allows for real-time communication, seamless data transfer, and efficient management of complex, distributed systems, making **ZMAG** an ideal choice for developers looking to build sophisticated network services that go beyond the capabilities of standard web applications.
 
-**{{ config.site_name }}** is designed to provide a more Pythonic syntax, moving away from the typical GraphQL and ZeroMQ styles and focusing instead on native Python conventions for greater readability and intuitiveness.
+**ZMAG** is designed to provide a more Pythonic syntax, moving away from the typical GraphQL and ZeroMQ styles and focusing instead on native Python conventions for greater readability and intuitiveness.
 
-!!! info "Capabilities of {{ config.site_name }}"
+!!! info "Capabilities of ZMAG"
 
     1. Build **GraphQL** **Queries** and **Mutations** for flexible data interactions.
     2. Develop **Request** and **Response** APIs for efficient communication.
@@ -56,7 +59,7 @@ Successfully installed zmag!
 
 ## Installation
 
-To install **{{ config.site_name }}** in different environments, use the following commands:
+To install **ZMAG** in different environments, use the following commands:
 
 ### **Development** Environment
 
@@ -70,7 +73,7 @@ python -m pip install "zmag[debug,server]"
 python -m pip install "zmag[server]"
 ```
 
-### **Client** Environment
+### **Client** or **Device** Environment
 
 ```sh
 python -m pip install "zmag"
@@ -89,24 +92,32 @@ python -m pip install "zmag"
 | 1. Load all **`Settings`**.                 | 1. Load all **`Settings`**.          |
 | 2. Load **`Environment Variables`**.        | 2. Load **`Environment Variables`**. |
 | 3. Load all **`Apps` (Packages)**.          | 3. Load all **`Apps` (Packages)**.   |
-| 4. Start the **`ZMQ`** **Backend**          | 4. Start the **`CLI`** **Manager**.  |
+| 4. Start the **`ZeroMQ`** **API**           | 4. Start the **`CLI`** **Manager**.  |
 
 ```mermaid
 flowchart LR;
+    subgraph ZMAG and Installed Apps
+    A --> B;
+
+    B <--> D;
+    B <--> E;
+    end
+
+    D <--> F;
+    E <--> G;
+
+    subgraph Your Code
+    F <--> | GraphQL | H
+    G <--> | GraphQL | H
+    end
+
     A{Click};
-    A --> B[Settings & Apps];
-    A --> C[Settings & Apps];
-
-    B <--> D{API};
-    C <--> E{CLI};
-
-    D <--> F[Operations];
-    E <--> G[Commands];
-
-    F <--> |GraphQL|H
-    G <--> |GraphQL|H
-    H((Your Code));
-
+    B[Settings & Apps];
+    D{The API};
+    E{The CLI};
+    F((Operations))
+    G((Commands))
+    H{Project};
 ```
 
 ### Explanation
@@ -123,13 +134,38 @@ The flowchart illustrates how the project initializes and operates both the **AP
          - **API** — the **ZeroMQ Backend** is started to manage backend processes and facilitate operations.
          - **CLI** — the **CLI Manager** is initiated using Click, which handles command-line inputs and operations.
 
-4.  **Integration with GraphQL**: Both the **API** and **CLI** interfaces can connect to the **GraphQL**, allowing you to perform GraphQL operations through either the **API Backend** or the **CLI Commands**.
+4.  **Integration with GraphQL**: Both the **API** and **CLI** interfaces can connect to the **GraphQL**, allowing you to perform GraphQL operations through either the **API** or the **CLI**.
 
-5.  **Custom Extensions**: You have the flexibility to create custom **CLI** commands or **API** methods, which can leverage the underlying **GraphQL** capabilities integrated with both **`ZeroMQ`** and **`Click`**.
+5.  **Custom Extensions**: You have the flexibility to create custom **CLI** commands or **API** methods, which can leverage the underlying **GraphQL** capabilities.
 
 !!! tip
 
     The setup provides a versatile and unified framework, enabling you to manage backend processes and handle command-line operations effectively, with seamless integration of GraphQL functionalities across both interfaces.
+
+---
+
+## Architectural **Patterns**
+
+These patterns illustrate the flow of communication in a zmag system:
+
+### Backend — Frontend
+
+A direct communication pattern where the Backend communicates with the Frontend.
+
+```mermaid
+flowchart LR;
+    A[Backend] --- B[Frontend];
+```
+
+### Backend — Device — Frontend
+
+An intermediary device manages the communication between the Backend and Frontend, allowing for scalability.
+
+```mermaid
+flowchart LR;
+    A[Backend] --- B((Device)) --- C[Frontend];
+    F[Backend] --- B --- D[Frontend];
+```
 
 ---
 
@@ -153,14 +189,14 @@ root/                           --> <Directory> - Project's Root
 
 ## Key Commands
 
-**{{ config.site_name }}** comes with several key commands:
+**ZMAG** comes with several key commands:
 
-| Command                               | Purpose                                                                   |
-| ------------------------------------- | ------------------------------------------------------------------------- |
-| `{{ config.site_name.lower() }}-init` | Create a new **{{ config.site_name }}** project.                          |
-| `./main.py run`                       | Run the **Server**.                                                       |
-| `./main.py start-app`                 | Create a **{{ config.site_name }} App** inside your **`apps`** directory. |
-| `./main.py --help`                    | Display more information about available commands.                        |
+| Command               | Purpose                                                 |
+| --------------------- | ------------------------------------------------------- |
+| `zmag-init`           | Create a new **ZMAG** project.                          |
+| `./main.py run`       | Run the **Server**.                                     |
+| `./main.py start-app` | Create a **ZMAG App** inside your **`apps`** directory. |
+| `./main.py --help`    | Display more information about available commands.      |
 
 !!! warning "Important: `zmag-init` Command"
 

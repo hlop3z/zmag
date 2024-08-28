@@ -21,15 +21,19 @@ def pub(
     days: int = 0,
 ) -> typing.Any:
     """
-    ZMQ `publisher` Creator.
+    This decorator transforms an `async` function into a ZeroMQ `publisher`,
+    enabling it to broadcast data to the frontend.
 
-    This function publishes `Data` to the `frontend`.
+    The function publishes either `zmag.Data` or `None` based on the availability of updates.
 
     Returns:
-        (zmag.Data | None): Return `zmag.Data` if updates, `None` otherwise.
+        (zmag.Data | None): Return `zmag.Data` if updates are available,
+            `None` If no updates are available.
 
     Example:
     ```python
+    import zmag
+
     @zmag.pub # or zmag.pub(seconds=5)
     async def topic(): # `topic` is the channel
         response = zmag.Data()
@@ -83,15 +87,19 @@ def push(
     days: int = 0,
 ) -> typing.Any:
     """
-    ZMQ `pusher` Creator.
+    This decorator transforms an `async` function into a ZeroMQ pusher,
+    allowing it to send data for the frontend to consume.
 
-    This function pushes `Data` to the `frontend`.
+    The function pushes either `zmag.Data` or `None`, based on whether there is new data available.
 
     Returns:
-        (zmag.Data | None): Return `zmag.Data` if workload, `None` otherwise.
+        (zmag.Data | None): Return `zmag.Data` If there is data to be sent,
+            `None` If there is no data to send.
 
     Example:
     ```python
+    import zmag
+
     @zmag.push # or zmag.push(seconds=5)
     async def push_method(): #
         response = zmag.Data()
