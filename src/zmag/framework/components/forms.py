@@ -6,7 +6,7 @@ import dataclasses as dc
 import functools
 import re
 from types import SimpleNamespace
-from typing import Any, Optional, TypedDict, TypeVar, get_origin
+from typing import Any, Optional, TypedDict, get_origin
 
 try:
     import strawberry
@@ -18,8 +18,32 @@ except ImportError:
     STRAWBERRY_INPUT = False  # type: ignore
     STRAWBERRY_FIELD = False  # type: ignore
 
+
 # Custom Typing
-UNSET = TypeVar("UNSET", bool, None)
+class UnsetType:
+    """Utility for representing `Empty` values."""
+
+    _instance: Optional["UnsetType"] = None
+
+    # Type["UnsetType"]
+    def __new__(cls: Any) -> "UnsetType":
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+    def __bool__(self) -> bool:
+        return False
+
+    def __repr__(self) -> str:
+        return "UNSET"
+
+    def __str__(self) -> str:
+        return ""
+
+
+# Create a singleton instance
+UNSET: UnsetType = UnsetType()
+# UNSET = TypeVar("UNSET", bool, None)
 
 
 def dc_field(**kwargs):
@@ -131,8 +155,6 @@ def value_cleaner(regex: list | None = None, rules: list | None = None) -> Value
     Example:
 
     ```python
-    import zmag
-
     zmag.clean(
         regex=[
             # Replace text using regex in the cleaning phase.
@@ -425,7 +447,7 @@ class FormSingleton:
         custom_annotations: Any = {"required": [], "optional": []}
         for f_name in fields:
             pre_field = getattr(self, f_name)
-            current = pre_field(self.__annotations__.get(f_name, str))
+            current = pre_field(self.__annotations__.get(f_name))
             current.name = f_name
             validate[f_name] = current
             if current.required:
@@ -555,12 +577,13 @@ def form_dataclass(  # pylint: disable=too-many-branches
         if not hasattr(original_object, field):
             setattr(original_object, field, form_field())
     custom_class: Any = type(
-        original_object.__name__, (FormSingleton, original_object), {}
+        original_object.__name__, (original_object, FormSingleton), {}
     )
 
     # Create Data-Class
     data_class = make_dataclass(custom_class, form_name)
 
+    # Field Deprecation
     if STRAWBERRY_FIELD and graphql:
         for f_name, reason in custom_class.__deprecated__.items():
             config = custom_class.__optionals__.get(f_name)
@@ -574,6 +597,8 @@ def form_dataclass(  # pylint: disable=too-many-branches
                 f_name,
                 STRAWBERRY_FIELD(**extras, deprecation_reason=reason),
             )
+
+    # GraphQL Input
     if STRAWBERRY_INPUT and graphql:
         description = description or original_object.__doc__
         data_class = STRAWBERRY_INPUT(data_class, description=description)

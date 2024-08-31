@@ -7,12 +7,12 @@ import functools
 import typing
 from collections import namedtuple
 
-from .....external import spoc, strawberry
+from .....external import SPOC, STRAWBERRY
 from .....tools.text import pascal_to_snake
 from ....components import components
 from .schema import create_schema
 
-if strawberry:
+if STRAWBERRY:
     from strawberry.types import Info
 
     INFO: typing.Any = Info
@@ -81,7 +81,7 @@ def collect_operations(
     """Collect Query & Mutation."""
     app_operations = []
     cls_method = getattr(active.object, gql_type)
-    cls_method_fields = spoc.get_fields(cls_method)
+    cls_method_fields = SPOC.get_fields(cls_method)
     for current in cls_method_fields:
         resolver_func = getattr(cls_method, current)
         resolver_name = create_name(resolver_func, app=root_app, model=root_model)
@@ -90,7 +90,7 @@ def collect_operations(
         )
         app_operations.append(op)
         resolver_func.__annotations__["info"] = INFO
-        gql_schema[gql_type][resolver_name] = strawberry.field(
+        gql_schema[gql_type][resolver_name] = STRAWBERRY.field(
             resolver=resolver_func,
             description=(resolver_func.__doc__ or "").strip(),
             permission_classes=permission_classes,
@@ -118,7 +118,7 @@ def graphql(schemas: list, permissions: list | None = None) -> GraphQL:
                 if root_model:
                     root_model = get_model_name(root_model)
             # Collect Operations
-            cls_fields = spoc.get_fields(current.object)
+            cls_fields = SPOC.get_fields(current.object)
             for gql_type in ["Query", "Mutation"]:
                 if gql_type in cls_fields:
                     app_operations.extend(
@@ -134,9 +134,9 @@ def graphql(schemas: list, permissions: list | None = None) -> GraphQL:
 
     gql_query, gql_mutation = None, None
     if gql_schema["Query"]:
-        gql_query = strawberry.type(type("Query", (object,), gql_schema["Query"]))
+        gql_query = STRAWBERRY.type(type("Query", (object,), gql_schema["Query"]))
     if gql_schema["Mutation"]:
-        gql_mutation = strawberry.type(
+        gql_mutation = STRAWBERRY.type(
             type("Mutation", (object,), gql_schema["Mutation"])
         )
 

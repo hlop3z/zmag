@@ -3,46 +3,32 @@
 Externals
 """
 
-import typing
+from typing import Any
 
-try:
-    import spoc
-except ImportError as e:
-    raise e
+# Dictionary to hold the imported modules
+modules: Any = {
+    "spoc": None,
+    "uvloop": None,
+    "click": None,
+    "strawberry": None,
+}
 
-try:
-    import uvloop  # type: ignore
-except ImportError:
-    uvloop = None
+# Attempt to import each module and update the dictionary
+for module_name in modules:
+    try:
+        modules[module_name] = __import__(module_name)
+    except ImportError:
+        modules[module_name] = None
 
-try:
-    import click
-except ImportError:
-    click = None  # type: ignore
-
-
-try:
-    import strawberry
-except ImportError:
-    strawberry = None  # type: ignore
-
-
-if strawberry:
-    from strawberry.scalars import JSON
-
-    StrawberryID = strawberry.ID
-    StrawberryPrivate = strawberry.Private
-else:
-    JSON = typing.Any  # type: ignore
-    StrawberryID = typing.Any  # type: ignore
-    StrawberryPrivate = typing.Any  # type: ignore
+# Extract the modules from the dictionary for easier access
+SPOC = modules["spoc"]
+UVLOOP = modules["uvloop"]
+CLICK = modules["click"]
+STRAWBERRY = modules["strawberry"]
 
 __all__ = (
-    "spoc",
-    "uvloop",
-    "click",
-    "strawberry",
-    "JSON",
-    "StrawberryID",
-    "StrawberryPrivate",
+    "SPOC",
+    "UVLOOP",
+    "CLICK",
+    "STRAWBERRY",
 )

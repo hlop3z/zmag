@@ -22,18 +22,20 @@ nav:
           - Operations: server/graphql/operations.md
           - Built-In: server/graphql/built-in.md
       - ZMQ:
-          - Request/Response: server/req-rep.md
-          - Publishers/Pushers: server/pub-push.md
-          - Authentication: server/authentication.md
+          - Queue: server/queue.md
+          - Streamer: server/streamer.md
+          - Forwarder: server/forwarder.md
           - Proxy Device: server/devices.md
+          - Authentication: server/authentication.md
   - Client:
       - Requests: client/requests.md
       - Sub/Pull: client/sub-pull.md
       - Authentication: client/authentication.md
   - Reference:
       - Demo: api/api.md
-      - GraphQL: api/graphql.md
       - ZeroMQ: api/zeromq.md
+      - GraphQL: api/graphql.md
+      - Commands: api/cli.md
       - Client: api/client.md
 
 # Path Watch

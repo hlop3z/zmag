@@ -9,9 +9,8 @@ import logging
 import os
 from functools import partial
 from typing import Any
-import time
 
-from ...external import spoc, uvloop
+from ...external import SPOC, UVLOOP
 from ...network import BackendZMQ, DeviceZMQ
 from .debugger import DebugServer
 from .pub_push import start_publisher, start_pusher
@@ -19,7 +18,7 @@ from .queue import start_queue
 from .watcher import start_watcher
 
 
-class Device(spoc.BaseThread):
+class Device(SPOC.BaseThread):
     """Device Service"""
 
     options: Any
@@ -47,7 +46,7 @@ class Device(spoc.BaseThread):
 class ZMQBaseServer:
     """Base ZMQ Server"""
 
-    agent: Any = uvloop if uvloop else asyncio
+    agent: Any = UVLOOP if UVLOOP else asyncio
     options: Any
     app: Any
     node: BackendZMQ
@@ -120,15 +119,15 @@ class ZMQBaseServer:
                 await start_queue(self, app, node)
 
 
-class ZMQServerProcess(ZMQBaseServer, spoc.BaseProcess):
+class ZMQServerProcess(ZMQBaseServer, SPOC.BaseProcess):
     """ZMQ Server with Processes"""
 
 
-class ZMQServerThread(ZMQBaseServer, spoc.BaseThread):
+class ZMQServerThread(ZMQBaseServer, SPOC.BaseThread):
     """ZMQ Server with Threads"""
 
 
-class Server(spoc.BaseServer):
+class Server(SPOC.BaseServer):
     """Main Server"""
 
     services: list[Any] = []
@@ -145,7 +144,7 @@ class Server(spoc.BaseServer):
                 logging.info("Waiting for Application to Shut Down. . .")
 
     @classmethod
-    def start_server(cls, config):
+    def start_server(cls, config: Any):
         """Start Main Server"""
         # Servers (Backend)
         server_type = ZMQServerThread if config.thread else ZMQServerProcess

@@ -9,7 +9,7 @@ from collections import OrderedDict, namedtuple
 from types import SimpleNamespace
 from typing import Annotated, Any, Optional, Type, get_origin, get_type_hints
 
-from ...external import strawberry
+from ...external import STRAWBERRY
 
 Field = namedtuple("Field", ["name", "type", "field"])
 
@@ -99,7 +99,7 @@ def extract_model_fields_properties(cls: Type, root_class) -> SimpleNamespace:
     for name, obj in inspect.getmembers(cls, is_property):
         hints = get_type_hints(obj.fget)
         obj.fget.__annotations__["return"] = Optional[hints.get("return", str)]
-        properties[name] = strawberry.field(obj.fget)
+        properties[name] = STRAWBERRY.field(obj.fget)
 
     bases = list(cls.__bases__)
     # bases.pop(0)

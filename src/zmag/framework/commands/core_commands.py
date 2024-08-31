@@ -3,15 +3,17 @@
 Run the API
 """
 
+import json as py_json
 from dataclasses import dataclass
 from functools import partial
 from typing import Any
 
-from ...external import click
+import click
+
 from ..shell import shell_print
 from .utils import get_imports, shell_banner
 
-IS_FLAG = {"is_flag": True, "default": False}
+IS_FLAG: Any = {"is_flag": True, "default": False}
 DEVICE_TYPES = click.Choice(["queue", "forwarder", "streamer"])
 
 
@@ -35,9 +37,9 @@ class ServerConfig:
     thread: bool = False
     # ZMQ Authentication
     authentication: bool = False
-    publickey: str = ""
-    secretkey: str = ""
-    serverkey: str = ""
+    publickey: str | None = None
+    secretkey: str | None = None
+    serverkey: str | None = None
     # Banner
     banner: Any = None
 
@@ -48,14 +50,12 @@ class ServerConfig:
             self.workers = 1
             self.server = self.client
 
-        """
         # Authentication (FOR NOW)
-        if self.authentication:
-            self.proxy = False
-            self.attach = False
-            self.server = self.client
-            self.workers = 1
-        """
+        # if self.authentication:
+        #    self.proxy = False
+        #    self.attach = False
+        #    self.server = self.client
+        #    self.workers = 1
 
         # Attach Banner
         banner = shell_banner(self)
@@ -99,9 +99,11 @@ def get_workers(config, workers, attach):
 @click.option(
     "-dp", "--port", default=5000, type=int, help="Port for the debug server."
 )
-def run(server, client, mode, proxy, attach, thread, workers, debug, host, port):
+def runserver(
+    server, client, mode, proxy, attach, thread, workers, debug, host, port
+) -> None:
     """
-    Start ZMAG Server and/or Device
+    Start the ZMAG <Server> and optionally a <Device>
     """
 
     # Imports
@@ -156,9 +158,6 @@ def run(server, client, mode, proxy, attach, thread, workers, debug, host, port)
         serverkey=serverkey,
     )
 
-    # Display Banner
-    # server_config.banner()
-
     # Server
     Server.start_server(server_config)
 
@@ -167,9 +166,9 @@ def run(server, client, mode, proxy, attach, thread, workers, debug, host, port)
 @click.option("-s", "--server", help="Backend (ZMQ) address (tcp://localhost:5556).")
 @click.option("-c", "--client", help="Frontend (ZMQ) address (tcp://localhost:5555).")
 @click.option("-m", "--mode", type=DEVICE_TYPES, help="Device Type.", required=True)
-def device(server, client, mode):
+def device(server, client, mode) -> None:
     """
-    Start ZMAG Device
+    Start ZMAG <Device>
     """
 
     # Imports
@@ -213,3 +212,21 @@ def device(server, client, mode):
 
     # Device
     Server.start_server(server_config)
+
+
+@click.command()
+@click.option("-j", "--json", is_flag=True, help="JSON format")
+def channels(json) -> None:
+    """
+    Print all ZeroMQ (Pub/Sub) channels
+    """
+
+    # Imports
+    Framework, _ = get_imports()
+    app = Framework()
+    all_channels = app.get_channels()
+
+    if json:
+        click.echo(py_json.dumps(list(all_channels), indent=4))
+    else:
+        click.echo("\n".join(all_channels))

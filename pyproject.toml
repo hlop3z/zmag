@@ -16,7 +16,12 @@ dependencies = ["pyzmq>=26.2.0", "orjson>=3.10.7"]
 
 [project.optional-dependencies]
 debug = ["uvicorn[standard]>=0.30.6", "starlette>=0.38.2", "watchdog>=4.0.2"]
-server = ["strawberry-graphql>=0.237.3", "click>=8.1.7", "spoc>=0.2.2"]
+server = [
+    "strawberry-graphql>=0.237.3",
+    "click>=8.1.7",
+    "spoc>=0.2.2",
+    "click-help-colors>=0.9.4",
+]
 
 [tool.pdm]
 version = { source = "file", path = "src/zmag/__about__.py" }

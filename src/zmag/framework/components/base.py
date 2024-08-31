@@ -3,9 +3,9 @@
 Components Base
 """
 
-from ...external import spoc
+from ...external import SPOC
 
-components = spoc.Components(
+components = SPOC.Components(
     # Click
     "command",
     # ZMQ

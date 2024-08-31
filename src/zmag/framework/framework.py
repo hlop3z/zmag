@@ -6,7 +6,7 @@ Framework Core
 from types import SimpleNamespace
 from typing import Any
 
-from ..external import spoc
+from ..external import SPOC
 from .commands.cli import cli
 from .components import handlers
 from .shell import click_commands
@@ -42,9 +42,9 @@ def get_project_info(framework):
     return {"name": name, "version": version}
 
 
-if spoc:
+if SPOC:
 
-    class Framework(spoc.Base):
+    class Framework(SPOC.Base):
         """Framework
         - base_dir
         - cli
@@ -52,6 +52,7 @@ if spoc:
         - debug
         - env
         - events
+        - get_channels
         - graphql
         - graphql_settings
         - info
@@ -95,21 +96,21 @@ if spoc:
 
         def init(self):
             """Class __init__ Replacement"""
-            framework: Any = spoc.init(MODULES)  #
+            framework: Any = SPOC.init(MODULES)  #
 
             # Core
-            self.base_dir = spoc.settings.BASE_DIR
-            self.mode = spoc.settings.MODE
+            self.base_dir = SPOC.settings.BASE_DIR
+            self.mode = SPOC.settings.MODE
 
             # Debug
-            self.debug = spoc.settings.DEBUG
+            self.debug = SPOC.settings.DEBUG
 
             # Settings
-            self.env = spoc.settings.ENV
-            self.spoc = spoc.settings.SPOC
-            self.settings = spoc.settings
-            self.pyproject = spoc.settings.CONFIG.get("pyproject", {})
-            self.graphql_settings = spoc.settings.SPOC.get("graphql", {})
+            self.env = SPOC.settings.ENV
+            self.spoc = SPOC.settings.SPOC
+            self.settings = SPOC.settings
+            self.pyproject = SPOC.settings.CONFIG.get("pyproject", {})
+            self.graphql_settings = SPOC.settings.SPOC.get("graphql", {})
 
             # Project
             # self.component = framework.components
@@ -136,8 +137,13 @@ if spoc:
                 permissions=framework.plugins.get("permissions", []),
             )
 
+            self.types = {
+                model.name: model.object
+                for model in framework.components.types.values()
+            }
+
             # GraphQL Schema
-            introspection = spoc.settings.DEBUG or self.graphql_settings.get(
+            introspection = SPOC.settings.DEBUG or self.graphql_settings.get(
                 "introspection", False
             )
             self.schema = self.graphql.schema(
@@ -149,4 +155,14 @@ if spoc:
             # Context
             self.context = SimpleNamespace(schema=self.schema)
 
-            # raise ValueError("DON'T START")
+        def get_channels(self) -> set[str]:
+            """
+            ZeroMQ (Pub/Sub) Channels
+            """
+            all_channels = set()
+
+            for method in self.publishers.values():
+                channel = method.info.config.get("channel", "")
+                all_channels.add(channel)
+
+            return all_channels

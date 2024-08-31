@@ -28,6 +28,7 @@ class CustomDevice(Device):
     """Device with Authentication"""
 
     def set_auth(self, auth):
+        """Set Authentication Handler"""
         self.auth = auth
 
     def _setup_sockets(self) -> Tuple[zmq.Socket, zmq.Socket]:

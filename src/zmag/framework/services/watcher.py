@@ -11,7 +11,7 @@ import sys
 import time
 from typing import Any
 
-from ...external import click
+import click
 
 
 # from .queue import start_queue

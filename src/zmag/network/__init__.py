@@ -4,8 +4,8 @@ ZMQ Network
 """
 
 import logging
-from typing import Any
 import signal
+from typing import Any
 
 from .base import ConfigSSH, ZeroMQ, tcp_string
 from .utils import Data
@@ -101,14 +101,12 @@ class BackendZMQ(ZeroMQ):
         Example:
 
         ```python
-        import zmag
-
         backend = zmag.Backend(...)
 
         backend.send({"token":"secret"}, message = "hello world")
         ```
         """
-        serialized = Data(head=__head__, body=kwargs)
+        serialized = Data(head=__head__ or {}, body=kwargs)
         message = serialized.send(command="response", node=self.name)
         await self.socket.send_multipart(message)
 
@@ -122,9 +120,8 @@ class BackendZMQ(ZeroMQ):
         Example:
 
         ```python
-        import zmag
-
         backend = zmag.Backend(...)
+
         data = zmag.Data(body={"message": "hello world"})
 
         backend.publish("channel", data)
@@ -143,9 +140,8 @@ class BackendZMQ(ZeroMQ):
         Example:
 
         ```python
-        import zmag
-
         backend = zmag.Backend(...)
+
         data = zmag.Data(body={"message": "hello world"})
 
         backend.push(data)
@@ -241,9 +237,7 @@ class FrontendZMQ(ZeroMQ):
         Example:
 
         ```python
-        from zmag import Frontend
-
-        client = Frontend(...)
+        client = zmag.Frontend(...)
 
         response = await client.request(...)
         print(response)
@@ -292,9 +286,7 @@ class FrontendZMQ(ZeroMQ):
         Example:
 
         ```python
-        from zmag import Frontend
-
-        client = Frontend(...)
+        client = zmag.Frontend(...)
 
         while True:
             message = await client.subscribe("") # or "some_channel"
@@ -313,9 +305,7 @@ class FrontendZMQ(ZeroMQ):
         Example:
 
         ```python
-        from zmag import Frontend
-
-        client = Frontend(...)
+        client = zmag.Frontend(...)
 
         while True:
             work = await client.pull()

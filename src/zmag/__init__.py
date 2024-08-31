@@ -6,12 +6,12 @@
 import logging
 import os
 
-from .external import spoc, strawberry
+from .external import SPOC, STRAWBERRY
 from .network import BackendZMQ as Backend
 from .network import DeviceZMQ as Device
 from .network import FrontendZMQ as Frontend
-from .network.utils import Data
 from .network.base import ConfigSSH
+from .network.utils import Data
 
 # Logs
 logging.basicConfig(format="%(levelname)s    -  %(message)s", level=logging.INFO)
@@ -20,7 +20,7 @@ logging.basicConfig(format="%(levelname)s    -  %(message)s", level=logging.INFO
 ZMAG_TYPE = os.getenv("ZMAG_TYPE")
 
 # Server
-if spoc and strawberry and not ZMAG_TYPE:
+if SPOC and STRAWBERRY and not ZMAG_TYPE:
     try:
         # Strawberry
         # import strawberry
@@ -33,6 +33,7 @@ if spoc and strawberry and not ZMAG_TYPE:
         from strawberry.permission import BasePermission
         from strawberry.scalars import JSON
         from strawberry.schema.config import StrawberryConfig as BaseConfig
+        from strawberry.types.lazy_type import lazy as lazy_type
 
         # Components
         from .framework.components import pub  # ZMQ
@@ -40,6 +41,7 @@ if spoc and strawberry and not ZMAG_TYPE:
         from .framework.components import BaseType, Input, Model, Type, cli
         from .framework.components import graphql_decorator as gql
         from .framework.components import graphql_input as input  # pylint: disable=W
+        from .framework.components.commands import CLI
 
         # GraphQL Forms
         from .framework.components.forms import UNSET, Form
@@ -49,19 +51,20 @@ if spoc and strawberry and not ZMAG_TYPE:
 
         # Framework Core
         from .framework.framework import Framework as App
+        from .graphql.inputs import Pagination, Selector
 
         # GraphQL Tools
-        from .graphql.types import Edge
+        from .graphql.types import Connection as Edge
         from .graphql.types import Error as Errors
         from .graphql.types import ErrorMessage as Error
-        from .graphql.types import Mutation, edge
+        from .graphql.types import Mutation, edge, input_error, Record
 
         # Other Tools
         from .tools.coro import coro
         from .tools.generic import docs
 
         # Scalars
-        ID = strawberry.ID
+        ID = STRAWBERRY.ID
         json = JSON
 
     # Ignores When Using Client (ONLY)
@@ -86,25 +89,32 @@ __all__ = (
     "BasePermission",
     # Core
     "cli",
+    "CLI",
     "gql",
     "field",
-    # Object Types
+    # GraphQL Object Types
     "BaseType",
     "Type",
     "Model",
     "Input",
-    # Form Tools
+    "lazy_type",
+    # GraphQL Form Tools
     "UNSET",
     "Form",
     "clean",
     "input",
     "value",
-    # Reponses
+    # GraphQL Reponses
     "Edge",
     "Error",
     "Errors",
     "Mutation",
+    "Record",
     "edge",
+    "input_error",
+    # GraphQL Built-in Inputs
+    "Selector",
+    "Pagination",
     # Utils
     "docs",
     "coro",

@@ -19,14 +19,27 @@ The code **must** be placed in a **file** named **`types.py`** or within a **fol
 ## Using **`zmag.Type`**
 
 ```python title="types.py"
+from dataclasses import dataclass
+from typing import Annotated, TypeAlias, TypeVar
+
 import zmag
 
-class Author(zmag.Type):
-    name: str
+# ForwardRef
+T = TypeVar("T")
+Ref: TypeAlias = Annotated[T, zmag.lazy_type(".types")]
 
+# Create your <types> here.
+@dataclass
 class Book(zmag.Type):
-    title: str
-    author: Author
+    title: str | None = None
+    author: Ref["Author"] | None = None
+
+
+@dataclass
+class Author(zmag.Type):
+    name: str | None = None
+    books: list[Book] | None = None
+
 ```
 
 ---
@@ -40,8 +53,7 @@ class Book(zmag.Type):
 Creating the `Author` class using `zmag.Type`.
 
 ```python
-import zmag
-
+@dataclass
 class Author(zmag.Type): ...
 ```
 
@@ -50,8 +62,7 @@ class Author(zmag.Type): ...
 Creating the `Author` class using `zmag.Model`.
 
 ```python
-import zmag
-
+@dataclass
 class Author(zmag.Model): ...
 ```
 
@@ -60,8 +71,11 @@ class Author(zmag.Model): ...
 Creating a computed field `full_name` in the `Author` class with a property method.
 
 ```python
+from dataclasses import dataclass
+
 import zmag
 
+@dataclass
 class Author(zmag.Type):
     first_name: str
     last_name: str

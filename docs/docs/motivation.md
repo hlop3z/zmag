@@ -20,9 +20,3 @@ flowchart TB;
 By leveraging ZeroMQ for efficient, low-latency messaging and GraphQL for flexible, self-documenting APIs, ZMAG enables developers to build sophisticated network applications that are both performant and maintainable. The goal is to provide a framework that simplifies the creation of internal services and allows seamless integration across various parts of a project or multiple projects.
 
 Additionally, I aimed to make the codebase as Pythonic as possible, minimizing the need to use GraphQL specific syntax. The intent is to create a natural development experience that feels like writing regular Python classes and functions while still benefiting from GraphQL’s automatic documentation and powerful querying capabilities. This approach ensures that developers can focus on building Python applications without needing to extensively learn the intricacies of GraphQL syntax.
-
-<style>
-    .mermaid{
-        text-align:center
-    }
-</style>

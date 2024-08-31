@@ -24,7 +24,7 @@ root/
 | Key                  | Description                                                                             |
 | -------------------- | --------------------------------------------------------------------------------------- |
 | **`INSTALLED_APPS`** | A list of ZMAG **`apps`** that are currently **enabled** and in use within the project. |
-| **`EXTRAS`**         | Additional **`components`** for the application.                                        |
+| **`PLUGINS`**        | Additional **`components`** for the application.                                        |
 
 ### `settings.py`
 
@@ -40,7 +40,7 @@ BASE_DIR = pathlib.Path(__file__).parents[1]  # (1)
 INSTALLED_APPS: list = ["app_one", "app_two"]  # (2)
 
 # Additional Components
-EXTRAS: dict = {  # (3)
+PLUGINS: dict = {  # (3)
     "extensions": [],
     "permissions": [],
     "on_startup": [],
@@ -50,7 +50,7 @@ EXTRAS: dict = {  # (3)
 
 1. **Base Directory**: Defines the root directory of the project, setting the base path for all file operations.
 2. **INSTALLED_APPS**: Specifies the ZMAG applications that are currently installed and active in the project.
-3. **EXTRAS**: Defines additional configurations, including extensions, permissions, and event handlers for startup and shutdown.
+3. **PLUGINS**: Defines additional configurations, including extensions, permissions, and event handlers for startup and shutdown.
 
 ## TOML
 
@@ -71,8 +71,8 @@ The `spoc.toml` file provides a declarative way to configure different aspects o
 | **`thread`**                  | `zmq`     | Configures whether to use threads or processes for ZeroMQ worker operations.                                 |
 | **`device`**                  | `zmq`     | Specifies the messaging pattern to use (`queue`, `forwarder`, or `streamer`) within ZeroMQ.                  |
 | **`server`** and **`client`** | `zmq`     | Defines the connection strings for the ZeroMQ server and client endpoints.                                   |
-| **`permissions`**             | `extras`  | Lists the permission classes that control access to different parts of the application.                      |
-| **`extensions`**              | `extras`  | Specifies the GraphQL extensions to enhance the API's functionality, such as custom directives or resolvers. |
+| **`permissions`**             | `plugins` | Lists the permission classes that control access to different parts of the application.                      |
+| **`extensions`**              | `plugins` | Specifies the GraphQL extensions to enhance the API's functionality, such as custom directives or resolvers. |
 | **`apps`**                    | `apps`    | Lists the installed apps for each environment mode, allowing customization of active apps per mode.          |
 
 ### `spoc.toml`
@@ -125,5 +125,6 @@ on_shutdown = ["my_app.events.on_shutdown"]
 - **mode**: Specifies the running environment, allowing for different configurations in development, staging, or production.
 - **GraphQL Settings**: Controls aspects of GraphQL, such as query depth and pagination limits.
 - **ZeroMQ Settings**: Configures the messaging patterns and server/client details for ZeroMQ operations.
-- **Apps and Extras**: Define which apps and additional features are enabled based on the current mode and user-defined settings.
+- **Apps**: Define which apps are enabled based on the current mode and user-defined settings.
+- **Plugins**: Define which additional features are enabled.
 - **Event Hooks**: Allows specification of functions that should run on startup and shutdown, enabling custom initialization and cleanup logic.

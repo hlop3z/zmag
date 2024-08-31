@@ -5,8 +5,11 @@ Components Base
 
 import functools
 import typing
+from dataclasses import dataclass
 
-from ...external import StrawberryID, StrawberryPrivate, strawberry
+import strawberry
+
+from ...external import STRAWBERRY
 from ...types import Callable
 from .base import components
 from .forms import Form, form_dataclass
@@ -30,11 +33,11 @@ def graphql_decorator(cls: typing.Any = None) -> typing.Any:
             should be an `async` function and can accept input data for modifying server-side state.
 
     Note: **Meta** class Attributes:
-        - **`app`** (`str | bool | None`): Specifies a custom prefix for the generated GraphQL field names.
+        - **`app`** (`str | bool | None`): Specifies a prefix for the GraphQL field names.
         If set to `None`, the prefix is omitted, and the field names are based
         directly on the method names.
 
-        - **`model`** (`str | type | None`): When specified, prefixes the generated GraphQL field names
+        - **`model`** (`str | type | None`): When specified, prefixes the GraphQL field names
         with the model name. This helps in creating more descriptive and
         structured GraphQL schemas.
 
@@ -44,8 +47,6 @@ def graphql_decorator(cls: typing.Any = None) -> typing.Any:
     Example:
 
     ```python
-    import zmag
-
     @zmag.gql
     class Graphql:
 
@@ -87,8 +88,6 @@ def graphql_input(
     Example:
 
     ```python
-    import zmag
-
     Author = zmag.input("Author")
 
     @Author
@@ -124,7 +123,7 @@ class TypeMeta(type):
         _class = create_typed_class(cls, BaseType)
 
         # Strawberry
-        type_class = strawberry.type(_class, description=cls.__doc__ or "")
+        type_class = STRAWBERRY.type(_class, description=cls.__doc__ or "")
 
         # Spoc
         components.register("type", type_class)
@@ -138,12 +137,9 @@ class BaseType(metaclass=TypeMeta):
     Example:
 
     ```python
-
-    import zmag
-
     # Abstract Class
     class MyBase(zmag.BaseType):
-        shared_key: str
+        shared_field: str
 
         class Meta:
             abstract = True
@@ -170,8 +166,6 @@ class Type(BaseType):
     Example:
 
     ```python
-    import zmag
-
     class Author(zmag.Type):
         first_name: str
         last_name: str
@@ -188,6 +182,7 @@ class Type(BaseType):
         abstract = True
 
 
+@dataclass
 class Model(BaseType):
     """
     GraphQL `Model` type with a **private `_id`** field and a **public `id`** field included.
@@ -195,8 +190,6 @@ class Model(BaseType):
     Example:
 
     ```python
-    import zmag
-
     class Author(zmag.Type):
         @property
         async def merged_ids(self) -> str:
@@ -209,8 +202,8 @@ class Model(BaseType):
 
         abstract = True
 
-    _id: StrawberryPrivate[object]  # type: ignore
-    id: StrawberryID  # type: ignore
+    _id: strawberry.Private[object] = None  # type: ignore
+    id: str | None = None  # type: ignore
 
 
 class Input:
@@ -220,8 +213,6 @@ class Input:
     Example:
 
     ```python
-    import zmag
-
     input = zmag.input()
 
     @input
@@ -232,3 +223,13 @@ class Input:
     """
 
     input: Form
+    """
+    Returns the processed value from `zmag.Input`.
+
+    Example:
+
+    ```python    
+    async def mutation(form: Form):
+        print(form.input)
+    ```
+    """

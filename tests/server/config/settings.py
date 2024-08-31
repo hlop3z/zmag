@@ -8,11 +8,10 @@ import pathlib
 # Base Directory
 BASE_DIR = pathlib.Path(__file__).parents[1]
 
-
 # Installed Apps
 INSTALLED_APPS: list = ["demo", "other"]
 
-# EXTRAS
+# Additional Components
 PLUGINS: dict = {
     "extensions": [],
     "permissions": [],

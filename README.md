@@ -1,37 +1,38 @@
-<h1 style="font-size: 5em; letter-spacing: -2px; font-family: Georgia, sans-serif;" align="center">
+<!-- Main Heading -->
+<h1 style="font-size: 5em; letter-spacing: -2px; font-family: Georgia, sans-serif; text-align: center;">
    Welcome to <strong>Zmag</strong>
 </h1>
 
-<p align="center">
-   <a href="https://pypi.org/project/zmag/" target="_blank"><img 
-      src="https://img.shields.io/pypi/v/zmag" 
-      alt="Python Package Index"
-      /></a>
-   <a href="https://pypi.org/project/zmag/" target="_blank">
-   <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/zmag" />
-   </a>
-   <a href="https://pypistats.org/packages/zmag" target="_blank">
-   <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/zmag" />
-   </a>
-   <img alt="License" src = "https://img.shields.io/badge/License-MIT-yellow.svg">
+<!-- Title Image -->
+<img src="https://raw.githubusercontent.com/hlop3z/zmag/main/docs/docs/assets/images/title.png" alt="title-image" style="width: 100%;" />
+
+---
+
+<!-- Badges -->
+<p style="text-align: center;">
+   <img alt="License" src="https://img.shields.io/badge/License-MIT-purple.svg" />
+   <img alt="Language" src="https://img.shields.io/github/languages/top/hlop3z/zmag" />
+   <img alt="GitHub" src="https://img.shields.io/github/v/tag/hlop3z/zmag?label=github" />
+   <img alt="PyPI" src="https://img.shields.io/pypi/v/zmag?color=blue" />
+   <img alt="Downloads" src="https://img.shields.io/pypi/dm/zmag?color=darkgreen" />
 </p>
 
-<p align="center" style="font-size: 3em; letter-spacing: -2px; font-family: Georgia, sans-serif;">
-   <strong>Craft APIs for Databases</strong> —  with ZeroMQ and GraphQL
+---
+
+<!-- Subheading -->
+<p style="font-size: 2.5em; letter-spacing: -2px; font-family: Georgia, sans-serif; text-align: center;">
+   <strong>Craft APIs</strong> — with ZeroMQ and GraphQL
 </p>
 
-<p align="center" style="font-size: 2.5em; letter-spacing: -2px; font-family: Georgia, sans-serif;" >
-   Links 
+---
+
+<!-- Links -->
+<p style="font-size: 2.5em; letter-spacing: -2px; font-family: Georgia, sans-serif; text-align: center;">
+   Links
    <br>
-   <a href="https://pypi.org/project/zmag" target="_blank">
-   PyPi
-   </a>
+   <a href="https://pypi.org/project/zmag" target="_blank">PyPi</a>
    <br>
-   <a href="https://github.com/hlop3z/zmag" target="_blank">
-   Github
-   </a>
+   <a href="https://github.com/hlop3z/zmag" target="_blank">Github</a>
    <br>
-   <a href="https://hlop3z.github.io/zmag/" target="_blank">
-   Docs
-   </a>
+   <a href="https://hlop3z.github.io/zmag/" target="_blank">Docs</a>
 </p>

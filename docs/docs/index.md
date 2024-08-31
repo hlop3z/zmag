@@ -7,9 +7,9 @@
 ---
 
 <p align="center" class="name-acronym" >
-    {{ acronym("ZeroMQ") }} — 
-    {{ acronym("Manages") }} — 
-    {{ acronym("A") }} — 
+    {{ acronym("ZeroMQ") }} —
+    {{ acronym("Manages") }} —
+    {{ acronym("A") }} —
     {{ acronym("GraphQL") }}
 </p>
 
@@ -42,18 +42,19 @@ Successfully installed zmag!
 
 | Module                                         | Purpose                                                            |
 | ---------------------------------------------- | ------------------------------------------------------------------ |
-| [**Pyzmq**](https://pyzmq.readthedocs.io)      | Core **Universal Messaging Library** for the API.                  |
-| [**Strawberry**](https://strawberry.rocks/)    | **GraphQL Library**                                                |
-| [**Click**](https://github.com/pallets/click/) | Manage the server, development processes, and custom **Commands**. |
-| [**SPOC**](https://pypi.org/project/spoc/)     | **Framework tool** for building this framework.                    |
+| [**pyzmq**](https://pyzmq.readthedocs.io)      | Core **Universal Messaging Library** for the API.                  |
+| [**orjson**](https://github.com/ijl/orjson)    | Fast Python JSON library.                                          |
+| [**strawberry**](https://strawberry.rocks/)    | **GraphQL Library**                                                |
+| [**click**](https://github.com/pallets/click/) | Manage the server, development processes, and custom **Commands**. |
+| [**spoc**](https://pypi.org/project/spoc/)     | **Framework tool** for building this framework.                    |
 
 ## Debug Server Built With
 
 | Module                                                   | Purpose                               |
 | -------------------------------------------------------- | ------------------------------------- |
-| [**Starlette**](https://www.starlette.io/)               | Runs the server in **Debug** mode.    |
-| [**Uvicorn**](https://www.uvicorn.org/)                  | ASGI web server.                      |
-| [**Watchdog**](https://github.com/gorakhargosh/watchdog) | Restarts the debug server on changes. |
+| [**starlette**](https://www.starlette.io/)               | Runs the server in **Debug** mode.    |
+| [**uvicorn**](https://www.uvicorn.org/)                  | ASGI web server.                      |
+| [**watchdog**](https://github.com/gorakhargosh/watchdog) | Restarts the debug server on changes. |
 
 ---
 
@@ -96,7 +97,7 @@ python -m pip install "zmag"
 
 ```mermaid
 flowchart LR;
-    subgraph ZMAG and Installed Apps
+    subgraph ZMAG & Installed Apps
     A --> B;
 
     B <--> D;
@@ -124,19 +125,19 @@ flowchart LR;
 
 The flowchart illustrates how the project initializes and operates both the **API** and **CLI** interfaces:
 
-1.  **Initialization**: The process begins with **Click**, which is used to launch both the API (services) and CLI (commands).
-2.  **Configuration Loading**: For both the API and CLI interfaces, all **`Settings`**, **`Environment Variables`**, and **`Apps (Modules)`** are loaded. This ensures the environment is properly configured and all necessary modules are available.
+1. **Initialization**: The process begins with **Click**, which is used to launch both the API (services) and CLI (commands).
+2. **Configuration Loading**: For both the API and CLI interfaces, all **`Settings`**, **`Environment Variables`**, and **`Apps (Modules)`** are loaded. This ensures the environment is properly configured and all necessary modules are available.
 
-3.  **Starting Interfaces**:
+3. **Starting Interfaces**:
 
     !!! Note "Interfaces"
 
          - **API** — the **ZeroMQ Backend** is started to manage backend processes and facilitate operations.
          - **CLI** — the **CLI Manager** is initiated using Click, which handles command-line inputs and operations.
 
-4.  **Integration with GraphQL**: Both the **API** and **CLI** interfaces can connect to the **GraphQL**, allowing you to perform GraphQL operations through either the **API** or the **CLI**.
+4. **Integration with GraphQL**: Both the **API** and **CLI** interfaces can connect to the **GraphQL**, allowing you to perform GraphQL operations through either the **API** or the **CLI**.
 
-5.  **Custom Extensions**: You have the flexibility to create custom **CLI** commands or **API** methods, which can leverage the underlying **GraphQL** capabilities.
+5. **Custom Extensions**: You have the flexibility to create custom **CLI** commands or **API** methods, which can leverage the underlying **GraphQL** capabilities.
 
 !!! tip
 

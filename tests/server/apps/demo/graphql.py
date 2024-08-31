@@ -8,6 +8,59 @@ import zmag
 from . import inputs, types
 
 
+@zmag.gql
+class Graphql:
+    """Books API"""
+
+    class Meta:
+        app = None
+        model = types.Book
+
+    class Query:
+        async def test(self) -> zmag.Record[types.Book]:
+            return zmag.Record(is_many=True)
+
+        async def list(
+            self,
+            pagination: zmag.Pagination,
+            item: zmag.Selector | None = None,
+        ) -> zmag.Edge[types.Book]:
+            """Read the Docs"""
+            print(pagination.input.data)
+            print(item.input.data)
+            return zmag.edge(
+                edges=[
+                    types.Book(
+                        _id=1,
+                        id="1",
+                        title="The Great Gatsby",
+                        author=types.Author(
+                            first_name="F. Scott", last_name="Fitzgerald"
+                        ),
+                    ),
+                ]
+            )
+
+    class Mutation:
+        async def create(self, form: inputs.Create) -> zmag.Mutation[types.Book]:
+            """Read the Docs"""
+            print(form)
+
+            # Not Valid
+            if not form.input.is_valid:
+                return zmag.input_error(form.input.errors)
+
+            # Is Valid
+            data = form.input.dict()
+            return zmag.Mutation(
+                item=types.Book(
+                    title=data.get("title"),
+                    author=types.Author(first_name="Michael", last_name="Crichton"),
+                ),
+            )
+
+
+'''
 # Create your API (GraphQL) here.
 @zmag.gql
 class Graphql:
@@ -54,3 +107,4 @@ class Graphql:
                 print(form.input.dict(True))
                 print(form.input.clean())
             return zmag.Mutation()
+'''

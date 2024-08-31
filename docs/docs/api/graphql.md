@@ -45,7 +45,6 @@
 
 ::: zmag.value
 
-
 ---
 
 ::: zmag.clean
@@ -58,3 +57,46 @@
 
 ::: zmag.gql
 
+---
+
+## GraphQL Output — [Examples](/{{ url("/server/graphql/built-in/") }})
+
+---
+
+::: zmag.Edge
+
+---
+
+::: zmag.edge
+
+---
+
+::: zmag.Mutation
+
+---
+
+::: zmag.Error
+
+---
+
+::: zmag.Errors
+
+---
+
+::: zmag.input_error
+
+---
+
+## GraphQL Input — [Examples](/{{ url("/server/graphql/built-in/") }})
+
+---
+
+::: zmag.Pagination
+    options:
+        members: false
+
+---
+
+::: zmag.Selector
+    options:
+        members: false

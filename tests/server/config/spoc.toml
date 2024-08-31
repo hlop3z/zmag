@@ -17,7 +17,7 @@ workers = 2
 proxy = true
 attach = true
 thread = true
-device = "forwarder"            # queue, forwarder, streamer
+device = "queue"                # queue, forwarder, streamer
 server = "tcp://127.0.0.1:5556"
 client = "tcp://127.0.0.1:5555"
 

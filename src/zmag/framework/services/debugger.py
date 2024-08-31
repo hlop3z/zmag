@@ -5,9 +5,10 @@
 
 from typing import Any
 
-from ...external import spoc
+from ...external import SPOC
 
-if spoc:
+if SPOC:
+    import spoc
 
     class DebugServer(spoc.BaseProcess):
         """Debug Starlette Server"""

@@ -31,9 +31,8 @@ def pub(
             `None` If no updates are available.
 
     Example:
-    ```python
-    import zmag
 
+    ```python
     @zmag.pub # or zmag.pub(seconds=5)
     async def topic(): # `topic` is the channel
         response = zmag.Data()
@@ -97,9 +96,8 @@ def push(
             `None` If there is no data to send.
 
     Example:
-    ```python
-    import zmag
 
+    ```python
     @zmag.push # or zmag.push(seconds=5)
     async def push_method(): #
         response = zmag.Data()
