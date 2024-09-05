@@ -2,7 +2,7 @@
 """Strawberry - GraphQL Types"""
 
 from dataclasses import dataclass
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, TypeAlias, TypeVar
 
 import strawberry
 from strawberry.scalars import JSON
@@ -10,6 +10,7 @@ from strawberry.scalars import JSON
 from ..tools import field
 
 T = TypeVar("T")
+S = TypeVar("S")
 
 
 @strawberry.type
@@ -29,7 +30,8 @@ class PageInfo:
 
     length: int = 0
     pages: int = 0
-    extra: JSON = field(default_factory=dict)  # type: ignore
+    has_next: bool = False
+    has_previous: bool = False
 
 
 @strawberry.type
@@ -43,11 +45,12 @@ class Edge(Generic[T]):
 
 @strawberry.type
 @dataclass
-class Connection(Generic[T]):
-    """Represents `paginated` objects"""
+class Connection(Generic[T, S]):
+    """Represents paginated objects"""
 
-    edges: list["Edge[T]"]
-    page_info: "PageInfo" = field(default_factory=PageInfo)
+    edges: list[Edge[T]]
+    page_info: PageInfo = field(default_factory=PageInfo)
+    computed: S | None = None
 
 
 @strawberry.type
@@ -108,12 +111,25 @@ class Mutation(Generic[T]):
     deleted: int = 0
 
 
+#################################################
+# Generic Connection                            #
+#################################################
+
+GenericEdge: TypeAlias = Connection[T, JSON]  # type: ignore
+
+#################################################
+# Wrappers                                      #
+#################################################
+
+
 def edge(
     edges: Any | None = None,
     count: int = 0,
     pages: int = 0,
-    extra: Any | None = None,
-) -> Connection:
+    has_next: bool = False,
+    has_previous: bool = False,
+    computed: Any | None = None,
+) -> Connection[Any, Any]:
     """
     Extends `Edges` used to return a `Page` response.
 
@@ -130,20 +146,22 @@ def edge(
                     title="The Great Gatsby",
                 ),
             ],
-            extra={
+            computed={
                 "someComputedValue": 100,
             },
         )
     ```
     """
     edges = edges or []
-    extra = extra or {}
+    computed = computed or {}
     items = [Edge(node=item, cursor=item.id) for item in edges]  # type: ignore
     return Connection(
+        computed=computed,  # type: ignore
         page_info=PageInfo(  # type: ignore
             length=count,
             pages=pages,
-            extra=extra,  # type: ignore
+            has_next=has_next,
+            has_previous=has_previous,
         ),
         edges=items,
     )

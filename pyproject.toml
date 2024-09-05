@@ -5,7 +5,7 @@ build-backend = "pdm.backend"
 [project]
 name = "zmag"
 dynamic = ["version"]
-description = "Craft APIs with ZeroMQ and GraphQL"
+description = "Craft Network APIs with ZeroMQ and GraphQL"
 requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "MIT" }

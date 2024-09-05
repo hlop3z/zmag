@@ -10,7 +10,9 @@ nav:
       - Introduction: index.md
       - Use Cases: use-cases.md
       - Motivation: motivation.md
+      - Limitations: limitations.md
   - Server:
+      - Introduction: server/intro.md
       - Constant: server/config/variables.md
       - Settings: server/config/settings.md
       - Environment: server/config/environment.md
@@ -19,8 +21,9 @@ nav:
       - GraphQL:
           - Types: server/graphql/types.md
           - Inputs: server/graphql/inputs.md
+          - Scalars: server/graphql/scalars.md
           - Operations: server/graphql/operations.md
-          - Built-In: server/graphql/built-in.md
+          - GQL Tools: server/graphql/built-in.md
       - ZMQ:
           - Queue: server/queue.md
           - Streamer: server/streamer.md
@@ -28,6 +31,7 @@ nav:
           - Proxy Device: server/devices.md
           - Authentication: server/authentication.md
   - Client:
+      - Introduction: client/intro.md
       - Requests: client/requests.md
       - Sub/Pull: client/sub-pull.md
       - Authentication: client/authentication.md

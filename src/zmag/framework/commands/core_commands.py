@@ -10,7 +10,7 @@ from typing import Any
 
 import click
 
-from ..shell import shell_print
+from .shell import shell_print
 from .utils import get_imports, shell_banner
 
 IS_FLAG: Any = {"is_flag": True, "default": False}
@@ -166,13 +166,17 @@ def runserver(
 @click.option("-s", "--server", help="Backend (ZMQ) address (tcp://localhost:5556).")
 @click.option("-c", "--client", help="Frontend (ZMQ) address (tcp://localhost:5555).")
 @click.option("-m", "--mode", type=DEVICE_TYPES, help="Device Type.", required=True)
-def device(server, client, mode) -> None:
+@click.option("-a", "--auth", **IS_FLAG, help="With Authentication.")
+def device(server, client, mode, auth) -> None:
     """
     Start ZMAG <Device>
     """
 
     # Imports
-    _, Server = get_imports()
+    Framework, Server = get_imports()
+
+    # Initialize APP
+    app = Framework()
 
     # OPTIONS
     is_debug = False
@@ -181,7 +185,6 @@ def device(server, client, mode) -> None:
     with_proxy = True
     is_attach = False
     total_workers = 0
-    authentication = False
 
     # ZMQ Devices
     device_type = mode
@@ -191,6 +194,14 @@ def device(server, client, mode) -> None:
     base_dir = None
     host = ""
     port = 0
+
+    # ZMQ Settings
+    env_config = app.env.get("zmq", {})
+
+    # Server Authentication
+    authentication = app.spoc.get("authentication", False) or auth
+    publickey = env_config.get("public_key") if authentication else None
+    secretkey = env_config.get("secret_key") if authentication else None
 
     server_config = ServerConfig(
         # Debug
@@ -207,7 +218,10 @@ def device(server, client, mode) -> None:
         attach=is_attach,
         workers=total_workers,
         thread=is_thread,
+        # ZMQ Authentication
         authentication=authentication,
+        publickey=publickey,
+        secretkey=secretkey,
     )
 
     # Device
@@ -224,9 +238,27 @@ def channels(json) -> None:
     # Imports
     Framework, _ = get_imports()
     app = Framework()
-    all_channels = app.get_channels()
+    all_channels = sorted(list(app.get_channels()))
 
     if json:
-        click.echo(py_json.dumps(list(all_channels), indent=4))
+        click.echo(py_json.dumps(all_channels, indent=4))
     else:
-        click.echo("\n".join(all_channels))
+        click.echo("\n".join([f"— {x}" for x in all_channels]))
+
+
+@click.command()
+@click.option("-j", "--json", is_flag=True, help="JSON format")
+def tasks(json) -> None:
+    """
+    Print all ZeroMQ (Pub/Sub) channels
+    """
+
+    # Imports
+    Framework, _ = get_imports()
+    app = Framework()
+    all_tasks = sorted(list(app.get_tasks()))
+
+    if json:
+        click.echo(py_json.dumps(all_tasks, indent=4))
+    else:
+        click.echo("\n".join([f"— {x}" for x in all_tasks]))

@@ -20,15 +20,19 @@ ITEM_DOC = """
 PAGINATION_DOC = """
 ---
 
-### **jsonQuery**: `(jsonQuery: "[{\\"key\\":1}]")`
+### **All**: 
 
-- **Description**: Allows filtering through JSON queries. This is particularly useful for special cases where more complex filtering criteria are required.
+`(all: true)`
+
+- **Description**: Returns **all items** in the **database**. This setting is primarily intended for **administrative purposes** and should be used with caution.
 
 ---
 
-### **All**: `(all: true)`
+### **jsonQuery**: 
 
-- **Description**: Returns **all items** in the **database**. This setting is primarily intended for **administrative purposes** and should be used with caution.
+`(jsonQuery: "[{\\"key\\":1}]")`
+
+- **Description**: Allows filtering through JSON queries. This is particularly useful for special cases where more complex filtering criteria are required.
 
 ---
 
@@ -51,7 +55,7 @@ def load_json(value):
 
 
 @Form(description=ITEM_DOC)
-class Selector(Input):
+class GenericSelector(Input):
     """
     A utility for `selecting` database record(s).
 
@@ -82,7 +86,7 @@ class Selector(Input):
 
 
 @Form(description=PAGINATION_DOC)
-class Pagination(Input):
+class GenericPagination(Input):
     """
     An input for managing pagination, for efficient `navigation` and retrieval of database records.
 

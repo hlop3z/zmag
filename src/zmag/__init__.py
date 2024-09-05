@@ -3,18 +3,33 @@
 **ZMAG** is a powerful tool designed for building **network APIs**.
 """
 
+import datetime as dt
+import decimal as dec
 import logging
 import os
+import sys
+from typing import Any, TypeAlias
 
+# Generic Tools
 from .external import SPOC, STRAWBERRY
 from .network import BackendZMQ as Backend
 from .network import DeviceZMQ as Device
 from .network import FrontendZMQ as Frontend
 from .network.base import ConfigSSH
+from .network.keypair import keypair
 from .network.utils import Data
 
+# Other Tools
+from .tools.coro import coro
+from .tools.datetime import Date
+from .tools.generic import docs
+
 # Logs
-logging.basicConfig(format="%(levelname)s    -  %(message)s", level=logging.INFO)
+logging.basicConfig(
+    format="%(levelname)s    -  %(message)s",
+    level=logging.INFO,
+    stream=sys.stdout,
+)
 
 # Client or Device - Mode
 ZMAG_TYPE = os.getenv("ZMAG_TYPE")
@@ -31,9 +46,10 @@ if SPOC and STRAWBERRY and not ZMAG_TYPE:
         # Strawberry
         from strawberry.extensions import SchemaExtension as BaseExtension
         from strawberry.permission import BasePermission
-        from strawberry.scalars import JSON
+        from strawberry.scalars import JSON as STRAWBERRY_JSON
         from strawberry.schema.config import StrawberryConfig as BaseConfig
         from strawberry.types.lazy_type import lazy as lazy_type
+        from strawberry import enum
 
         # Components
         from .framework.components import pub  # ZMQ
@@ -51,21 +67,27 @@ if SPOC and STRAWBERRY and not ZMAG_TYPE:
 
         # Framework Core
         from .framework.framework import Framework as App
-        from .graphql.inputs import Pagination, Selector
 
         # GraphQL Tools
-        from .graphql.types import Connection as Edge
+        from .graphql.inputs import GenericPagination as Pagination
+        from .graphql.inputs import GenericSelector as Selector
+        from .graphql.types import Connection as BaseEdge
         from .graphql.types import Error as Errors
         from .graphql.types import ErrorMessage as Error
-        from .graphql.types import Mutation, edge, input_error, Record
-
-        # Other Tools
-        from .tools.coro import coro
-        from .tools.generic import docs
+        from .graphql.types import GenericEdge as Edge
+        from .graphql.types import Mutation, Record, edge, input_error
 
         # Scalars
-        ID = STRAWBERRY.ID
-        json = JSON
+        JSON: Any = STRAWBERRY_JSON
+        ID: str | int = STRAWBERRY.ID
+        id: TypeAlias = ID  # type: ignore # pylint: disable=W,C
+        json: TypeAlias = JSON  # type: ignore # pylint: disable=C
+
+        # Python Scalars
+        time = dt.time  # pylint: disable=C
+        date = dt.date  # pylint: disable=C
+        datetime = dt.datetime  # pylint: disable=C
+        decimal = dec.Decimal  # pylint: disable=C
 
     # Ignores When Using Client (ONLY)
     finally:
@@ -83,6 +105,7 @@ __all__ = (
     "ConfigSSH",
     "pub",
     "push",
+    "keypair",
     # Strawberry
     "BaseConfig",
     "BaseExtension",
@@ -92,11 +115,19 @@ __all__ = (
     "CLI",
     "gql",
     "field",
+    # GraphQL Scalars
+    "id",
+    "json",
+    "time",
+    "date",
+    "datetime",
+    "decimal",
     # GraphQL Object Types
     "BaseType",
-    "Type",
-    "Model",
     "Input",
+    "Model",
+    "Type",
+    "enum",
     "lazy_type",
     # GraphQL Form Tools
     "UNSET",
@@ -105,6 +136,7 @@ __all__ = (
     "input",
     "value",
     # GraphQL Reponses
+    "BaseEdge",
     "Edge",
     "Error",
     "Errors",
@@ -116,6 +148,7 @@ __all__ = (
     "Selector",
     "Pagination",
     # Utils
+    "Date",
     "docs",
     "coro",
 )

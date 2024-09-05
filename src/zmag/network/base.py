@@ -16,7 +16,7 @@ from typing import Any, Tuple  # Literal
 import zmq
 import zmq.asyncio
 import zmq.auth
-from zmq.devices import Device
+from zmq.devices import Device  # ThreadDevice
 
 # https://pyzmq.readthedocs.io/en/latest/howto/ssh.html
 from zmq.ssh.tunnel import tunnel_connection
@@ -69,7 +69,12 @@ class CustomDevice(Device):
 
 @dc.dataclass
 class ConfigSSH:
-    """ZeroMQ SSH Configuration"""
+    """
+    ZeroMQ SSH Configuration
+
+    - https://pyzmq.readthedocs.io/en/latest/howto/ssh.html
+
+    """
 
     host: Any
     keyfile: Any | None = None

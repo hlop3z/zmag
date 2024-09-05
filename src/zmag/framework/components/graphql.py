@@ -15,6 +15,9 @@ from .base import components
 from .forms import Form, form_dataclass
 from .objects import create_typed_class
 
+STRAWBERRY_ID: typing.Any = strawberry.ID
+ID: typing.TypeAlias = STRAWBERRY_ID  # type: ignore # pylint: disable=C
+
 
 def graphql_decorator(cls: typing.Any = None) -> typing.Any:
     """
@@ -203,7 +206,7 @@ class Model(BaseType):
         abstract = True
 
     _id: strawberry.Private[object] = None  # type: ignore
-    id: str | None = None  # type: ignore
+    id: ID | None = None  # type: ignore
 
 
 class Input:

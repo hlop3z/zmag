@@ -18,7 +18,7 @@ async def content(context):
     return response
 
 
-@zmag.pub(seconds=5)
+@zmag.pub(seconds=5, channel="custom_name")
 async def topic():
     """Topic"""
     response = zmag.Data()
@@ -27,7 +27,7 @@ async def topic():
 
 
 @zmag.pub(seconds=1)
-async def generic():
+async def generic_demo():
     """Generic"""
     response = zmag.Data()
     response.body = {"message": "generic demo"}

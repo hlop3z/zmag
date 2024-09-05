@@ -7,7 +7,7 @@ import zmag
 
 
 @zmag.pub(seconds=1)
-async def generic():
+async def generic_other():
     """Generic"""
     response = zmag.Data()
     response.body = {"message": "generic other"}

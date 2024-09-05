@@ -8,7 +8,7 @@ from types import SimpleNamespace
 
 async def start_queue(server, app, node):
     """Start Queue"""
-    while not server.stop_event.is_set():
+    while server.active:
         # ZMQ Response
         response = SimpleNamespace(data=None, errors=None)
 
@@ -27,8 +27,8 @@ async def start_queue(server, app, node):
                 variable_values=request_body.get("variables"),
             )
 
-        print("QUEUE-REQUEST")
-        print(request_zmq)
+        # print("QUEUE-REQUEST")
+        # print(request_zmq)
         # Send Response
         await node.send(
             {},

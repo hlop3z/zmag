@@ -15,7 +15,7 @@ import click
 
 
 # from .queue import start_queue
-def start_watcher(cls, path_to_watch, banner, services):
+def start_watcher(spoc_worker, path_to_watch, banner, services):
     """Watch For File Changes"""
 
     from watchdog.events import FileSystemEventHandler
@@ -35,7 +35,7 @@ def start_watcher(cls, path_to_watch, banner, services):
         """Signal handler to stop the server and loop"""
         logging.info("Shutting Down. . .")
         stop_loop_server()
-        cls.stop(force_stop=True)
+        spoc_worker.stop(force_stop=True)
         # Exit
         sys.exit(0)
         # Force exit the main thread
@@ -69,10 +69,10 @@ def start_watcher(cls, path_to_watch, banner, services):
             await restart_event.wait()  # Wait for the event to be set
             restart_event.clear()  # Clear the event flag
 
-            cls.stop(timeout=0, forced_delay=0)
-            cls.workers.clear()
-            cls.add(*[s() for s in services])
-            cls.start(False)
+            spoc_worker.stop(timeout=0, forced_delay=0)
+            spoc_worker.workers.clear()
+            spoc_worker.add(*[s() for s in services])
+            spoc_worker.start(False)
             click.clear()
             await asyncio.sleep(banner_sleep_time)
             time.sleep(banner_sleep_time)

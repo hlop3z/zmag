@@ -1,47 +1,21 @@
 # `Queue`
 
-In this guide, you'll learn how to implement `Request/Response` operations, with GraphQL.
+In this guide, you'll learn how to run the server in `Request/Response` mode. To create operations for the `Queue` mode look at [GraphQL Operations](/{{ url("/server/graphql/operations/") }}).
 
-## `GraphQL` Operations
+Here will learn how to configure the server to run on Queue mode which its very simple set the **`device`** to **`queue`**
 
-Must be inside a file named `graphql.py`
+## Settings
 
-This is the most common and default way to use `zmag`. This is to create a `Request/Response` pattern also known as `client/server` model.
-
-### Example
-
-```python title="types.py"
-class Book:
-    title: str
-    author: "Author"
-
-class Author:
-    name: str
-    books: list[Book]
+```toml title="config/spoc.toml"
+[spoc.zmq]
+...
+device = "queue"  # options: queue, forwarder, streamer
+...
 ```
 
-```python title="graphql.py"
-import zmag
+<!-- termynal -->
 
-from . import inputs, types
-
-@zmag.gql
-class Graphql:
-
-    class Meta:
-        app = None
-        model = types.Book
-
-    class Query:
-        async def items(self) -> list[types.Book] :
-            return [
-                Book(
-                    title="The Great Gatsby",
-                    author="F. Scott Fitzgerald",
-                ),
-            ]
-
-    class Mutation:
-        async def create(self) -> str::
-            return "Create (Mutation)"
+```
+$ python main.py runserver
+INFO    -  Starting Application . . .
 ```

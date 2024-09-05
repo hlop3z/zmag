@@ -19,12 +19,12 @@ def types(models: list):
 
 def pushers(models: list):
     """Collect (ZMQ) Pushers"""
-    return generic_collector("push", models, generics=True)
+    return generic_collector("push", models)
 
 
 def publishers(models: list):
     """Collect (ZMQ) Publishers"""
-    return generic_collector("pub", models, generics=True)
+    return generic_collector("pub", models)
 
 
 __all__ = (

@@ -74,7 +74,7 @@ python -m pip install "zmag[debug,server]"
 python -m pip install "zmag[server]"
 ```
 
-### **Client** or **Device** Environment
+### **Client** Environment
 
 ```sh
 python -m pip install "zmag"
@@ -155,7 +155,7 @@ A direct communication pattern where the Backend communicates with the Frontend.
 
 ```mermaid
 flowchart LR;
-    A[Backend] --- B[Frontend];
+    A[Backend] <--> B[Frontend];
 ```
 
 ### Backend — Device — Frontend
@@ -164,8 +164,8 @@ An intermediary device manages the communication between the Backend and Fronten
 
 ```mermaid
 flowchart LR;
-    A[Backend] --- B((Device)) --- C[Frontend];
-    F[Backend] --- B --- D[Frontend];
+    A[Backend] <--> B((Device)) <--> C[Frontend];
+    F[Backend] <--> B <--> D[Frontend];
 ```
 
 ---
@@ -195,7 +195,7 @@ root/                           --> <Directory> - Project's Root
 | Command               | Purpose                                                 |
 | --------------------- | ------------------------------------------------------- |
 | `zmag-init`           | Create a new **ZMAG** project.                          |
-| `./main.py run`       | Run the **Server**.                                     |
+| `./main.py runserver` | Run the **Server**.                                     |
 | `./main.py start-app` | Create a **ZMAG App** inside your **`apps`** directory. |
 | `./main.py --help`    | Display more information about available commands.      |
 

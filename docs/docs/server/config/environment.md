@@ -69,3 +69,15 @@ The `production.toml` file includes settings optimized for the live production e
 ## Summary
 
 By organizing environment-specific settings into distinct files, you can easily switch between configurations for `development`, `staging`, and `production`. This structure also ensures that sensitive information, such as keys and environment variables, is properly managed and isolated per environment.
+
+---
+
+## Using `OS` **Environment Variables**
+
+For enhanced security and flexibility, you can use environment variables to manage your ZMAG keys.
+
+```sh
+export ZMAG_PUBLIC_KEY="public-key-x7i+CS<BVZMJyXEX)H8?31k5o)?mQ"
+export ZMAG_SECRET_KEY="secret-key-x(<XES*xpZ3UmIPEIy+lt1qNY!!Kn"
+export ZMAG_SERVER_KEY="server-key-QAvkkf}^Y5OVu=R?S<V9Xi-Y!Zm4q"
+```

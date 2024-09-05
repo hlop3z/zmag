@@ -135,6 +135,6 @@ class Graphql:
             return "Detail (Query)"
 
     class Mutation:
-        async def create(self) -> str::
+        async def create(self) -> str:
             return "Create (Mutation)"
 ```

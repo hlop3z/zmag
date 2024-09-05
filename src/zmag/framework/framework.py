@@ -3,13 +3,14 @@
 Framework Core
 """
 
+import os
 from types import SimpleNamespace
 from typing import Any
 
 from ..external import SPOC
 from .commands.cli import cli
+from .commands.shell import click_commands
 from .components import handlers
-from .shell import click_commands
 
 MODULES = [
     # Click
@@ -96,7 +97,8 @@ if SPOC:
 
         def init(self):
             """Class __init__ Replacement"""
-            framework: Any = SPOC.init(MODULES)  #
+            framework: Any = SPOC.init(MODULES)
+            self._setup_env()
 
             # Core
             self.base_dir = SPOC.settings.BASE_DIR
@@ -166,3 +168,32 @@ if SPOC:
                 all_channels.add(channel)
 
             return all_channels
+
+        def get_tasks(self) -> set[str]:
+            """
+            ZeroMQ (Push/Pull) Tasks
+            """
+            all_jobs = set()
+
+            for method in self.pushers.values():
+                time_in_seconds = method.info.config.get("time", 0)
+                all_jobs.add(f"{method.key}(time={time_in_seconds})")
+
+            return all_jobs
+
+        @staticmethod
+        def _setup_env():
+            # Init `ZMQ` in environment
+            if "zmq" not in SPOC.settings.ENV:
+                SPOC.settings.ENV["zmq"] = {}
+            # Keys
+            env_public_key = os.getenv("ZMAG_PUBLIC_KEY")
+            env_secret_key = os.getenv("ZMAG_SECRET_KEY")
+            env_server_key = os.getenv("ZMAG_SERVER_KEY")
+            # Setters
+            if env_public_key:
+                SPOC.settings.ENV["zmq"]["public_key"] = env_public_key
+            if env_secret_key:
+                SPOC.settings.ENV["zmq"]["secret_key"] = env_secret_key
+            if env_server_key:
+                SPOC.settings.ENV["zmq"]["server_key"] = env_server_key

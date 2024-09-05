@@ -17,6 +17,12 @@ Ref: TypeAlias = Annotated[T, zmag.lazy_type(".types")]
 class Book(zmag.Model):
     title: str | None = None
     author: Ref["Author"] | None = None
+    time: zmag.time | None = None
+    date: zmag.date | None = None
+    datetime: zmag.datetime | None = None
+    decimal: zmag.decimal | None = None
+    some_id: zmag.id | None = None
+    some_dict: zmag.json | None = None
 
 
 @dc.dataclass

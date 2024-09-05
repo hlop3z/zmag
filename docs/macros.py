@@ -40,10 +40,10 @@ def define_env(env):
         return datetime.now().year
 
     @env.macro
-    def url(url):
+    def url(path):
         #  env.config.site_name
         site_name = env.conf.get("site_name", "").lower()
-        return f"{site_name}{url}"
+        return f"{site_name}{path}"
 
     @env.macro
     def acronym(text):

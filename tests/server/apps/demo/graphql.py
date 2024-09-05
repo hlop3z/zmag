@@ -17,17 +17,19 @@ class Graphql:
         model = types.Book
 
     class Query:
-        async def test(self) -> zmag.Record[types.Book]:
-            return zmag.Record(is_many=True)
+        async def test(self, select: zmag.Selector) -> zmag.json:
+            return {
+                "page": 1,
+                "limit": 1,
+                "sort_by": 1,
+            }
 
         async def list(
             self,
             pagination: zmag.Pagination,
-            item: zmag.Selector | None = None,
-        ) -> zmag.Edge[types.Book]:
+        ) -> zmag.BaseEdge[types.Book, types.Book]:
             """Read the Docs"""
-            print(pagination.input.data)
-            print(item.input.data)
+            # print(pagination.input.data)
             return zmag.edge(
                 edges=[
                     types.Book(
@@ -37,6 +39,9 @@ class Graphql:
                         author=types.Author(
                             first_name="F. Scott", last_name="Fitzgerald"
                         ),
+                        time=zmag.Date.time(),
+                        date=zmag.Date.date(),
+                        datetime=zmag.Date.datetime(),
                     ),
                 ]
             )

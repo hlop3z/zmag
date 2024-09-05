@@ -10,7 +10,10 @@ import os
 from functools import partial
 from typing import Any
 
-from ...external import SPOC, UVLOOP
+import spoc
+import zmq
+
+from ...external import UVLOOP
 from ...network import BackendZMQ, DeviceZMQ
 from .debugger import DebugServer
 from .pub_push import start_publisher, start_pusher
@@ -18,7 +21,7 @@ from .queue import start_queue
 from .watcher import start_watcher
 
 
-class Device(SPOC.BaseThread):
+class Device(spoc.BaseProcess):
     """Device Service"""
 
     options: Any
@@ -40,7 +43,11 @@ class Device(SPOC.BaseThread):
             publickey=self.options.publickey,
             secretkey=self.options.secretkey,
         )
-        node.device()
+        try:
+            node.device()
+        except zmq.error.ZMQError as e:
+            logging.critical(e)
+            raise e from e
 
 
 class ZMQBaseServer:
@@ -51,7 +58,7 @@ class ZMQBaseServer:
     app: Any
     node: BackendZMQ
 
-    def before_async(self) -> None:
+    def before(self) -> None:
         """Loop Policy"""
         if os.name == "nt":
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
@@ -65,16 +72,20 @@ class ZMQBaseServer:
         node_name = self.app.spoc.get("zmq", {}).get("node")
 
         # Server Node
-        self.node = BackendZMQ(
-            name=node_name,
-            backend=self.options.server,
-            frontend=self.options.client,
-            mode=self.options.device,
-            attach=self.options.attach,
-            publickey=self.options.publickey,
-            secretkey=self.options.secretkey,
-            serverkey=self.options.serverkey or self.options.publickey,
-        )
+        try:
+            self.node = BackendZMQ(
+                name=node_name,
+                backend=self.options.server,
+                frontend=self.options.client,
+                mode=self.options.device,
+                attach=self.options.attach,
+                publickey=self.options.publickey,
+                secretkey=self.options.secretkey,
+                serverkey=self.options.serverkey or self.options.publickey,
+            )
+        except zmq.error.ZMQError as e:
+            logging.critical(e)
+            raise e from e
 
     async def on_event(self, event_type: str):
         """App Events"""
@@ -119,15 +130,15 @@ class ZMQBaseServer:
                 await start_queue(self, app, node)
 
 
-class ZMQServerProcess(ZMQBaseServer, SPOC.BaseProcess):
+class ZMQServerProcess(ZMQBaseServer, spoc.BaseProcess):
     """ZMQ Server with Processes"""
 
 
-class ZMQServerThread(ZMQBaseServer, SPOC.BaseThread):
+class ZMQServerThread(ZMQBaseServer, spoc.BaseThread):
     """ZMQ Server with Threads"""
 
 
-class Server(SPOC.BaseServer):
+class Server(spoc.BaseServer):
     """Main Server"""
 
     services: list[Any] = []

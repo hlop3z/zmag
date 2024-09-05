@@ -94,7 +94,7 @@ items_per_page = 100
 
 # ZeroMQ Configuration
 [spoc.zmq]
-node = "node-name"
+node = "service-name"
 workers = 1
 proxy = true
 attach = true

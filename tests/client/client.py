@@ -5,23 +5,26 @@ ZMAG Client
 
 # Python
 import asyncio
+import multiprocessing
 import os
+import threading
+import timeit
 from types import SimpleNamespace
 
 # Set Env for Client Mode
 os.environ["ZMAG_TYPE"] = "1"
 
 # ZMAG
-from zmag import Frontend  # pylint: disable=C
+import zmag
 
 # import time
 # from pathlib import Path
 
-
+TIMEIT = False
 IS_SYNC = True
 
-MODE = "forwarder"
-TEST_COUNT = 2
+MODE = "queue"
+TEST_COUNT = 1
 PORT = 5555
 
 DEMO_PUBLICKEY = "2x.Y>2(J]I:$7i+CS<BVZMJyXEX)H8?31k5o)?mQ"
@@ -32,11 +35,11 @@ AUTHENTICATION = SimpleNamespace(
 )
 
 
-client = Frontend(
+client = zmag.Frontend(
     is_sync=IS_SYNC,
     host=f"tcp://127.0.0.1:{PORT}",
     mode=MODE,
-    **AUTHENTICATION.__dict__,
+    # **AUTHENTICATION.__dict__,
     # base_dir=CURRENT_PATH,
     # fragments={"Author": "fragments/author.graphql"},
 )
@@ -45,11 +48,16 @@ client = Frontend(
 TEST_SIMPLE = """query MyQuery { demoBookList { id title } }"""
 TEST_COMPLEX = """
 query MyQuery {
-  demoBookList {
-    id
-    title
-    author {
-      name
+  bookList(pagination: {page: 0}) {
+    edges {
+      cursor
+      node {
+        id
+        titles
+        author {
+          fullName
+        }
+      }
     }
   }
 }
@@ -95,7 +103,7 @@ def test_sync_request():
     """Request Sync"""
     for _ in range(TEST_COUNT):
         response = client.request(**ARGS.__dict__)
-        print(response)
+        print(response.body)
 
 
 def test_sync():
@@ -118,6 +126,30 @@ async def test_async():
         print(response)
 
 
+def thread_worker():
+    """Function to create and manage 10 threads in each process."""
+    threads = []
+    for _ in range(500):
+        thread = threading.Thread(target=test_sync)
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()  # Wait for all threads to finish
+
+
+def process_worker():
+    processes = []
+    for _ in range(10):
+        process = multiprocessing.Process(target=thread_worker)
+        processes.append(process)
+        process.start()
+
+    # Wait for all processes to complete
+    for process in processes:
+        process.join()
+
+
 def main():
     """Main"""
     if os.name == "nt":
@@ -125,6 +157,9 @@ def main():
 
     if IS_SYNC:
         test_sync()
+        if TIMEIT:
+            timer = timeit.timeit(process_worker, number=1)
+            print(timer)
     else:
         asyncio.run(test_async())
 

@@ -16,7 +16,7 @@ def error_message(group, one, two):
     return msg
 
 
-def generic_collector(component_name: str, models: list, generics: bool = False):
+def generic_collector(component_name: str, models: list):
     """Collect Components"""
     single_name: dict = {}
     for current in models:
@@ -24,8 +24,8 @@ def generic_collector(component_name: str, models: list, generics: bool = False)
         if is_component:
             name = current.object.__name__
             # Generic
-            if generics and name == "generic":
-                name = current.key.replace(".", "__")
+            # if generics and name == "generic":
+            #    name = current.key.replace(".", "__")
             # UNIQUE names
             found = single_name.get(name)
             if found and found.object != current.object:  #  and not generics

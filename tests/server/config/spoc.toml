@@ -1,8 +1,8 @@
 # Application Configuration
 [spoc]
-mode = "development"  # options: production, development, staging
+mode = "development"   # options: production, development, staging
 debug = false
-authentication = true
+authentication = false
 
 # GraphQL Configuration
 [spoc.graphql]
@@ -16,7 +16,7 @@ node = "my-service"
 workers = 2
 proxy = true
 attach = true
-thread = true
+thread = false
 device = "queue"                # queue, forwarder, streamer
 server = "tcp://127.0.0.1:5556"
 client = "tcp://127.0.0.1:5555"
