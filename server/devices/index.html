@@ -8,35 +8,37 @@
       
       
       
-        <link rel="canonical" href="https://hlop3z.github.io/zmag/">
+        <link rel="canonical" href="https://hlop3z.github.io/zmag/server/devices/">
       
       
+        <link rel="prev" href="../forwarder/">
       
-        <link rel="next" href="use-cases/">
+      
+        <link rel="next" href="../authentication/">
       
       
-      <link rel="icon" href="assets/images/logo.png">
+      <link rel="icon" href="../../assets/images/logo.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
     
     
       
-        <title>Introduction - ZMAG</title>
+        <title>Proxy Device - ZMAG</title>
       
     
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.35f28582.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
 
     
-    <link rel="stylesheet" href="./css/extra.css" />
+    <link rel="stylesheet" href="../../css/extra.css" />
     <!--
-        <link rel="stylesheet" href="./css/termynal.css" />
+        <link rel="stylesheet" href="../../css/termynal.css" />
     -->
 
     
@@ -44,7 +46,7 @@
       
     
     <!--
-    <script src="./js/termynal.js"></script>
+    <script src="../../js/termynal.js"></script>
     -->
 
     
@@ -57,11 +59,11 @@
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="termynal.css">
+      <link rel="stylesheet" href="../../termynal.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -87,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#devices" class="md-skip">
           Skip to content
         </a>
       
@@ -101,9 +103,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="ZMAG" class="md-header__button md-logo" aria-label="ZMAG" data-md-component="logo">
+    <a href="../.." title="ZMAG" class="md-header__button md-logo" aria-label="ZMAG" data-md-component="logo">
       
-  <img src="assets/images/logo.png" alt="logo">
+  <img src="../../assets/images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -120,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Introduction
+              Proxy Device
             
           </span>
         </div>
@@ -225,13 +227,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="." class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
           
   
   ZMAG
@@ -245,11 +245,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="server/intro/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../intro/" class="md-tabs__link">
           
   
   Server
@@ -267,7 +269,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="client/intro/" class="md-tabs__link">
+        <a href="../../client/intro/" class="md-tabs__link">
           
   
   Client
@@ -285,7 +287,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="api/zeromq/" class="md-tabs__link">
+        <a href="../../api/zeromq/" class="md-tabs__link">
           
   
   Reference
@@ -318,9 +320,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="ZMAG" class="md-nav__button md-logo" aria-label="ZMAG" data-md-component="logo">
+    <a href="../.." title="ZMAG" class="md-nav__button md-logo" aria-label="ZMAG" data-md-component="logo">
       
-  <img src="assets/images/logo.png" alt="logo">
+  <img src="../../assets/images/logo.png" alt="logo">
 
     </a>
     ZMAG
@@ -339,6 +341,139 @@
     </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    ZMAG
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            ZMAG
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../use-cases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../limitations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Limitations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
     
       
       
@@ -364,318 +499,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    ZMAG
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_1">
-            <span class="md-nav__icon md-icon"></span>
-            ZMAG
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Introduction
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Introduction
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#built-with" class="md-nav__link">
-    <span class="md-ellipsis">
-      Built With
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#debug-server-built-with" class="md-nav__link">
-    <span class="md-ellipsis">
-      Debug Server Built With
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Installation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#development-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Development Environment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#server-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Server Environment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#client-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Client Environment
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-flowchart" class="md-nav__link">
-    <span class="md-ellipsis">
-      Project Flowchart
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Project Flowchart">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#explanation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Explanation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architectural-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      Architectural Patterns
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Architectural Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#backend-frontend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backend — Frontend
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#backend-device-frontend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backend — Device — Frontend
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#core-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      Core Layout
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Commands
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="use-cases/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Use Cases
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="motivation/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Motivation
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="limitations/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Limitations
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -686,7 +513,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Server
@@ -700,7 +527,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/intro/" class="md-nav__link">
+      <a href="../intro/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -721,7 +548,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/config/variables/" class="md-nav__link">
+      <a href="../config/variables/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -742,7 +569,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/config/settings/" class="md-nav__link">
+      <a href="../config/settings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -763,7 +590,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/config/environment/" class="md-nav__link">
+      <a href="../config/environment/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -789,10 +616,13 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -801,7 +631,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -826,7 +656,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/commands/" class="md-nav__link">
+      <a href="../commands/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -860,10 +690,13 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -872,7 +705,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
         
           
-          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -897,7 +730,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/graphql/types/" class="md-nav__link">
+      <a href="../graphql/types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -918,7 +751,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/graphql/inputs/" class="md-nav__link">
+      <a href="../graphql/inputs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -939,7 +772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/graphql/scalars/" class="md-nav__link">
+      <a href="../graphql/scalars/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -960,7 +793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/graphql/operations/" class="md-nav__link">
+      <a href="../graphql/operations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -981,7 +814,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/graphql/built-in/" class="md-nav__link">
+      <a href="../graphql/built-in/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1002,7 +835,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/graphql/extensions/" class="md-nav__link">
+      <a href="../graphql/extensions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1023,7 +856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/graphql/permissions/" class="md-nav__link">
+      <a href="../graphql/permissions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1049,27 +882,30 @@
                 
   
   
+    
   
   
+  
     
     
     
       
       
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
         
           
+          
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1080,7 +916,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_7">
             <span class="md-nav__icon md-icon"></span>
             ZMQ
@@ -1094,7 +930,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/queue/" class="md-nav__link">
+      <a href="../queue/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1115,7 +951,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/streamer/" class="md-nav__link">
+      <a href="../streamer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1136,7 +972,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/forwarder/" class="md-nav__link">
+      <a href="../forwarder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1154,10 +990,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="server/devices/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Proxy Device
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1166,6 +1022,71 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types-of-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Devices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Settings
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1178,7 +1099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="server/authentication/" class="md-nav__link">
+      <a href="../authentication/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1256,7 +1177,7 @@
   
   
     <li class="md-nav__item">
-      <a href="client/intro/" class="md-nav__link">
+      <a href="../../client/intro/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1277,7 +1198,7 @@
   
   
     <li class="md-nav__item">
-      <a href="client/requests/" class="md-nav__link">
+      <a href="../../client/requests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1298,7 +1219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="client/sub-pull/" class="md-nav__link">
+      <a href="../../client/sub-pull/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1319,7 +1240,7 @@
   
   
     <li class="md-nav__item">
-      <a href="client/authentication/" class="md-nav__link">
+      <a href="../../client/authentication/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1389,7 +1310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/zeromq/" class="md-nav__link">
+      <a href="../../api/zeromq/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1410,7 +1331,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/graphql/" class="md-nav__link">
+      <a href="../../api/graphql/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1431,7 +1352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/cli/" class="md-nav__link">
+      <a href="../../api/cli/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1479,135 +1400,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#built-with" class="md-nav__link">
+  <a href="#purpose" class="md-nav__link">
     <span class="md-ellipsis">
-      Built With
+      Purpose
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#debug-server-built-with" class="md-nav__link">
+  <a href="#types-of-devices" class="md-nav__link">
     <span class="md-ellipsis">
-      Debug Server Built With
+      Types of Devices
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
+  <a href="#advantages" class="md-nav__link">
     <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Installation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#development-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Development Environment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#server-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Server Environment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#client-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Client Environment
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-flowchart" class="md-nav__link">
-    <span class="md-ellipsis">
-      Project Flowchart
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Project Flowchart">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#explanation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Explanation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architectural-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      Architectural Patterns
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Architectural Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#backend-frontend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backend — Frontend
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#backend-device-frontend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Backend — Device — Frontend
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#core-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      Core Layout
+      Advantages
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-commands" class="md-nav__link">
+  <a href="#usage" class="md-nav__link">
     <span class="md-ellipsis">
-      Key Commands
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Settings
     </span>
   </a>
   
@@ -1631,243 +1462,70 @@
   
 
 
-<h1 id="_1"></h1>
-<div style="text-align:center; margin-top: -60px">
- <img src="assets/images/title.png" alt="Alt text" class="title-image" />
-</div>
-
-<hr />
-<p align="center" class="name-acronym" >
-    (<strong>Z</strong>)eroMQ —
-    (<strong>M</strong>)anages —
-    (<strong>A</strong>) —
-    (<strong>G</strong>)raphQL
-</p>
-
-<hr />
-<div class="termy" data-termynal data-ty-macos data-ty-title="bash"><span data-ty="input" data-ty-prompt="$">python -m pip install &quot;zmag[server]&quot;</span><span data-ty="progress"></span><span data-ty>Successfully installed zmag!<br></span></div>
-
-<hr />
-<p><strong>ZMAG</strong> is a tool designed for building <strong>network APIs</strong> rather than traditional web applications, leveraging the unique combination of <strong>GraphQL</strong> and <strong>ZeroMQ</strong>. By integrating <strong>GraphQL's</strong> flexible and efficient querying capabilities with <strong>ZeroMQ's</strong> high-performance messaging patterns, <strong>ZMAG</strong> enables developers to create robust and scalable network APIs. This approach allows for real-time communication, seamless data transfer, and efficient management of complex, distributed systems, making <strong>ZMAG</strong> an ideal choice for developers looking to build sophisticated network services that go beyond the capabilities of standard web applications.</p>
-<p><strong>ZMAG</strong> is designed to provide a more Pythonic syntax, moving away from the typical GraphQL and ZeroMQ styles and focusing instead on native Python conventions for greater readability and intuitiveness.</p>
-<div class="admonition info">
-<p class="admonition-title">Capabilities of ZMAG</p>
+<h1 id="devices">Devices</h1>
+<p>ZeroMQ devices are specialized components provided by the ZeroMQ messaging library to facilitate complex messaging patterns. They serve as intermediaries that handle specific messaging tasks, such as forwarding messages between different types of sockets, proxying, and load balancing. Devices simplify the creation of advanced messaging workflows by managing the intricacies of message routing and handling.</p>
+<h2 id="purpose">Purpose</h2>
 <ol>
-<li>Build <strong>GraphQL</strong> <strong>Queries</strong> and <strong>Mutations</strong> for flexible data interactions.</li>
-<li>Develop <strong>Request</strong> and <strong>Response</strong> APIs for efficient communication.</li>
-<li>Implement <strong>Pub/Sub</strong> and <strong>Push/Pull</strong> patterns for robust messaging and data distribution.</li>
-<li>Leverage <strong>Commands</strong> to automate processes and streamline operations.</li>
+<li><strong>Message Forwarding</strong>: Efficiently routes messages between different sockets.</li>
+<li><strong>Proxying</strong>: Acts as an intermediary to manage communication between various endpoints.</li>
+<li><strong>Load Balancing</strong>: Distributes messages evenly across multiple workers.</li>
 </ol>
-</div>
-<hr />
-<h2 id="built-with">Built With</h2>
-<table>
-<thead>
-<tr>
-<th>Module</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://pyzmq.readthedocs.io"><strong>pyzmq</strong></a></td>
-<td>Core <strong>Universal Messaging Library</strong> for the API.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/ijl/orjson"><strong>orjson</strong></a></td>
-<td>Fast Python JSON library.</td>
-</tr>
-<tr>
-<td><a href="https://strawberry.rocks/"><strong>strawberry</strong></a></td>
-<td><strong>GraphQL Library</strong></td>
-</tr>
-<tr>
-<td><a href="https://github.com/pallets/click/"><strong>click</strong></a></td>
-<td>Manage the server, development processes, and custom <strong>Commands</strong>.</td>
-</tr>
-<tr>
-<td><a href="https://pypi.org/project/spoc/"><strong>spoc</strong></a></td>
-<td><strong>Framework tool</strong> for building this framework.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="debug-server-built-with">Debug Server Built With</h2>
-<table>
-<thead>
-<tr>
-<th>Module</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://www.starlette.io/"><strong>starlette</strong></a></td>
-<td>Runs the server in <strong>Debug</strong> mode.</td>
-</tr>
-<tr>
-<td><a href="https://www.uvicorn.org/"><strong>uvicorn</strong></a></td>
-<td>ASGI web server.</td>
-</tr>
-<tr>
-<td><a href="https://github.com/gorakhargosh/watchdog"><strong>watchdog</strong></a></td>
-<td>Restarts the debug server on changes.</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="installation">Installation</h2>
-<p>To install <strong>ZMAG</strong> in different environments, use the following commands:</p>
-<h3 id="development-environment"><strong>Development</strong> Environment</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;zmag[debug,server]&quot;</span>
-</code></pre></div>
-<h3 id="server-environment"><strong>Server</strong> Environment</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;zmag[server]&quot;</span>
-</code></pre></div>
-<h3 id="client-environment"><strong>Client</strong> Environment</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;zmag&quot;</span>
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>ZMAG is currently in its early stages of development, so there may be some changes in the future. However, we aim to keep the public API stable.</p>
-</div>
-<hr />
-<h2 id="project-flowchart">Project <strong>Flowchart</strong></h2>
-<table>
-<thead>
-<tr>
-<th><strong>(API)</strong> Application Programming Interface</th>
-<th><strong>(CLI)</strong> Command-Line Interface</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1. Load all <strong><code>Settings</code></strong>.</td>
-<td>1. Load all <strong><code>Settings</code></strong>.</td>
-</tr>
-<tr>
-<td>2. Load <strong><code>Environment Variables</code></strong>.</td>
-<td>2. Load <strong><code>Environment Variables</code></strong>.</td>
-</tr>
-<tr>
-<td>3. Load all <strong><code>Apps</code> (Packages)</strong>.</td>
-<td>3. Load all <strong><code>Apps</code> (Packages)</strong>.</td>
-</tr>
-<tr>
-<td>4. Start the <strong><code>ZeroMQ</code></strong> <strong>API</strong></td>
-<td>4. Start the <strong><code>CLI</code></strong> <strong>Manager</strong>.</td>
-</tr>
-</tbody>
-</table>
-<pre class="mermaid"><code>flowchart LR;
-    subgraph ZMAG &amp; Installed Apps
-    A --&gt; B;
-
-    B &lt;--&gt; D;
-    B &lt;--&gt; E;
-    end
-
-    D &lt;--&gt; F;
-    E &lt;--&gt; G;
-
-    subgraph Your Code
-    F &lt;--&gt; | GraphQL | H
-    G &lt;--&gt; | GraphQL | H
-    end
-
-    A{Click};
-    B[Settings &amp; Apps];
-    D{The API};
-    E{The CLI};
-    F((Operations))
-    G((Commands))
-    H{Project};</code></pre>
-<h3 id="explanation">Explanation</h3>
-<p>The flowchart illustrates how the project initializes and operates both the <strong>API</strong> and <strong>CLI</strong> interfaces:</p>
-<ol>
-<li><strong>Initialization</strong>: The process begins with <strong>Click</strong>, which is used to launch both the API (services) and CLI (commands).</li>
-<li>
-<p><strong>Configuration Loading</strong>: For both the API and CLI interfaces, all <strong><code>Settings</code></strong>, <strong><code>Environment Variables</code></strong>, and <strong><code>Apps (Modules)</code></strong> are loaded. This ensures the environment is properly configured and all necessary modules are available.</p>
-</li>
-<li>
-<p><strong>Starting Interfaces</strong>:</p>
-<div class="admonition note">
-<p class="admonition-title">Interfaces</p>
+<h2 id="types-of-devices">Types of Devices</h2>
 <ul>
-<li><strong>API</strong> — the <strong>ZeroMQ Backend</strong> is started to manage backend processes and facilitate operations.</li>
-<li><strong>CLI</strong> — the <strong>CLI Manager</strong> is initiated using Click, which handles command-line inputs and operations.</li>
+<li><strong><code>Queue</code></strong>: Implements <code>Request/Response</code> patterns, handling message queues.</li>
+<li><strong><code>Forwarder</code></strong>: Implements <code>Publish/Subscribe</code> patterns, forwarding messages between publishers and subscribers.</li>
+<li><strong><code>Streamer</code></strong>: Implements <code>Push/Pull</code> patterns, managing the flow of messages between producers and consumers.</li>
+</ul>
+<h2 id="advantages">Advantages</h2>
+<ul>
+<li><strong>Abstraction</strong>: Devices abstract complex message routing and handling, simplifying application development.</li>
+<li><strong>Scalability</strong>: Supports scalable and flexible messaging patterns, accommodating various use cases and architectures.</li>
+<li><strong>Efficiency</strong>: Optimized for high-throughput and low-latency messaging, ensuring performance.</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p>Using ZeroMQ devices is optional. However, if your application requires multiple servers or workers, employing a device becomes necessary. ZMAG provides support for both scenarios. You can control whether a device is used and its configuration through settings:</p>
+<ul>
+<li><strong>Starting a Device</strong>: Set <code>proxy = true</code> if the device runs within the application.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Starting a Device</p>
+<ul>
+<li><code>proxy = true</code></li>
 </ul>
 </div>
-</li>
-<li>
-<p><strong>Integration with GraphQL</strong>: Both the <strong>API</strong> and <strong>CLI</strong> interfaces can connect to the <strong>GraphQL</strong>, allowing you to perform GraphQL operations through either the <strong>API</strong> or the <strong>CLI</strong>.</p>
-</li>
-<li>
-<p><strong>Custom Extensions</strong>: You have the flexibility to create custom <strong>CLI</strong> commands or <strong>API</strong> methods, which can leverage the underlying <strong>GraphQL</strong> capabilities.</p>
-</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>The setup provides a versatile and unified framework, enabling you to manage backend processes and handle command-line operations effectively, with seamless integration of GraphQL functionalities across both interfaces.</p>
+<ul>
+<li><strong>Attaching to Device</strong>: If the device is running in a separate environment, set <code>proxy = false</code> and <code>attach = true</code>.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Attaching to Device</p>
+<ul>
+<li><code>proxy = false</code></li>
+<li><code>attach = true</code></li>
+</ul>
 </div>
-<hr />
-<h2 id="architectural-patterns">Architectural <strong>Patterns</strong></h2>
-<p>These patterns illustrate the flow of communication in a zmag system:</p>
-<h3 id="backend-frontend">Backend — Frontend</h3>
-<p>A direct communication pattern where the Backend communicates with the Frontend.</p>
-<pre class="mermaid"><code>flowchart LR;
-    A[Backend] &lt;--&gt; B[Frontend];</code></pre>
-<h3 id="backend-device-frontend">Backend — Device — Frontend</h3>
-<p>An intermediary device manages the communication between the Backend and Frontend, allowing for scalability.</p>
-<pre class="mermaid"><code>flowchart LR;
-    A[Backend] &lt;--&gt; B((Device)) &lt;--&gt; C[Frontend];
-    F[Backend] &lt;--&gt; B &lt;--&gt; D[Frontend];</code></pre>
-<hr />
-<h2 id="core-layout">Core <strong>Layout</strong></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>root/                           --&gt; &lt;Directory&gt; - Project&#39;s Root
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>|
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>|-- apps/                       --&gt; &lt;Directory&gt; - Project&#39;s Apps
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>|
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>|-- config/                     --&gt; &lt;Directory&gt; - Configurations
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>|    |-- .env                   --&gt; &lt;Directory&gt; - Environment Settings
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>|    |-- ...
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>|    |-- settings.py            --&gt; &lt;File&gt; - Pythonic API Settings
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>|    `-- spoc.toml              --&gt; &lt;File&gt; - TOML API Settings
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>|
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>`-- etc...
+<ul>
+<li><strong>Running a Single Server</strong>: If you want to run a single server without a device, set <code>proxy = false</code>, <code>attach = false</code>, and <code>workers = 1</code>.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Single Server</p>
+<ul>
+<li><code>workers = 1</code></li>
+<li><code>proxy = false</code></li>
+<li><code>attach = false</code></li>
+</ul>
+</div>
+<h2 id="settings">Settings</h2>
+<p><strong>Example Configuration:</strong></p>
+<div class="highlight"><span class="filename">config/spoc.toml</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># ZeroMQ Configuration</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">[spoc.zmq]</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">...</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">proxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">attach</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">...</span>
 </code></pre></div>
+<p>By leveraging ZeroMQ devices, you can build robust and efficient messaging systems tailored to your application's needs.</p>
 <hr />
-<h2 id="key-commands">Key Commands</h2>
-<p><strong>ZMAG</strong> comes with several key commands:</p>
-<table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>zmag-init</code></td>
-<td>Create a new <strong>ZMAG</strong> project.</td>
-</tr>
-<tr>
-<td><code>./main.py runserver</code></td>
-<td>Run the <strong>Server</strong>.</td>
-</tr>
-<tr>
-<td><code>./main.py start-app</code></td>
-<td>Create a <strong>ZMAG App</strong> inside your <strong><code>apps</code></strong> directory.</td>
-</tr>
-<tr>
-<td><code>./main.py --help</code></td>
-<td>Display more information about available commands.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition warning">
-<p class="admonition-title">Important: <code>zmag-init</code> Command</p>
-<p>Use the <code>zmag-init</code> command <strong>only once</strong> and make sure you are in a <strong>new folder</strong>. This command will write files and folders to the current directory.</p>
-</div>
 
 
 
@@ -1902,15 +1560,31 @@
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
+          
+          <a href="../forwarder/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Forwarder">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Forwarder
+              </div>
+            </div>
+          </a>
+        
         
           
-          <a href="use-cases/" class="md-footer__link md-footer__link--next" aria-label="Next: Use Cases">
+          <a href="../authentication/" class="md-footer__link md-footer__link--next" aria-label="Next: Authentication">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Use Cases
+                Authentication
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1943,17 +1617,17 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.annotate", "navigation.expand", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.footer"], "search": "assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate", "navigation.expand", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "navigation.footer"], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
     
-      <script src="assets/javascripts/bundle.56dfad97.min.js"></script>
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
       
-        <script src="termynal.js"></script>
+        <script src="../../termynal.js"></script>
       
     
     <!--
-    <script src="./js/bashv1-0-0.js"></script>
+    <script src="../../js/bashv1-0-0.js"></script>
     -->
 
   </body>

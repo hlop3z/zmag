@@ -1,21 +1,69 @@
+/* Tables */
 .md-typeset__table {
-    min-width: 100%;
- }
- 
- .md-typeset table:not([class]) {
-     display: table;
- }
- 
-.cool-text { 
-    color: #cc00cc;
+  min-width: 100%;
 }
 
-[data-ty="progress"] {
-    width: 100% !important;
-    overflow-wrap: break-all;
-    overflow: hidden;
+.md-typeset table:not([class]) {
+  display: table;
 }
 
-[data-termynal] > span {
-    display: block;
+/* Side Bar */
+label.md-nav__title {
+  text-align: center;
+}
+.md-nav__title .md-logo img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Layout */
+.md-grid {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+}
+.md-sidebar--primary {
+  /* width: 8rem; */
+  width: 10rem;
+}
+.md-sidebar--secondary {
+  width: 10rem;
+}
+.md-footer-meta__inner {
+  justify-content: center !important;
+}
+
+/* DOCS */
+.doc code,
+.doc-heading * {
+  color: cyan !important;
+  /* font-size: 1em; */
+}
+
+/* Name Acronym */
+.name-acronym {
+  font-size: 32px;
+  letter-spacing: 2px;
+}
+@media only screen and (min-width: 0px) and (max-width: 720px) {
+  .name-acronym {
+    font-size: 20px;
+  }
+}
+
+/* Title Image */
+.title-image {
+  height: auto;
+  width: 768px;
+}
+@media only screen and (max-width: 768px) {
+  .title-image {
+    width: 100%;
+  }
+}
+
+/* Mermaid */
+.mermaid {
+  text-align: center;
+  zoom: 200%;
 }

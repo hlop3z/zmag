@@ -2,37 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://hlop3z.github.io/zmag/</loc>
-         <lastmod>2023-11-10</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2024-09-07</lastmod>
     </url>
     <url>
-         <loc>https://hlop3z.github.io/zmag/client/</loc>
-         <lastmod>2023-11-10</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://hlop3z.github.io/zmag/limitations/</loc>
+         <lastmod>2024-09-07</lastmod>
     </url>
     <url>
-         <loc>https://hlop3z.github.io/zmag/commands/</loc>
-         <lastmod>2023-11-10</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://hlop3z.github.io/zmag/motivation/</loc>
+         <lastmod>2024-09-07</lastmod>
     </url>
     <url>
-         <loc>https://hlop3z.github.io/zmag/manager/</loc>
-         <lastmod>2023-11-10</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://hlop3z.github.io/zmag/use-cases/</loc>
+         <lastmod>2024-09-07</lastmod>
     </url>
     <url>
-         <loc>https://hlop3z.github.io/zmag/schema/</loc>
-         <lastmod>2023-11-10</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://hlop3z.github.io/zmag/api/cli/</loc>
+         <lastmod>2024-09-07</lastmod>
     </url>
     <url>
-         <loc>https://hlop3z.github.io/zmag/settings/</loc>
-         <lastmod>2023-11-10</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://hlop3z.github.io/zmag/api/graphql/</loc>
+         <lastmod>2024-09-07</lastmod>
     </url>
     <url>
-         <loc>https://hlop3z.github.io/zmag/databases/</loc>
-         <lastmod>2023-11-10</lastmod>
-         <changefreq>daily</changefreq>
+         <loc>https://hlop3z.github.io/zmag/api/zeromq/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/client/authentication/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/client/intro/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/client/requests/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/client/sub-pull/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/authentication/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/commands/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/devices/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/forwarder/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/intro/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/queue/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/streamer/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/config/environment/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/config/settings/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/config/variables/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/graphql/built-in/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/graphql/extensions/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/graphql/inputs/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/graphql/operations/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/graphql/permissions/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/graphql/scalars/</loc>
+         <lastmod>2024-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://hlop3z.github.io/zmag/server/graphql/types/</loc>
+         <lastmod>2024-09-07</lastmod>
     </url>
 </urlset>
