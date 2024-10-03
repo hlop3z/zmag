@@ -31,7 +31,7 @@ staging = []
 [spoc.plugins]
 # Plugins
 # permissions = ["demo.permissions.MyPermission"]
-# extensions = ["demo.extensions.MyExtension"]
+extensions = ["demo.extensions.MyExtension"]
 
 # Event Hooks
 on_startup = ["demo.events.on_startup"]

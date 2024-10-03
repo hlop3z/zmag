@@ -9,6 +9,7 @@ import logging
 import os
 import sys
 from typing import Any, TypeAlias
+from uuid import UUID as uuid
 
 # Generic Tools
 from .external import SPOC, STRAWBERRY
@@ -42,14 +43,15 @@ if SPOC and STRAWBERRY and not ZMAG_TYPE:
 
         # Spoc
         from spoc import settings
+        from strawberry import enum
 
         # Strawberry
         from strawberry.extensions import SchemaExtension as BaseExtension
         from strawberry.permission import BasePermission
         from strawberry.scalars import JSON as STRAWBERRY_JSON
         from strawberry.schema.config import StrawberryConfig as BaseConfig
+        from strawberry.types import Info as InfoGraphql
         from strawberry.types.lazy_type import lazy as lazy_type
-        from strawberry import enum
 
         # Components
         from .framework.components import pub  # ZMQ
@@ -110,6 +112,7 @@ __all__ = (
     "BaseConfig",
     "BaseExtension",
     "BasePermission",
+    "InfoGraphql",
     # Core
     "cli",
     "CLI",
@@ -122,6 +125,7 @@ __all__ = (
     "date",
     "datetime",
     "decimal",
+    "uuid",
     # GraphQL Object Types
     "BaseType",
     "Input",

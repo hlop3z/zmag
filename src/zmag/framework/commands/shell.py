@@ -2,14 +2,6 @@
 Commands
 """
 
-# import os
-# import pathlib
-# import shutil
-# import zipfile
-
-import shlex
-import subprocess
-
 import click
 from click_help_colors import HelpColorsMultiCommand
 
@@ -56,18 +48,3 @@ def click_commands(core_cli, items: list):
 def shell_print(text: str, color: str = "green"):
     """Shell Print"""
     return click.secho(f"{ text }", fg=color, bold=True)
-
-
-def shell_command(list_of_commands: str | list[str]):
-    """Execute a list of Shell Commands"""
-
-    processes = []
-    if not isinstance(list_of_commands, list):
-        list_of_commands = [list_of_commands]
-    for cmd in list_of_commands:
-        split_cmd = shlex.split(cmd)
-        # task = subprocess.Popen(split_cmd, shell=True)
-        # processes.append(task)
-        with subprocess.Popen(split_cmd, shell=True) as task:
-            processes.append(task)
-    return [process.wait() for process in processes]

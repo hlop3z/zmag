@@ -13,6 +13,12 @@ import click
 from .shell import shell_print
 from .utils import get_imports, shell_banner
 
+# import logging
+# import os
+# import tomllib
+# from pathlib import Path
+
+
 IS_FLAG: Any = {"is_flag": True, "default": False}
 DEVICE_TYPES = click.Choice(["queue", "forwarder", "streamer"])
 
@@ -162,12 +168,11 @@ def runserver(
     Server.start_server(server_config)
 
 
+# pylint: disable-next=pointless-string-statement
+'''
 @click.command()
-@click.option("-s", "--server", help="Backend (ZMQ) address (tcp://localhost:5556).")
-@click.option("-c", "--client", help="Frontend (ZMQ) address (tcp://localhost:5555).")
 @click.option("-m", "--mode", type=DEVICE_TYPES, help="Device Type.", required=True)
-@click.option("-a", "--auth", **IS_FLAG, help="With Authentication.")
-def device(server, client, mode, auth) -> None:
+def device(mode) -> None:
     """
     Start ZMAG <Device>
     """
@@ -177,11 +182,19 @@ def device(server, client, mode, auth) -> None:
 
     # Initialize APP
     app = Framework()
+    current_dir = Path(os.getcwd())
+
+    # TOML
+    with open(current_dir / "device.toml", "rb") as f:
+        toml_data = tomllib.load(f)
+
+    # ZMQ Settings
+    toml_data = app.env.get("zmq", {})
 
     # OPTIONS
     is_debug = False
-    server_uri = server or tcp_port(5556)
-    client_uri = client or tcp_port(5555)
+    server_uri = toml_data.get("server") or tcp_port(5556)
+    client_uri = toml_data.get("client") or tcp_port(5555)
     with_proxy = True
     is_attach = False
     total_workers = 0
@@ -195,13 +208,10 @@ def device(server, client, mode, auth) -> None:
     host = ""
     port = 0
 
-    # ZMQ Settings
-    env_config = app.env.get("zmq", {})
-
     # Server Authentication
-    authentication = app.spoc.get("authentication", False) or auth
-    publickey = env_config.get("public_key") if authentication else None
-    secretkey = env_config.get("secret_key") if authentication else None
+    publickey = toml_data.get("public_key")
+    secretkey = toml_data.get("secret_key")
+    authentication = publickey and secretkey
 
     server_config = ServerConfig(
         # Debug
@@ -224,8 +234,11 @@ def device(server, client, mode, auth) -> None:
         secretkey=secretkey,
     )
 
+    logging.info(publickey)
+    logging.info(secretkey)
     # Device
-    Server.start_server(server_config)
+    # Server.start_server(server_config)
+'''
 
 
 @click.command()
@@ -250,7 +263,7 @@ def channels(json) -> None:
 @click.option("-j", "--json", is_flag=True, help="JSON format")
 def tasks(json) -> None:
     """
-    Print all ZeroMQ (Pub/Sub) channels
+    Print all ZeroMQ (Push/Pull) tasks
     """
 
     # Imports

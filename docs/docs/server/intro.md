@@ -1,5 +1,7 @@
 # **Server** Introduction
 
+To get started with the ZMAG server, first install the package:
+
 ```sh
 python -m pip install "zmag[server]"
 ```

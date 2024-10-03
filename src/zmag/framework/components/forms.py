@@ -365,7 +365,7 @@ class FormTools:
             for test in setup.rules:
                 if callable(test):
                     try:
-                        found_rule = test(current_input)
+                        found_rule: Any = test(current_input)
                         if found_rule is not True:
                             the_error = FormError(
                                 field=name, type="rule", text=found_rule

@@ -53,7 +53,7 @@ query MyQuery {
       cursor
       node {
         id
-        titles
+        title
         author {
           fullName
         }

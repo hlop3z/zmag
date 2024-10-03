@@ -1,13 +1,20 @@
+# Permissions
+
+ZMAG provides a wrapper for Strawberry's `Permission` and `Info`.
+
+!!! note "strawberry"
+
+    To create custom permissions or learn more about how they work, visit the official documentation [here](https://strawberry.rocks/docs/guides/permissions).
+
+```python
 # -*- coding: utf-8 -*-
 """
 Permission
 """
 
-import typing
+from typing import Any
 
-from strawberry.types import Info
-
-from zmag import BasePermission
+from zmag import BasePermission, InfoGraphql
 
 
 class MyPermission(BasePermission):
@@ -17,9 +24,9 @@ class MyPermission(BasePermission):
 
     def has_permission(
         self,
-        source: typing.Any,
-        info: Info,
-        **kwargs: typing.Any,
+        source: Any,
+        info: InfoGraphql,
+        **kwargs: Any,
     ) -> bool:
         """Check GraphQL's Info Context"""
 
@@ -31,3 +38,4 @@ class MyPermission(BasePermission):
         if user:
             return True
         return False
+```

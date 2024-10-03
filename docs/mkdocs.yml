@@ -24,6 +24,8 @@ nav:
           - Scalars: server/graphql/scalars.md
           - Operations: server/graphql/operations.md
           - GQL Tools: server/graphql/built-in.md
+          - Extensions: server/graphql/extensions.md
+          - Permissions: server/graphql/permissions.md
       - ZMQ:
           - Queue: server/queue.md
           - Streamer: server/streamer.md
@@ -36,11 +38,9 @@ nav:
       - Sub/Pull: client/sub-pull.md
       - Authentication: client/authentication.md
   - Reference:
-      - Demo: api/api.md
       - ZeroMQ: api/zeromq.md
       - GraphQL: api/graphql.md
       - Commands: api/cli.md
-      - Client: api/client.md
 
 # Path Watch
 watch:

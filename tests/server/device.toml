@@ -1,0 +1,5 @@
+[zmq]
+server = "tcp://127.0.0.1:5556"
+client = "tcp://127.0.0.1:5555"
+public_key = "2x.Y>2(J]I:$7i+CS<BVZMJyXEX)H8?31k5o)?mQ"
+secret_key = "B.)wGr$@cYiy(<$ES*$pZ3UmIPEIy+lt1qNY!!Kn"
