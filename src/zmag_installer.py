@@ -87,6 +87,20 @@ public_key = ""
 secret_key = ""
 """
 
+MAIN_TEXT = '''
+# -*- coding: utf-8 -*-
+"""
+Run (CLI) Command-Line Interface
+"""
+
+import zmag
+
+app = zmag.App()
+
+if __name__ == "__main__":
+    app.cli()
+'''
+
 
 def start_project(
     settings_text: str = SETTINGS_TEXT,
@@ -119,6 +133,9 @@ def start_project(
     path.settings_file = path.config_dir / "settings.py"
     path.spoc_file = path.config_dir / "spoc.toml"
 
+    # Main File
+    path.main_file = root_dir / "main.py"
+
     # Create Folder
     path.config_dir.mkdir(exist_ok=True)
 
@@ -139,6 +156,10 @@ def start_project(
     if not path.spoc_file.exists():
         with open(path.spoc_file, "w", encoding="utf-8") as file:
             file.write(spoc_text)
+
+    if not path.main_file.exists():
+        with open(path.main_file, "w", encoding="utf-8") as file:
+            file.write(MAIN_TEXT)
 
     # Environment Create Files
     for env in env_types:
