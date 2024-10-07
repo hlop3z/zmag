@@ -1,0 +1,39 @@
+
+# Application Configuration
+[spoc]
+mode = "development"   # options: production, development, staging
+debug = false
+authentication = false
+
+# GraphQL Configuration
+[spoc.graphql]
+max_depth = 4
+introspection = true
+items_per_page = 100
+
+# ZeroMQ Configuration
+[spoc.zmq]
+node = "my-service"
+workers = 1 
+proxy = true
+attach = true
+thread = false
+device = "queue"                # queue, forwarder, streamer
+server = "tcp://127.0.0.1:5556"
+client = "tcp://127.0.0.1:5555"
+
+# Installed Apps by Mode
+[spoc.apps]
+production = []
+development = []
+staging = []
+
+# Additional Components
+[spoc.plugins]
+# Plugins
+permissions = []
+extensions = []
+
+# Event Hooks
+on_startup = []
+on_shutdown = []

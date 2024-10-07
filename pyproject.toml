@@ -27,9 +27,13 @@ server = [
 version = { source = "file", path = "src/zmag/__about__.py" }
 distribution = true
 
+
+[project.scripts]
+zmag-init = "zmag_installer:start_project"
+
 [tool.pdm.build]
 # package-dir = "src"
-# includes = ["src", "README.md", "LICENSE"]
+includes = ["src"]
 excludes = ["tests"]
 
 [tool.pdm.dev-dependencies]
