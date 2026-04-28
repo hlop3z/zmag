@@ -9,10 +9,22 @@ def utc_now():
 
 
 _OPERATORS = {
-    "eq", "ne", "gt", "gte", "lt", "lte",
-    "in", "nin",
-    "like", "ilike", "contains", "icontains",
-    "startswith", "istartswith", "endswith", "iendswith",
+    "eq",
+    "ne",
+    "gt",
+    "gte",
+    "lt",
+    "lte",
+    "in",
+    "nin",
+    "like",
+    "ilike",
+    "contains",
+    "icontains",
+    "startswith",
+    "istartswith",
+    "endswith",
+    "iendswith",
     "isnull",
 }
 

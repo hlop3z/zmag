@@ -1,9 +1,7 @@
 """Main application entry point."""
 
-from spoc import Framework, Schema, Hook
-
 from config import settings
-
+from spoc import Framework, Hook, Schema
 
 # Define the application schema
 schema = Schema(

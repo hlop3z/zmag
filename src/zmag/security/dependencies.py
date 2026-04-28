@@ -6,18 +6,12 @@ from fastapi import Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 
-from .config import (
-    ACCESS_TOKEN_EXPIRE_MINUTES,
-    ALGORITHM,
-    REFRESH_TOKEN_EXPIRE_DAYS,
-    SECRET_KEY,
-    TOKEN_URL,
-    fake_users_db,
-)
+from .config import (ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM,
+                     REFRESH_TOKEN_EXPIRE_DAYS, SECRET_KEY, TOKEN_URL,
+                     fake_users_db)
 from .hashing import DUMMY_HASH, verify_password
 from .schemas import TokenData, User, UserInDB
 from .tokens import create_access_token, create_refresh_token
-
 
 _REFRESH_MAX_AGE = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
 

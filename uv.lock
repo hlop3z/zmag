@@ -1,10 +1,6 @@
 version = 1
 revision = 3
 requires-python = ">=3.14"
-resolution-markers = [
-    "python_full_version >= '3.15'",
-    "python_full_version < '3.15'",
-]
 
 [[package]]
 name = "aiosqlite"
@@ -859,11 +855,11 @@ wheels = [
 
 [[package]]
 name = "spoc"
-version = "0.3.2"
+version = "0.3.5"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/23/0c/a0f27bf2c2fd462a99796eebd1c568defa908a157fa5f7970d9570ad3016/spoc-0.3.2.tar.gz", hash = "sha256:e3d02f6919287230da958cfa562e1fcf5741a3949ab04196f5e06189fc2847a6", size = 3377982, upload-time = "2026-04-26T05:37:46.602Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ec/97/06271c293e9fec8d7f8bc77f52323c1334f1ba10a51815abbeb8839683c6/spoc-0.3.5.tar.gz", hash = "sha256:4ccb765a703fb3fa13caecb2215f6ab6926d80486f9c81da889f7ab326481b5c", size = 3378057, upload-time = "2026-04-28T10:03:34.23Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4e/17/4fda8ff61e5e8655ebed9fa3febcd365daf87100cd7b353b3925e2a38860/spoc-0.3.2-py3-none-any.whl", hash = "sha256:99ff845344bbf7d1ed51973258ea8013eb062e9107ca5bedc7a5f86a4664a3e9", size = 29392, upload-time = "2026-04-26T05:37:48.09Z" },
+    { url = "https://files.pythonhosted.org/packages/49/9d/14b64af29c14c3cc0632afce56df6ddc93a251cf6f93962987255480f2f3/spoc-0.3.5-py3-none-any.whl", hash = "sha256:4ed8b046b5a5d6ffe9e52c425c7362664ae545bf324bc4af32db39dfd5909b12", size = 29750, upload-time = "2026-04-28T10:03:36.206Z" },
 ]
 
 [[package]]
@@ -1146,7 +1142,7 @@ requires-dist = [
     { name = "pwdlib", extras = ["argon2"], specifier = ">=0.3.0" },
     { name = "pyjwt", specifier = ">=2.12.1" },
     { name = "slowapi", specifier = ">=0.1.9" },
-    { name = "spoc", specifier = ">=0.3.2" },
+    { name = "spoc", specifier = ">=0.3.5" },
     { name = "sqlalchemy", specifier = ">=2.0.49" },
 ]
 

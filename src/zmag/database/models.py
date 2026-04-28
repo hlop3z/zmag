@@ -1,24 +1,24 @@
 from typing import Optional as use
 
 from sqlalchemy import (
-    Integer,
+    JSON,
     BigInteger,
+    Boolean,
+    Date,
+    DateTime,
+    Enum,
+    Float,
+    Integer,
+    LargeBinary,
+    Numeric,
     String,
     Text,
-    Boolean,
-    DateTime,
-    Date,
     Time,
-    Float,
-    Numeric,
-    JSON,
     Uuid,
-    Enum,
-    LargeBinary,
 )
 
-from ..framework.sql_model import model as type
 from ..framework.sql_model import field as col
+from ..framework.sql_model import model as type
 
 json = JSON
 
@@ -35,6 +35,7 @@ numeric = Numeric
 uuid = Uuid
 enum = Enum
 binary = LargeBinary
+
 
 __all__ = (
     # Utils

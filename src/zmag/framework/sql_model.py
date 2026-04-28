@@ -1,19 +1,16 @@
 from __future__ import annotations
 
-from typing import Any, Callable, TypeVar, overload
-from typing import dataclass_transform  # Python 3.12+
-
-from dataclasses import field as dc_field
 from dataclasses import dataclass as dc_dataclass
+from dataclasses import field as dc_field
 from dataclasses import fields as dc_fields
+from typing import dataclass_transform  # Python 3.12+
+from typing import Any, Callable, TypeVar, overload
 
-
-from sqlalchemy.sql.schema import _ServerDefaultArgument
+from sqlalchemy import Column, ForeignKey, Computed
 from sqlalchemy.sql.base import _NoArg
-from sqlalchemy import Column, ForeignKey
+from sqlalchemy.sql.schema import _ServerDefaultArgument
 
-from .base import components
-
+from .components import components
 
 T = TypeVar("T", bound=type[Any])
 
@@ -23,26 +20,10 @@ T = TypeVar("T", bound=type[Any])
 
 
 @dc_dataclass
-class SQLModel:
-    columns: list[Any]
-    unique: list | None = None
-    index: list | None = None
-
-
-@dc_dataclass
-class Form:
-    create: list[str]
-    update: list[str]
-    required: list[str]
-    nullable: list[str]
-
-
-@dc_dataclass
 class SQLMeta:
     fields: Any
-    is_abstract: bool = False
-    index: list[tuple[str]] | None = None
-    unique: list[tuple[str]] | None = None
+    index: list[tuple[str, ...]] | None = None
+    unique: list[tuple[str, ...]] | None = None
     required: list[str] | None = None
     form_create: list[str] | None = None
     form_update: list[str] | None = None
@@ -58,8 +39,8 @@ def model(
     _cls: None = None,
     *,
     is_abstract: bool = False,
-    index: list[tuple[str]] | None = None,
-    unique: list[tuple[str]] | None = None,
+    index: list[tuple[str, ...]] | None = None,
+    unique: list[tuple[str, ...]] | None = None,
     required: list[str] | None = None,
     form_create: list[str] | None = None,
     form_update: list[str] | None = None,
@@ -71,8 +52,8 @@ def model(
     _cls: T,
     *,
     is_abstract: bool = False,
-    index: list[tuple[str]] | None = None,
-    unique: list[tuple[str]] | None = None,
+    index: list[tuple[str, ...]] | None = None,
+    unique: list[tuple[str, ...]] | None = None,
     required: list[str] | None = None,
     form_create: list[str] | None = None,
     form_update: list[str] | None = None,
@@ -84,8 +65,8 @@ def model(
     _cls: T | None = None,
     *,
     is_abstract: bool = False,
-    index: list[tuple[str]] | None = None,
-    unique: list[tuple[str]] | None = None,
+    index: list[tuple[str, ...]] | None = None,
+    unique: list[tuple[str, ...]] | None = None,
     required: list[str] | None = None,
     form_create: list[str] | None = None,
     form_update: list[str] | None = None,
@@ -93,17 +74,17 @@ def model(
 
     def decorator(cls: T) -> T:
         dataclass_cls = dc_dataclass(cls)
-        __meta = SQLMeta(
-            fields=dc_fields(dataclass_cls),
-            is_abstract=is_abstract,
-            index=index or [],
-            unique=unique or [],
-            required=required or [],
-            form_create=form_create or [],
-            form_update=form_update or [],
-        )
+        if not is_abstract:
+            __meta = SQLMeta(
+                fields=dc_fields(dataclass_cls),
+                index=index or [],
+                unique=unique or [],
+                required=required or [],
+                form_create=form_create or [],
+                form_update=form_update or [],
+            )
 
-        components.register("models", dataclass_cls, config={"sql": __meta})
+            components.register("models", dataclass_cls, config={"sql": __meta})
         return dataclass_cls
 
     return decorator if _cls is None else decorator(_cls)
@@ -115,7 +96,9 @@ def model(
 
 
 def field(
-    col_type: Any = None,
+    col_type: Any,
+    m2m: bool = False,
+    computed: str | None = None,
     meta: dict[str, Any] | None = None,
     autoincrement: bool = False,
     default: Any = _NoArg.NO_ARG,
@@ -145,9 +128,12 @@ def field(
 
     def sql_column(name, table_uri: str | None = None):
         _col_type = col_type
+        with_computed = []
+        if computed:
+            with_computed.append(Computed(computed, persisted=True))
         if table_uri and isinstance(col_type, str):
             _col_type = ForeignKey(table_uri)
-        return Column(name, _col_type, **column_args)
+        return Column(name, _col_type, *with_computed, **column_args)
 
     _default = default if default is not _NoArg.NO_ARG else None
     _meta = {
@@ -156,6 +142,7 @@ def field(
         "refs": col_type if isinstance(col_type, str) else None,
         "nullable": nullable,
         "metadata": (meta or {}),
+        "many_to_many": m2m,
     }
 
     return (
