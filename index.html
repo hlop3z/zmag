@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Alpine App</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Your app description here" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Alpine.js (defer is important) -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Optional: modern CSS reset -->
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            line-height: 1.5;
+        }
+
+        main {
+            text-align: center;
+            margin-top: 25dvh;
+        }
+
+        form {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 260px;
+            margin-top: 1.5rem;
+        }
+
+        input {
+            padding: 0.4rem 0.6rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 0.4rem 0.8rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            border: 1px solid #888;
+        }
+
+        .error {
+            color: crimson;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .user {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- App Root -->
+    <main x-data="app()" x-init="init()" class="container">
+
+        <h1>Application View</h1>
+
+        <template x-if="user">
+            <div>
+                <p class="user">Logged in as <strong x-text="user.username"></strong></p>
+                <button @click="logout()">Logout</button>
+                <button @click="test_secret()">Test App</button>
+                <button @click="test_public()">Test Pub</button>
+                <pre x-text="JSON.stringify(data, null, 2)" style="text-align: left;"></pre>
+            </div>
+        </template>
+
+    </main>
+
+    <script>
+        class ApiClient {
+            constructor(baseURL) {
+                this.baseURL = baseURL;
+                this.token = null;
+            }
+
+            setToken(token) { this.token = token; }
+
+            query(params) {
+                const qs = new URLSearchParams();
+                for (const [key, value] of Object.entries(params)) {
+                    if (Array.isArray(value)) {
+                        value.forEach(v => qs.append(key, v));
+                    } else {
+                        qs.append(key, value);
+                    }
+                }
+                return "?" + qs.toString();
+            }
+
+            get(endpoint, params, headers) {
+                const _endpoint = params ? endpoint + this.query(params) : endpoint;
+                return this.request(_endpoint, { method: "GET", headers });
+            }
+
+            post(endpoint, body, headers) {
+                return this.request(endpoint, { method: "POST", body, headers });
+            }
+
+            put(endpoint, body, headers) {
+                return this.request(endpoint, { method: "PUT", body, headers });
+            }
+
+            patch(endpoint, body, headers) {
+                return this.request(endpoint, { method: "PATCH", body, headers });
+            }
+
+            delete(endpoint, headers) {
+                return this.request(endpoint, { method: "DELETE", headers });
+            }
+
+            form(endpoint, body, headers) {
+                return this.request(endpoint, { method: "POST", body: new URLSearchParams(body), headers });
+            }
+
+            async request(endpoint, { method = "GET", body = null, headers = {} } = {}) {
+                const isForm = body instanceof URLSearchParams || body instanceof FormData;
+                const config = {
+                    method,
+                    headers: {
+                        ...(isForm ? {} : { "Content-Type": "application/json" }),
+                        ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
+                        ...headers,
+                    },
+                };
+
+                if (body) {
+                    config.body = isForm ? body : JSON.stringify(body);
+                }
+
+                const response = await fetch(`${this.baseURL}${endpoint}`, config);
+                const data = await response.json().catch(() => null);
+
+                if (!response.ok) {
+                    throw new Error(data?.detail || data?.message || "Request failed");
+                }
+
+                return data;
+            }
+        }
+
+        function createAPI(baseURL) {
+            return new ApiClient(baseURL);
+        }
+
+        const API = createAPI("/api")
+        const fakeQuery = { "page": 1, "limit": 10, sort_by: ["-id", "name"] }
+
+        function app() {
+            return {
+                user: null,
+                data: null,
+
+                async test_public() {
+                    const data = await API.get('/public/auth/model', fakeQuery);
+                    console.log(data);
+                    this.data = data;
+                },
+
+                async test_secret() {
+                    const data = await API.get('/v1/auth/model', fakeQuery);
+                    console.log(data);
+                    this.data = data;
+                },
+
+                async init() {
+                    try {
+                        this.user = await API.get('/auth/me');
+                    } catch {
+                        window.location.href = '/';
+                    }
+                },
+
+                async logout() {
+                    await API.post('/auth/logout');
+                    window.location.href = '/';
+                },
+            };
+        }
+    </script>
+
+</body>
+
+</html>

@@ -7,8 +7,40 @@ authors = [
     { name = "hlop3z", email = "23062270+hlop3z@users.noreply.github.com" },
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "aiosqlite>=0.22.1",
+    "alembic>=1.18.4",
+    "asyncpg>=0.31.0",
+    "click>=8.3.3",
+    "fastapi[standard]>=0.136.1",
+    "httpx>=0.28.1",
+    "pwdlib[argon2]>=0.3.0",
+    "pyjwt>=2.12.1",
+    "slowapi>=0.1.9",
+    "spoc>=0.3.2",
+    "sqlalchemy>=2.0.49",
+]
+
+[project.scripts]
+zmag-init = "zmag.admin:main"
+
+[dependency-groups]
+dev = [
+    # Devs Tools
+    "pytest>=9.0.2",
+    "ruff>=0.14.13",
+    "isort>=8.0.1",
+    "ty>=0.0.32",
+]
 
 [build-system]
 requires = ["uv_build>=0.9.3,<0.10.0"]
 build-backend = "uv_build"
+
+[tool.pyright]
+# Dynamic Pydantic schemas built at runtime.
+reportInvalidTypeForm = "none"
+
+[tool.ty.rules]
+# Dynamic Pydantic schemas built at runtime.
+invalid-type-form = "ignore"

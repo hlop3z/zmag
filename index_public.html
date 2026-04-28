@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Alpine App</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Your app description here" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Alpine.js (defer is important) -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Optional: modern CSS reset -->
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            line-height: 1.5;
+        }
+
+        main {
+            text-align: center;
+            margin-top: 25dvh;
+        }
+
+        form {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 260px;
+            margin-top: 1.5rem;
+        }
+
+        input {
+            padding: 0.4rem 0.6rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 0.4rem 0.8rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            border: 1px solid #888;
+        }
+
+        .error {
+            color: crimson;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .user {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Login Page -->
+    <main x-data="login()" class="container">
+
+        <h1>Login View</h1>
+
+        <form @submit.prevent="submit()">
+            <input type="text" x-model="username" placeholder="Username" autocomplete="username" required />
+            <input type="password" x-model="password" placeholder="Password" autocomplete="current-password" required />
+            <button type="submit" :disabled="loading" x-text="loading ? 'Logging in…' : 'Login'"></button>
+            <span class="error" x-text="error"></span>
+        </form>
+
+    </main>
+
+    <script>
+        class ApiClient {
+            constructor(baseURL) {
+                this.baseURL = baseURL;
+                this.token = null;
+            }
+
+            setToken(token) { this.token = token; }
+
+            query(params) {
+                const qs = new URLSearchParams();
+                for (const [key, value] of Object.entries(params)) {
+                    if (Array.isArray(value)) {
+                        value.forEach(v => qs.append(key, v));
+                    } else {
+                        qs.append(key, value);
+                    }
+                }
+                return "?" + qs.toString();
+            }
+
+            get(endpoint, params, headers) {
+                const _endpoint = params ? endpoint + this.query(params) : endpoint;
+                return this.request(_endpoint, { method: "GET", headers });
+            }
+
+            post(endpoint, body, headers) {
+                return this.request(endpoint, { method: "POST", body, headers });
+            }
+
+            put(endpoint, body, headers) {
+                return this.request(endpoint, { method: "PUT", body, headers });
+            }
+
+            patch(endpoint, body, headers) {
+                return this.request(endpoint, { method: "PATCH", body, headers });
+            }
+
+            delete(endpoint, headers) {
+                return this.request(endpoint, { method: "DELETE", headers });
+            }
+
+            form(endpoint, body, headers) {
+                return this.request(endpoint, { method: "POST", body: new URLSearchParams(body), headers });
+            }
+
+            async request(endpoint, { method = "GET", body = null, headers = {} } = {}) {
+                const isForm = body instanceof URLSearchParams || body instanceof FormData;
+                const config = {
+                    method,
+                    headers: {
+                        ...(isForm ? {} : { "Content-Type": "application/json" }),
+                        ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
+                        ...headers,
+                    },
+                };
+
+                if (body) {
+                    config.body = isForm ? body : JSON.stringify(body);
+                }
+
+                const response = await fetch(`${this.baseURL}${endpoint}`, config);
+                const data = await response.json().catch(() => null);
+
+                if (!response.ok) {
+                    throw new Error(data?.detail || data?.message || "Request failed");
+                }
+
+                return data;
+            }
+        }
+
+        function createAPI(baseURL) {
+            return new ApiClient(baseURL);
+        }
+
+        const API = createAPI("/api");
+
+        function login() {
+            return {
+                username: '',
+                password: '',
+                error: '',
+                loading: false,
+
+                async submit() {
+                    this.error = '';
+                    this.loading = true;
+                    try {
+                        await API.form('/auth/login', {
+                            username: this.username,
+                            password: this.password,
+                        });
+                        window.location.href = '/';
+                    } catch (e) {
+                        this.error = e.message || 'Login failed';
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+            };
+        }
+    </script>
+
+</body>
+
+</html>
