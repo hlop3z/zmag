@@ -12,9 +12,10 @@ class User(zmag.Model):
 @m.type
 class Blog(zmag.FullModel):
     name: m.use[str] = m.col(m.str)
+    meta: m.use[dict] = m.col(m.json)
     user_id: m.use[str] = m.col("sample.User.id")
     users: m.use[str] = m.col("sample.User.id", m2m=True)
 
 
-User()
-Blog()
+# User()
+# Blog().orm.create

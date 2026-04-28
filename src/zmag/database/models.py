@@ -1,5 +1,6 @@
 from typing import Optional as use
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy import (
     JSON,
     BigInteger,
@@ -19,8 +20,12 @@ from sqlalchemy import (
 
 from ..framework.sql_model import field as col
 from ..framework.sql_model import model as type
+from ..framework.sql_settings import DB_ENGINE
 
-json = JSON
+if DB_ENGINE == "sqlite":
+    json = JSON
+else:
+    json = JSONB
 
 int = Integer
 int64 = BigInteger

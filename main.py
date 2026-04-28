@@ -5,16 +5,18 @@ from fastapi import Request, Response
 from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.staticfiles import StaticFiles
+
 from zmag.security import (
+    CurrentUser,
     Token,
     User,
     authenticate_user,
     fake_users_db,
-    get_current_active_user,
     issue_access_token,
     set_refresh_cookie,
     validate_refresh_token,
 )
+from zmag.database import DatabaseSession
 from zmag.utils import load_template, parse_query
 from zmag.middleware._sample import RejectBadTokenMiddleware
 
@@ -79,9 +81,7 @@ def logout(response: Response):
 
 
 @app.get("/api/auth/me")
-async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_active_user)],
-) -> User:
+async def read_users_me(current_user: CurrentUser) -> User:
     return current_user
 
 
@@ -93,10 +93,12 @@ async def read_users_me(
 @app.get("/api/public/{app_name}/{model_name}")
 async def get_item_public(
     request: Request,
+    db: DatabaseSession,
     app_name: str,
     model_name: str,
 ):
     query, filters = parse_query(request.query_params)
+    print(db)
     return {
         "label": app_name,
         "model": model_name,
@@ -109,7 +111,7 @@ async def get_item_public(
 @app.get("/api/v1/{app_name}/{model_name}")
 async def get_item(
     request: Request,
-    current_user: Annotated[User, Depends(get_current_active_user)],
+    current_user: CurrentUser,
     app_name: str,
     model_name: str,
 ):

@@ -3,6 +3,8 @@
 from config import settings
 from spoc import Framework, Hook, Schema
 
+from .builders.models import build_models
+
 # Define the application schema
 schema = Schema(
     # Modules to load from each app
@@ -31,3 +33,6 @@ framework = Framework(
     echo=False,  # Set to True for debug output
     mode="loose",  # "strict" enforces all modules exist, "loose" allows missing
 )
+
+
+build_models(framework.components.models.items())
