@@ -1,18 +1,18 @@
 # Application Configuration
 [spoc]
+mode = "development" # options: (development, staging, production)
+debug = true
+
+[spoc.api]
 name = "ZMAG API"
 docs = true
 html = true
-# Server Config
-# options: development, staging, production
-mode = "development"
-debug = true
 version = "0.4.0"
 description = "API for managing items, including creation, retrieval, updates, and deletion."
 
 # Installed Apps by Mode
 [spoc.apps]
-production = ["sample", "blogs"]
+production = ["sample"]
 staging = []
 development = []
 

@@ -16,7 +16,7 @@ from zmag.security import (
     validate_refresh_token,
 )
 from zmag.utils import load_template, parse_query
-from zmag.middleware.sample import RejectBadTokenMiddleware
+from zmag.middleware._sample import RejectBadTokenMiddleware
 
 app = FastAPI()
 

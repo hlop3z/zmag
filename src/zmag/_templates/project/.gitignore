@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[codz]
+*.so
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual envs
+.venv/
+venv/
+.python-version
+
+# Type checkers / linters
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Project
+*.sqlite3
+.env
+.env.*
+!.env.example
+
+# Editors
+.vscode/*
+!.vscode/settings.json
+.idea/

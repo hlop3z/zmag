@@ -3,7 +3,7 @@ set -euo pipefail
 
 echo "Running pre-commit checks..."
 
-DIRS=("src" "apps")
+DIRS=("src")
 
 run() {
   echo "→ $*"
