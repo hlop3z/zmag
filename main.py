@@ -4,6 +4,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi import Request, Response
 from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.staticfiles import StaticFiles
 from zmag.security import (
     Token,
     User,
@@ -14,12 +15,16 @@ from zmag.security import (
     set_refresh_cookie,
     validate_refresh_token,
 )
-from zmag.utils import load_template
+from zmag.utils import load_template, parse_query
 from zmag.middleware.sample import RejectBadTokenMiddleware
 
 app = FastAPI()
 
 app.add_middleware(RejectBadTokenMiddleware)
+
+# ---------------------------------------------------------------------------
+# Authentication
+# ---------------------------------------------------------------------------
 
 
 @app.post("/api/auth/login")
@@ -80,11 +85,9 @@ async def read_users_me(
     return current_user
 
 
-@app.get("/api/items")
-async def read_own_items(
-    current_user: Annotated[User, Depends(get_current_active_user)],
-):
-    return [{"item_id": "Foo", "owner": current_user.username}]
+# ---------------------------------------------------------------------------
+# APIs Handlers
+# ---------------------------------------------------------------------------
 
 
 @app.get("/api/public/{app_name}/{model_name}")
@@ -93,17 +96,12 @@ async def get_item_public(
     app_name: str,
     model_name: str,
 ):
-    query = {
-        k: v if len(v) > 1 else v[0]
-        for k, v in {
-            k: request.query_params.getlist(k)
-            for k in dict.fromkeys(request.query_params)
-        }.items()
-    }
+    query, filters = parse_query(request.query_params)
     return {
         "label": app_name,
         "model": model_name,
         "query": query,
+        "filters": filters,
         "user": None,
     }
 
@@ -115,25 +113,28 @@ async def get_item(
     app_name: str,
     model_name: str,
 ):
-    query = {
-        k: v if len(v) > 1 else v[0]
-        for k, v in {
-            k: request.query_params.getlist(k)
-            for k in dict.fromkeys(request.query_params)
-        }.items()
-    }
+    query, filters = parse_query(request.query_params)
     return {
         "label": app_name,
         "model": model_name,
         "query": query,
+        "filters": filters,
         "user": current_user.model_dump(),
     }
+
+
+# ---------------------------------------------------------------------------
+# Views
+# ---------------------------------------------------------------------------
+
+app.mount("/__static__", StaticFiles(directory="frontend/__static__"), name="static")
+app.mount("/__assets__", StaticFiles(directory="frontend/__assets__"), name="assets")
 
 
 @app.get("/{full_path:path}", response_class=HTMLResponse, tags=["views"])
 async def root(request: Request, full_path: str):
     logged_in = "refresh_token" in request.cookies
-    login_html = load_template("index_public.html")
-    root_html = load_template("index.html")
+    login_html = load_template("index.html")
+    root_html = load_template("frontend/index.html")
     template = root_html if logged_in else login_html
     return template.render(full_path=full_path, logged_in=logged_in)

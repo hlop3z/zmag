@@ -73,20 +73,17 @@
 
 <body>
 
-    <!-- App Root -->
-    <main x-data="app()" x-init="init()" class="container">
+    <!-- Login Page -->
+    <main x-data="login()" class="container">
 
-        <h1>Application View</h1>
+        <h1>Login View</h1>
 
-        <template x-if="user">
-            <div>
-                <p class="user">Logged in as <strong x-text="user.username"></strong></p>
-                <button @click="logout()">Logout</button>
-                <button @click="test_secret()">Test App</button>
-                <button @click="test_public()">Test Pub</button>
-                <pre x-text="JSON.stringify(data, null, 2)" style="text-align: left;"></pre>
-            </div>
-        </template>
+        <form @submit.prevent="submit()">
+            <input type="text" x-model="username" placeholder="Username" autocomplete="username" required />
+            <input type="password" x-model="password" placeholder="Password" autocomplete="current-password" required />
+            <button type="submit" :disabled="loading" x-text="loading ? 'Logging in…' : 'Login'"></button>
+            <span class="error" x-text="error"></span>
+        </form>
 
     </main>
 
@@ -166,37 +163,29 @@
             return new ApiClient(baseURL);
         }
 
-        const API = createAPI("/api")
-        const fakeQuery = { "page": 1, "limit": 10, sort_by: ["-id", "name"] }
+        const API = createAPI("/api");
 
-        function app() {
+        function login() {
             return {
-                user: null,
-                data: null,
+                username: '',
+                password: '',
+                error: '',
+                loading: false,
 
-                async test_public() {
-                    const data = await API.get('/public/auth/model', fakeQuery);
-                    console.log(data);
-                    this.data = data;
-                },
-
-                async test_secret() {
-                    const data = await API.get('/v1/auth/model', fakeQuery);
-                    console.log(data);
-                    this.data = data;
-                },
-
-                async init() {
+                async submit() {
+                    this.error = '';
+                    this.loading = true;
                     try {
-                        this.user = await API.get('/auth/me');
-                    } catch {
+                        await API.form('/auth/login', {
+                            username: this.username,
+                            password: this.password,
+                        });
                         window.location.href = '/';
+                    } catch (e) {
+                        this.error = e.message || 'Login failed';
+                    } finally {
+                        this.loading = false;
                     }
-                },
-
-                async logout() {
-                    await API.post('/auth/logout');
-                    window.location.href = '/';
                 },
             };
         }

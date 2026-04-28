@@ -103,6 +103,7 @@ class Context:
     app: App = dc.field(default_factory=lambda: App())
     user: dict = dc.field(default_factory=dict)
     query: dict = dc.field(default_factory=dict)
+    filters: dict = dc.field(default_factory=dict)
     request: Any = None
     db: Any = None
 
