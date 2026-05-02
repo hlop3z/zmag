@@ -1,29 +1,79 @@
-from zmag import framework
+import asyncio
+
+import zmag
+
+if zmag.typing:
+    from apps.sample.models import Blog, User
+
+from zmag.database.sql_sessions import async_session
 
 
-def main():
-    """Run the application."""
-    print("\n=== SPOC Application Started ===\n")
+async def main():
+    # ── Bootstrap ────────────────────────────────────────────────────────────
+    zmag.create_tables()
 
-    # Access installed apps
-    print(f"Installed apps: {framework.installed_apps}")
+    User: User = zmag.get_model("sample", "User")
+    Blog: Blog = zmag.get_model("sample", "Blog")
 
-    # Get all models
-    print("\n--- Registered Models ---")
-    for name, model in framework.components.models.items():
-        print(f"• {name}:")
-        print(model.orm.table)
+    async with async_session() as session:
 
-    # Get a specific component
-    print("\n--- Using Components ---")
-    found_model = framework.get_component("models", "sample.User")
-    if found_model:
-        print(f"Model: {found_model}")
+        # ── CREATE ───────────────────────────────────────────────────────────
+        user_id: str = (
+            await session.execute(
+                User.orm.create({"first_name": "John", "last_name": "Doe"})
+            )
+        ).scalar_one()
 
-    print("\n=== Application Running ===\n")
-    # When done, shutdown gracefully
-    # framework.shutdown()
+        blog_id: str = (
+            await session.execute(
+                Blog.orm.create({"name": "My Blog", "meta": {}, "user_id": user_id})
+            )
+        ).scalar_one()
+
+        await session.commit()
+        print("Created user:", user_id)
+        print("Created blog:", blog_id)
+
+        # ── READ ─────────────────────────────────────────────────────────────
+        user_row = (await session.execute(User.orm.get(user_id))).mappings().first()
+        print("User:", dict(user_row) if user_row else None)
+
+        # ── FILTER ───────────────────────────────────────────────────────────
+        stmt = Blog.orm.filter([("name", "like", "%Blog%")])
+        blogs = (await session.execute(stmt)).mappings().all()
+        print("Blogs matching 'Blog':", [dict(b) for b in blogs])
+
+        # ── UPDATE ───────────────────────────────────────────────────────────
+        await session.execute(Blog.orm.update(blog_id, {"name": "Updated Blog"}))
+        await session.commit()
+        print("Updated blog name")
+
+        # ── M2M: link ────────────────────────────────────────────────────────
+        await session.execute(Blog.m2m.users(blog_id).add(user_id))
+        await session.commit()
+        print("Linked user to blog")
+
+        # ── M2M: query through junction ───────────────────────────────────────
+        stmt = Blog.m2m.users(blog_id).of()
+        users = (await session.execute(stmt)).mappings().all()
+        print("Users on blog:", [dict(u) for u in users])
+
+        # chain extra filters on top
+        stmt = Blog.m2m.users(blog_id).of().where(User.orm.table.c.first_name == "John")
+        users_named_john = (await session.execute(stmt)).mappings().all()
+        print("Users named John on blog:", [dict(u) for u in users_named_john])
+
+        # ── M2M: unlink ───────────────────────────────────────────────────────
+        await session.execute(Blog.m2m.users(blog_id).remove(user_id))
+        await session.commit()
+        print("Unlinked user from blog")
+
+        # ── DELETE ────────────────────────────────────────────────────────────
+        # await session.execute(Blog.orm.delete(blog_id))
+        # await session.execute(User.orm.delete(user_id))
+        await session.commit()
+        print("Deleted blog and user")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
