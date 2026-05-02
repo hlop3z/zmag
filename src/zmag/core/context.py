@@ -24,19 +24,19 @@ class Context:
         db: DatabaseSession,
         id: UUID | None,
         input: dict[str, Any],
-        meta: dict[str, Any],
+        pagination: dict[str, Any],
         request: Request,
         response: Response,
         filters: list[Any],
     ):
-        Context(
+        return Context(
             db=db,
             id=id,
             input=input,
             pagination=Pagination(
-                page=meta.get("page", 1),
-                limit=meta.get("limit", MAX_PAGE_SIZE),
-                sort_by=meta.get("sort_by", []),
+                page=pagination.get("page", 1),
+                limit=pagination.get("limit", MAX_PAGE_SIZE),
+                sort_by=pagination.get("sort_by", []),
             ),
             filters=filters,
             request=request,

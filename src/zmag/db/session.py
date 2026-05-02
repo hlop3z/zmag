@@ -57,7 +57,13 @@ async def db_session() -> AsyncGenerator[AsyncSession, None]:
     if not SessionLocal:
         raise RuntimeError("Database not initialised — lifespan did not run")
     async with SessionLocal() as session:
-        yield session
+        try:
+            yield session
+            await session.commit()
+        except:  # noqa: E722
+            await session.rollback()
+        finally:
+            await session.close()
 
 
 # Define a type alias

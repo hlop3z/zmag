@@ -123,6 +123,7 @@ def build_models(models_list):
             model_m2m_refs.setdefault(link_name, []).append((model, link.field_name))
 
         # ORM Attach
+        model.orm.sortable = meta.sortable or []
         model.orm.table = Table(
             table_name,
             METADATA,

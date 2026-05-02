@@ -21,9 +21,11 @@ from sqlalchemy.sql.base import ReadOnlyColumnCollection
 
 from ..core.decorators.models import field
 from ..core.decorators.models import model
+from ..db.session import DatabaseSession
+from .utils import apply_sort
 
 Col = ReadOnlyColumnCollection[str, Column[Any]]
-
+Filters = list[tuple[str, str, Any]]
 
 FILTER_OPS: dict[str, Callable] = {
     "eq": lambda col, v: col == v,
@@ -77,22 +79,23 @@ class M2MORM:
         return cls.all().where(getattr(cls.table.c, cls.own_col) == own_id)
 
     @classmethod
-    def add(cls, own_id: str, related: str):
+    def add(cls, own_id: str, related_id: str):
         return insert(cls.table).values(
-            **{cls.own_col: own_id, cls.related_col: related}
+            **{cls.own_col: own_id, cls.related_col: related_id}
         )
 
     @classmethod
-    def remove(cls, own_id: str, related: str):
+    def remove(cls, own_id: str, related_id: str):
         return (
             delete(cls.table)
             .where(getattr(cls.table.c, cls.own_col) == own_id)
-            .where(getattr(cls.table.c, cls.related_col) == related)
+            .where(getattr(cls.table.c, cls.related_col) == related_id)
         )
 
 
 class ORM:
     table: Table
+    sortable: list[str] | None = None
 
     _cached_cols = None
 
@@ -115,24 +118,7 @@ class ORM:
         return insert(cls.table).values(**cls._valid(data)).returning(cls.table.c.id)
 
     @classmethod
-    def update(cls, item_id, data: dict[str, Any]) -> Update:
-        return (
-            update(cls.table)
-            .where(cls.table.c.id == item_id)
-            .values(**cls._valid(data))
-        )
-
-    @classmethod
-    def delete(cls, item_id: UUID) -> Delete:
-        return delete(cls.table).where(cls.table.c.id == item_id)
-
-    @classmethod
-    def get(cls, item_id: UUID) -> Select:
-        return select(cls.table).where(cls.table.c.id == item_id)
-
-    @classmethod
-    def filter(cls, conditions: list[tuple[str, str, Any]]) -> Select:
-        stmt = select(cls.table)
+    def _apply_conditions(cls, stmt, conditions: Filters):
         for field_name, op, value in conditions:
             if field_name not in cls._cols():
                 continue
@@ -141,6 +127,35 @@ class ORM:
             if handler:
                 stmt = stmt.where(handler(col, value))
         return stmt
+
+    @classmethod
+    def update(
+        cls, item_id, data: dict[str, Any], conditions: Filters | None = None
+    ) -> Update:
+        stmt = (
+            update(cls.table)
+            .where(cls.table.c.id == item_id)
+            .values(**cls._valid(data))
+        )
+        return cls._apply_conditions(stmt, conditions) if conditions else stmt
+
+    @classmethod
+    def delete(cls, item_id: UUID, conditions: Filters | None = None) -> Delete:
+        stmt = delete(cls.table).where(cls.table.c.id == item_id)
+        return cls._apply_conditions(stmt, conditions) if conditions else stmt
+
+    @classmethod
+    def get(cls, item_id: UUID, conditions: Filters | None = None) -> Select:
+        stmt = select(cls.table).where(cls.table.c.id == item_id)
+        return cls._apply_conditions(stmt, conditions) if conditions else stmt
+
+    @classmethod
+    def filter(cls, conditions: Filters, query: Select | None = None) -> Select:
+        return cls._apply_conditions(query or select(cls.table), conditions)
+
+    @classmethod
+    def sort(cls, query: Select, sort_by: list[str]) -> Select:
+        return apply_sort(cls.table, query, sort_by, cls.sortable)
 
 
 class Crud:

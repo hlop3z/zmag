@@ -69,15 +69,11 @@ async def catch_all_public(
         except Exception:
             pass
 
-    ctx = Context(
+    ctx = Context.init(
         db=db,
         id=item_id,
         input=body,
-        pagination=Pagination(
-            page=meta.get("page", 1),
-            limit=meta.get("limit", 1),
-            sort_by=meta.get("sort_by", []),
-        ),
+        pagination=meta,
         filters=filters,
         request=request,
         response=response,

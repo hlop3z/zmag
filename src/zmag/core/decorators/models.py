@@ -25,6 +25,7 @@ class SQLMeta:
     index: list[tuple[str, ...]] | None = None
     unique: list[tuple[str, ...]] | None = None
     required: list[str] | None = None
+    sortable: list[str] | None = None
     form_create: list[str] | None = None
     form_update: list[str] | None = None
 
@@ -42,6 +43,7 @@ def model(
     index: list[tuple[str, ...]] | None = None,
     unique: list[tuple[str, ...]] | None = None,
     required: list[str] | None = None,
+    sortable: list[str] | None = None,
     form_create: list[str] | None = None,
     form_update: list[str] | None = None,
 ) -> Callable[[T], T]: ...
@@ -55,6 +57,7 @@ def model(
     index: list[tuple[str, ...]] | None = None,
     unique: list[tuple[str, ...]] | None = None,
     required: list[str] | None = None,
+    sortable: list[str] | None = None,
     form_create: list[str] | None = None,
     form_update: list[str] | None = None,
 ) -> T: ...
@@ -68,6 +71,7 @@ def model(
     index: list[tuple[str, ...]] | None = None,
     unique: list[tuple[str, ...]] | None = None,
     required: list[str] | None = None,
+    sortable: list[str] | None = None,
     form_create: list[str] | None = None,
     form_update: list[str] | None = None,
 ) -> T | Callable[[T], T]:
@@ -80,6 +84,7 @@ def model(
                 index=index or [],
                 unique=unique or [],
                 required=required or [],
+                sortable=sortable or [],
                 form_create=form_create or [],
                 form_update=form_update or [],
             )
