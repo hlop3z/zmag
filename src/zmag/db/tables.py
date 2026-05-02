@@ -6,7 +6,10 @@ from sqlalchemy import (
     func,
     Table,
     Column,
+    Boolean,
     DateTime,
+    Float,
+    Integer,
     Uuid,
     insert,
     update,
@@ -18,10 +21,10 @@ from sqlalchemy import (
     Select,
 )
 from sqlalchemy.sql.base import ReadOnlyColumnCollection
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..core.decorators.models import field
 from ..core.decorators.models import model
-from ..db.session import DatabaseSession
 from .utils import apply_sort
 
 Col = ReadOnlyColumnCollection[str, Column[Any]]
@@ -110,11 +113,36 @@ class ORM:
         return cls._cached_cols
 
     @classmethod
-    def _valid(cls, data: dict[str, Any]) -> dict[str, Any]:
-        return {k: v for k, v in data.items() if k in cls._cols()}
+    def _coerce(cls, col_name: str, value: Any) -> Any:
+        if not isinstance(value, str):
+            return value
+        col_type = getattr(cls.table.c, col_name).type
+        if isinstance(col_type, DateTime):
+            return datetime.fromisoformat(value)
+        if isinstance(col_type, Uuid):
+            return UUID(value)
+        if isinstance(col_type, Integer):
+            return int(value)
+        if isinstance(col_type, Float):
+            return float(value)
+        if isinstance(col_type, Boolean):
+            return value.lower() in ("true", "1", "yes")
+        return value
 
     @classmethod
-    def create(cls, data: dict[str, Any]) -> Insert:
+    def _valid(cls, data: dict[str, Any]) -> dict[str, Any]:
+        return {
+            k: cls._coerce(k, v)
+            for k, v in data.items()
+            if k in cls._cols() and not cls.table.c[k].primary_key
+        }
+
+    # ------------------------------------------------------------------
+    # Statement builders  (use these when you need to compose further)
+    # ------------------------------------------------------------------
+
+    @classmethod
+    def create_stmt(cls, data: dict[str, Any]) -> Insert:
         return insert(cls.table).values(**cls._valid(data)).returning(cls.table.c.id)
 
     @classmethod
@@ -125,11 +153,16 @@ class ORM:
             col = getattr(cls.table.c, field_name)
             handler = FILTER_OPS.get(op)
             if handler:
-                stmt = stmt.where(handler(col, value))
+                coerced = (
+                    [cls._coerce(field_name, v) for v in value]
+                    if isinstance(value, list)
+                    else cls._coerce(field_name, value)
+                )
+                stmt = stmt.where(handler(col, coerced))
         return stmt
 
     @classmethod
-    def update(
+    def update_stmt(
         cls, item_id, data: dict[str, Any], conditions: Filters | None = None
     ) -> Update:
         stmt = (
@@ -140,48 +173,93 @@ class ORM:
         return cls._apply_conditions(stmt, conditions) if conditions else stmt
 
     @classmethod
-    def delete(cls, item_id: UUID, conditions: Filters | None = None) -> Delete:
+    def delete_stmt(cls, item_id: UUID, conditions: Filters | None = None) -> Delete:
         stmt = delete(cls.table).where(cls.table.c.id == item_id)
         return cls._apply_conditions(stmt, conditions) if conditions else stmt
 
     @classmethod
-    def get(cls, item_id: UUID, conditions: Filters | None = None) -> Select:
+    def get_stmt(cls, item_id: UUID, conditions: Filters | None = None) -> Select:
         stmt = select(cls.table).where(cls.table.c.id == item_id)
         return cls._apply_conditions(stmt, conditions) if conditions else stmt
 
     @classmethod
-    def filter(cls, conditions: Filters, query: Select | None = None) -> Select:
+    def filter_stmt(cls, conditions: Filters, query: Select | None = None) -> Select:
         return cls._apply_conditions(query or select(cls.table), conditions)
 
     @classmethod
     def sort(cls, query: Select, sort_by: list[str]) -> Select:
         return apply_sort(cls.table, query, sort_by, cls.sortable)
 
+    # ------------------------------------------------------------------
+    # Async execution methods  (primary API)
+    # ------------------------------------------------------------------
 
-class Crud:
+    @classmethod
+    async def create(cls, db: AsyncSession, data: dict[str, Any]) -> Any:
+        result = await db.execute(cls.create_stmt(data))
+        return result.mappings().first()
+
+    @classmethod
+    async def update(
+        cls,
+        db: AsyncSession,
+        item_id: UUID,
+        data: dict[str, Any],
+        conditions: Filters | None = None,
+    ) -> None:
+        await db.execute(cls.update_stmt(item_id, data, conditions))
+
+    @classmethod
+    async def delete(
+        cls, db: AsyncSession, item_id: UUID, conditions: Filters | None = None
+    ) -> None:
+        await db.execute(cls.delete_stmt(item_id, conditions))
+
+    @classmethod
+    async def get(
+        cls, db: AsyncSession, item_id: UUID, conditions: Filters | None = None
+    ) -> Any:
+        result = await db.execute(cls.get_stmt(item_id, conditions))
+        return result.mappings().first()
+
+    @classmethod
+    async def filter(
+        cls,
+        db: AsyncSession,
+        conditions: Filters,
+        query: Select | None = None,
+    ) -> Any:
+        result = await db.execute(cls.filter_stmt(conditions, query))
+        return result.mappings().all()
+
+
+class CRUD:
     orm: ORM
     m2m: M2MORM
 
     async def create(self, ctx):
-        pass
+        return await self.orm.create(ctx.db, ctx.input)
 
     async def update(self, ctx):
-        pass
+        await self.orm.update(ctx.db, ctx.id, ctx.input)
+        return await self.orm.get(ctx.db, ctx.id)
 
     async def patch(self, ctx):
-        pass
+        await self.orm.update(ctx.db, ctx.id, ctx.input)
+        return await self.orm.get(ctx.db, ctx.id)
 
     async def delete(self, ctx):
-        pass
+        await self.orm.delete(ctx.db, ctx.id)
 
     async def list(self, ctx):
-        pass
+        return await self.orm.filter(ctx.db, ctx.filters)
 
     async def get(self, ctx):
-        pass
+        return await self.orm.get(ctx.db, ctx.id)
 
 
 PRIMARY_KEY = field(Uuid, primary_key=True, default=uuid4, sort_order=-100)
+ID = field(Uuid, primary_key=True, default=uuid4, sort_order=-10)
 
 CREATED_AT = field(
     DateTime(timezone=True),

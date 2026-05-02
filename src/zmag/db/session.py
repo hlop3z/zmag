@@ -26,6 +26,10 @@ _SQLITE_KWARGS = dict(
 )
 
 
+class InternalError(Exception):
+    pass
+
+
 class DBLifespan:
     @staticmethod
     async def start():
@@ -62,6 +66,7 @@ async def db_session() -> AsyncGenerator[AsyncSession, None]:
             await session.commit()
         except:  # noqa: E722
             await session.rollback()
+            raise InternalError("Database Error")
         finally:
             await session.close()
 

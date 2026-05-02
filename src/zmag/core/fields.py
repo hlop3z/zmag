@@ -23,9 +23,10 @@ from sqlalchemy import (
 )
 
 from .settings import settings
-from ..db.tables import BaseModel, Model, FullModel, Crud
+from ..db.tables import BaseModel, Model, FullModel, CRUD
 from .decorators.models import field as col  # noqa: N811
 from .decorators.models import model as type  # noqa: N811
+from .context import Context
 
 if settings.db_engine == "postgres":
     from sqlalchemy.dialects.postgresql import JSONB as JSON
@@ -60,11 +61,12 @@ __all__ = (
     "col",
     "type",
     "typing",
+    "Context",
     # Base Model
     "Model",
     "BaseModel",
     "FullModel",
-    "Crud",
+    "CRUD",
     # DataTypes
     "refs",
     "int",

@@ -1,4 +1,5 @@
 from zmag import m
+from datetime import datetime
 
 if m.typing:
     from apps.sample_app.models import Blog
@@ -11,30 +12,7 @@ class User(m.Model):
     full_name: m.use[str] = m.col(m.str, computed="first_name || ' ' || last_name")
     blogs: m.refs["Blog"] = m.col("sample_app.Blog.id", m2m=True)
 
-    class CRUD(m.Crud):
-        async def create(self, ctx):
-            stmt = self.orm.create(ctx.input)
-            result = (await ctx.db.execute(stmt)).mappings().first()
-            return result
+    class CRUD(m.CRUD):
 
-        async def update(self, ctx):
-            stmt = self.orm.update(ctx.id, ctx.input)
-            await ctx.db.execute(stmt)
-            return (await ctx.db.execute(self.orm.get(ctx.id))).mappings().first()
-
-        async def patch(self, ctx):
-            stmt = self.orm.update(ctx.id, ctx.input)
-            await ctx.db.execute(stmt)
-            return (await ctx.db.execute(self.orm.get(ctx.id))).mappings().first()
-
-        async def delete(self, ctx):
-            await ctx.db.execute(self.orm.delete(ctx.id))
-
-        async def list(self, ctx):
-            extra = []  # ("last_name", "eq", "doe")
-            stmt = self.orm.filter(ctx.filters + extra)
-            return (await ctx.db.execute(stmt)).mappings().all()
-
-        async def get(self, ctx):
-            stmt = self.orm.get(ctx.id)
-            return (await ctx.db.execute(stmt)).mappings().first()
+        async def list(self, ctx: m.Context):
+            return await self.orm.filter(ctx.db, ctx.filters)
