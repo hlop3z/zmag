@@ -6,11 +6,7 @@ from ..builder.models import build_models
 # Define the application schema
 schema = Schema(
     # Modules to load from each app
-    modules=["models", "api"],
-    # Module dependencies (views depend on models)
-    dependencies={
-        "api": ["models"],
-    },
+    modules=["models", "api", "tools", "commands"]
 )
 
 # Create the framework instance

@@ -29,4 +29,4 @@ class Settings(metaclass=SingletonMeta):
             return f"postgresql+asyncpg://{cfg.get("user")}:{cfg.get("pass")}@{cfg.get("host")}:{cfg.get("port")}/{cfg.get("name")}"
 
 
-settings = Settings()
+settings: Settings = Settings()

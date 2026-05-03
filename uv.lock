@@ -855,11 +855,11 @@ wheels = [
 
 [[package]]
 name = "spoc"
-version = "0.3.7"
+version = "0.3.9"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f9/31/549622bd2f26e7fac7a2977c803dfee0f9fb49ed3d775cce9840a5aa58cb/spoc-0.3.7.tar.gz", hash = "sha256:754df88f6587e63fd050ce2c6a1f9f71afa81c31380e2e5d6c0c7b31789096bb", size = 3378643, upload-time = "2026-04-30T23:23:22.219Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/fe/55d51d84b8892d86826ff4d852beda7f5eed699e203a5740775e962dbd18/spoc-0.3.9.tar.gz", hash = "sha256:42ba00084f4070da13fbca859aaa2bae909b82380f4daf8280f108471af170e3", size = 3378663, upload-time = "2026-05-03T03:49:05.363Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ae/f5/378945b9aa541a72e6a0753100ee01095a9d22e0cac32266fb5df86cf853/spoc-0.3.7-py3-none-any.whl", hash = "sha256:aa58a218fc5c51107e7f3354a64d95ebf36871e16dce1047bd3f872affda6b07", size = 30373, upload-time = "2026-04-30T23:23:20.706Z" },
+    { url = "https://files.pythonhosted.org/packages/8a/6c/795912955a409cf869a1e01e06a6c3c4f9e2ac92a6299e88de00768efd45/spoc-0.3.9-py3-none-any.whl", hash = "sha256:e94820b0c093941c08d1a3ecd1de0b14dbf94585e210e36c3a5183694fce4892", size = 30394, upload-time = "2026-05-03T03:49:04.057Z" },
 ]
 
 [[package]]
@@ -1142,7 +1142,7 @@ requires-dist = [
     { name = "pwdlib", extras = ["argon2"], specifier = ">=0.3.0" },
     { name = "pyjwt", specifier = ">=2.12.1" },
     { name = "slowapi", specifier = ">=0.1.9" },
-    { name = "spoc", specifier = ">=0.3.7" },
+    { name = "spoc", specifier = ">=0.3.9" },
     { name = "sqlalchemy", specifier = ">=2.0.49" },
 ]
 

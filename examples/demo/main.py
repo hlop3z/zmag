@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from uuid import UUID
-from typing import Any
+from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi import Request, Response
@@ -16,8 +16,16 @@ from zmag.utils import parse_query, Pagination
 from zmag.core.context import Context
 from zmag.db.session import DBLifespan, create_tables, DatabaseSession
 
-from apps.sample_app.models import Blog
-from apps.auth.models import User
+from zmag.security import (
+    CurrentUser,
+    Token,
+    User,
+    authenticate_user,
+    fake_users_db,
+    issue_access_token,
+    set_refresh_cookie,
+    validate_refresh_token,
+)
 
 
 @asynccontextmanager
@@ -34,14 +42,82 @@ for r in framework.components.api.values():
     app.include_router(r)
 
 
+# ---------------------------------------------------------------------------
+# Authentication
+# ---------------------------------------------------------------------------
+
+
+@app.post("/api/auth/login")
+def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    response.set_cookie(
+        key="access_token",
+        value=issue_access_token(user),
+        httponly=True,
+        secure=True,
+        samesite="strict",
+    )
+    set_refresh_cookie(response, user)
+    return {"message": "logged in"}
+
+
+@app.post("/api/auth/token")
+def login_for_access_token(
+    response: Response, form_data: OAuth2PasswordRequestForm = Depends()
+):
+    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    set_refresh_cookie(response, user)
+    return Token(access_token=issue_access_token(user), token_type="bearer")
+
+
+@app.post("/api/auth/token/refresh")
+async def refresh_access_token(
+    response: Response,
+    user: Annotated[User, Depends(validate_refresh_token)],
+) -> Token:
+    set_refresh_cookie(response, user)  # token rotation
+    return Token(access_token=issue_access_token(user), token_type="bearer")
+
+
+@app.post("/api/auth/logout")
+def logout(response: Response):
+    response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
+    return {"message": "logged out"}
+
+
+@app.get("/api/auth/me")
+async def read_users_me(current_user: CurrentUser) -> User:
+    return current_user
+
+
+# ---------------------------------------------------------------------------
+# APIs Handlers
+# ---------------------------------------------------------------------------
+
+
 @app.api_route(
-    "/api/public/{app_name}/{model_name}",
-    methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+    "/api/crud/{app_name}/{model_name}",
+    methods=["GET", "POST", "PATCH", "DELETE"],
+    tags=["crud"],
 )
 async def catch_all_public(
     request: Request,
     response: Response,
     db: DatabaseSession,
+    current_user: CurrentUser,
     app_name: str,
     model_name: str,
 ):
@@ -60,10 +136,10 @@ async def catch_all_public(
         try:
             item_id = UUID(raw_id)
         except ValueError:
-            raise HTTPException(status_code=400, detail="Invalid id format")
+            raise HTTPException(status_code=400, detail="Invalid ID format")
 
     body = {}
-    if request.method in {"POST", "PUT", "PATCH"}:
+    if request.method in {"POST", "PATCH"}:
         try:
             body = await request.json()
         except Exception:
@@ -77,21 +153,29 @@ async def catch_all_public(
         filters=filters,
         request=request,
         response=response,
+        user=current_user.model_dump(),
     )
 
-    match request.method:
-        case "POST":
-            result = await crud_api.create(db_model, ctx)
-        case "PUT":
-            result = await crud_api.update(db_model, ctx)
-        case "PATCH":
-            result = await crud_api.patch(db_model, ctx)
-        case "DELETE":
-            result = await crud_api.delete(db_model, ctx)
-        case _:
-            if item_id:
-                result = await crud_api.get(db_model, ctx)
-            else:
-                result = await crud_api.list(db_model, ctx)
+    if request.method in {"DELETE", "PATCH"}:
+        if not item_id:
+            ctx.error(code="invalid", message="Must include an ID")
 
-    return {"data": result}
+    try:
+        match request.method:
+            case "POST":
+                result = await crud_api.create(db_model, ctx)
+            case "PATCH":
+                result = await crud_api.patch(db_model, ctx)
+            case "DELETE":
+                result = await crud_api.delete(db_model, ctx)
+            case _:
+                if item_id:
+                    result = await crud_api.get(db_model, ctx)
+                else:
+                    result = await crud_api.list(db_model, ctx)
+    except:  # noqa: E722
+        result = None
+        ctx.error(code="invalid", message="Invalid input")
+    if len(ctx.errors):
+        return {"data": None, "errors": ctx.errors}
+    return {"data": result, "errors": []}

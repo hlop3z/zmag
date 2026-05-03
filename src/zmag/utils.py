@@ -1,28 +1,11 @@
-from dataclasses import dataclass, field
 from typing import Any
 
 from starlette.datastructures import QueryParams
 
-from .db.tables import FILTER_NAMES
-
-_TRUTHY = {"1", "true", "yes", "on"}
-
-MAX_PAGE_SIZE = 20
-
-
-@dataclass
-class Pagination:
-    page: int = 1
-    limit: int = 10
-    sort_by: list[str] = field(default_factory=list)
-
-    def __post_init__(self):
-        self.page = max(1, int(self.page))
-        self.limit = max(1, min(int(self.limit), MAX_PAGE_SIZE))
-
-    @property
-    def offset(self) -> int:
-        return (self.page - 1) * self.limit
+from .db.pagination import MAX_PAGE_SIZE as MAX_PAGE_SIZE
+from .db.pagination import Page as Page
+from .db.pagination import Pagination as Pagination
+from .db.tables import FILTER_NAMES, TRUTHY
 
 
 def _parse_query(params: QueryParams) -> tuple[dict, dict]:
@@ -36,7 +19,7 @@ def _parse_query(params: QueryParams) -> tuple[dict, dict]:
             field, _, op = key.partition("__")
             if op in FILTER_NAMES:
                 if op == "isnull":
-                    value = str(value).lower() in _TRUTHY
+                    value = str(value).lower() in TRUTHY
                 filters.setdefault(field, {})[op] = value
                 continue
         meta[key] = value

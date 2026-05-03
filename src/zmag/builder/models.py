@@ -170,4 +170,4 @@ def build_models(models_list):
             )
             setattr(owner_model.m2m, field_name, m2m_orm)
 
-    return relationship
+    return None
