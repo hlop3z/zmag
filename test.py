@@ -1,19 +1,50 @@
 import asyncio
 import httpx
 
+_AUTH_KEY = ""
 
-def auth(key):
-    return {"Authorization": f"Bearer {key}"}
+
+def auth(key=None):
+    return {"Authorization": f"Bearer {key or _AUTH_KEY}"}
+
+
+async def register_login():
+    global _AUTH_KEY
+    base_url = "http://127.0.0.1:8000"
+
+    # Create Account (separate client — register may close the connection on retry)
+    async with httpx.AsyncClient(base_url=base_url, timeout=30.0) as client:
+        try:
+            await client.get("/api/auth/register")
+        except httpx.HTTPError:
+            pass
+
+    # Login (fresh connection)
+    async with httpx.AsyncClient(base_url=base_url, timeout=30.0) as client:
+        res = await client.post(
+            "/api/auth/token",
+            headers={"accept": "application/json"},
+            data={
+                "grant_type": "password",
+                "username": "john@doe.com",
+                "password": "secret",
+            },
+        )
+        if res.status_code == 200:
+            _AUTH_KEY = res.json()["access_token"]
+            print("Login:", res.json())
+        else:
+            print("Login failed:", res.status_code, res.text)
 
 
 async def test_catch_all():
+    # Login
+    await register_login()
+
+    # CRUD TEST
     async with httpx.AsyncClient(
         base_url="http://localhost:8000",
-        headers={
-            **auth(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huQGRvZS5jb20iLCJleHAiOjE3Nzc3OTY3NjEsInR5cGUiOiJhY2Nlc3MifQ.8WWC3YZ5zSAbauQJdy1NIkiaBKH3jug923_2Mavb0mU"
-            )
-        },
+        headers={**auth()},
     ) as client:
         app_name = "sample-app"
         model_name = "blog"

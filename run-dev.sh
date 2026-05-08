@@ -1,3 +1,3 @@
 #!/bin/bash
 
-uv run fastapi dev
+cd examples/demo && uv run fastapi dev

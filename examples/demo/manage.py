@@ -1,34 +1,14 @@
-from typing import Annotated
-
-from fastapi import Depends, FastAPI, HTTPException
-from fastapi import Request, Response
-from fastapi.responses import HTMLResponse
-from fastapi.security import OAuth2PasswordRequestForm
-from fastapi.staticfiles import StaticFiles
-
-
 from zmag.framework.base import framework
 
-from apps.sample_app.models import BlogPost, User
+from apps.sample_app.models import Blog, User
 
 # Access registered components
-# print(framework.components.models.get("sample.Blog"))
-# data = BlogPost(tags=["1", "a"], meta={"1": "a"}, owner=User(), followers=[User()])
-# print(data.id)
-app = FastAPI()
+print(framework.components.models.get("sample.Blog"))
 
+# Blog
+b_data = Blog(name="my-blog")
+print(b_data.id)
 
-@app.get("/api/public/{app_name}/{model_name}")
-async def get_item_public(
-    request: Request,
-    app_name: str,
-    model_name: str,
-):
-
-    return {
-        "label": app_name,
-        "model": model_name,
-        "query": {},
-        "filters": {},
-        "user": None,
-    }
+# Blog
+u_data = User(first_name="john")
+print(u_data.id)

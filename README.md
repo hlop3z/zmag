@@ -1,4 +1,4 @@
 # ZMAG
 
-username: `johndoe`
+username: `john@doe.com`
 password: `secret`
