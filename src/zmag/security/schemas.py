@@ -1,4 +1,10 @@
 from pydantic import BaseModel
+from uuid import UUID
+
+
+class LoginForm(BaseModel):
+    email: str
+    password: str
 
 
 class Token(BaseModel):
@@ -7,12 +13,12 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: str | None = None
+    email: str | None = None
 
 
 class User(BaseModel):
-    username: str
-    email: str | None = None
+    id: UUID
+    email: str
     full_name: str | None = None
     disabled: bool | None = None
 

@@ -236,6 +236,16 @@ class ORM:
         return cls._apply_conditions(query or select(cls.table), conditions)
 
     @classmethod
+    def get_by_stmt(cls, **kwargs) -> Select:
+        stmt = select(cls.table)
+        for col_name, value in kwargs.items():
+            if col_name in cls._cols():
+                stmt = stmt.where(
+                    getattr(cls.table.c, col_name) == cls._coerce(col_name, value)
+                )
+        return stmt
+
+    @classmethod
     def sort(cls, query: Select, sort_by: list[str]) -> Select:
         return apply_sort(cls.table, query, sort_by, cls.sortable)
 
@@ -275,6 +285,11 @@ class ORM:
         if not item_id:
             return None
         result = await db.execute(cls.get_stmt(item_id, conditions))
+        return result.mappings().first()
+
+    @classmethod
+    async def get_by(cls, db: AsyncSession, **kwargs) -> Any:
+        result = await db.execute(cls.get_by_stmt(**kwargs))
         return result.mappings().first()
 
     @classmethod

@@ -11,37 +11,37 @@ async def test_catch_all():
         base_url="http://localhost:8000",
         headers={
             **auth(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huZG9lIiwiZXhwIjoxNzc3NzgzOTA3LCJ0eXBlIjoiYWNjZXNzIn0.CL5pH8AZO-tWFI20P378Ok_9-7f2VfHY0zA-n1EeObY"
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huQGRvZS5jb20iLCJleHAiOjE3Nzc3OTY3NjEsInR5cGUiOiJhY2Nlc3MifQ.8WWC3YZ5zSAbauQJdy1NIkiaBKH3jug923_2Mavb0mU"
             )
         },
     ) as client:
-        app_name = "auth"
-        model_name = "user"
+        app_name = "sample-app"
+        model_name = "blog"
 
         res = await client.post(
             f"/api/crud/{app_name}/{model_name}",
-            json={"first_name": "john", "last_name": "doe"},
+            json={"name": "my-post"},
         )
         if res.status_code == 200:
             print("CREATE:", res.json())
 
-        user_id = (res.json().get("data") or {}).get("id")
+        item_id = (res.json().get("data") or {}).get("id")
 
-        if user_id:
-            res = await client.get(f"/api/crud/{app_name}/{model_name}?id={user_id}")
+        if item_id:
+            res = await client.get(f"/api/crud/{app_name}/{model_name}?id={item_id}")
             if res.status_code == 200:
                 print("GET   :", res.json())
 
             res = await client.patch(
                 f"/api/crud/{app_name}/{model_name}",
-                json={"first_name": "jane"},
+                json={"name": "new-name"},
             )
             if res.status_code == 200:
                 print("UPDATE:", res.json())
 
             res = await client.patch(
-                f"/api/crud/{app_name}/{model_name}?id={user_id}",
-                json={"first_name": "jane", "last_name": []},
+                f"/api/crud/{app_name}/{model_name}?id={item_id}",
+                json={"name": []},
             )
             if res.status_code == 200:
                 print("UPDATE :", res.json())
@@ -50,9 +50,11 @@ async def test_catch_all():
             if res.status_code == 200:
                 print("LIST  :", res.json())
 
-            res = await client.delete(f"/api/crud/{app_name}/{model_name}?id={user_id}")
+            """
+            res = await client.delete(f"/api/crud/{app_name}/{model_name}?id={item_id}")
             if res.status_code == 200:
                 print("DELETE:", res.json())
+            """
 
 
 if __name__ == "__main__":

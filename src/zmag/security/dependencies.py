@@ -6,11 +6,17 @@ from fastapi import Depends, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 
-from .config import (ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM,
-                     REFRESH_TOKEN_EXPIRE_DAYS, SECRET_KEY, TOKEN_URL,
-                     fake_users_db)
+from ..db.session import DatabaseSession
+from ..framework.apps import get_model
+from .config import (
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    ALGORITHM,
+    REFRESH_TOKEN_EXPIRE_DAYS,
+    SECRET_KEY,
+    TOKEN_URL,
+)
 from .hashing import DUMMY_HASH, verify_password
-from .schemas import TokenData, User, UserInDB
+from .schemas import TokenData, User
 from .tokens import create_access_token, create_refresh_token
 
 _REFRESH_MAX_AGE = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
@@ -22,11 +28,9 @@ async def get_token(
     request: Request,
     token: Annotated[str | None, Depends(oauth2_scheme)] = None,
 ) -> str:
-    # Priority: header first
     if token:
         return token
 
-    # Fallback to cookie
     cookie_token = request.cookies.get("access_token")
     if cookie_token:
         return cookie_token
@@ -38,35 +42,57 @@ async def get_token(
     )
 
 
-def get_user(db, username: str | None):
-    if username in db:
-        return UserInDB(**db[username])
+async def _get_user(db, email: str) -> User | None:
+    UserModel = get_model("auth", "User")
+    if UserModel is None:
+        return None
+    row = await UserModel.orm.get_by(db, email=email)
+    if row is None:
+        return None
+    return User(
+        id=row["id"],
+        email=row["email"],
+        full_name=row.get("full_name"),
+        disabled=row.get("disabled", False),
+    )
 
 
-def authenticate_user(fake_db, username: str, password: str):
-    user = get_user(fake_db, username)
-    if not user:
+async def authenticate_user(db, email: str, password: str) -> User | None:
+    UserModel = get_model("auth", "User")
+    if UserModel is None:
         verify_password(password, DUMMY_HASH)
-        return False
-    if not verify_password(password, user.hashed_password):
-        return False
-    return user
+        return None
+    row = await UserModel.orm.get_by(db, email=email)
+    if not row:
+        verify_password(password, DUMMY_HASH)
+        return None
+    if not verify_password(password, row["password"]):
+        return None
+    return User(
+        id=row["id"],
+        email=row["email"],
+        full_name=row.get("full_name"),
+        disabled=row.get("disabled", False),
+    )
 
 
-async def get_current_user(token: Annotated[str, Depends(get_token)]):
+async def get_current_user(
+    db: DatabaseSession,
+    token: Annotated[str, Depends(get_token)],
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username = payload.get("sub")
-        if username is None:
+        email = payload.get("sub")
+        if email is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(email=email)
     except InvalidTokenError:
         raise credentials_exception
-    user = get_user(fake_users_db, username=token_data.username)
+    user = await _get_user(db, token_data.email)
     if user is None:
         raise credentials_exception
     return user
@@ -82,13 +108,13 @@ async def get_current_active_user(
 
 def issue_access_token(user: User) -> str:
     return create_access_token(
-        data={"sub": user.username},
+        data={"sub": user.email},
         expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
     )
 
 
 def set_refresh_cookie(response: Response, user: User) -> None:
-    token = create_refresh_token(data={"sub": user.username})
+    token = create_refresh_token(data={"sub": user.email})
     response.set_cookie(
         key="refresh_token",
         value=token,
@@ -99,7 +125,7 @@ def set_refresh_cookie(response: Response, user: User) -> None:
     )
 
 
-async def validate_refresh_token(request: Request) -> User:
+async def validate_refresh_token(db: DatabaseSession, request: Request) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid refresh token",
@@ -111,12 +137,12 @@ async def validate_refresh_token(request: Request) -> User:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         if payload.get("type") != "refresh":
             raise credentials_exception
-        username: str | None = payload.get("sub")
-        if username is None:
+        email: str | None = payload.get("sub")
+        if email is None:
             raise credentials_exception
     except InvalidTokenError:
         raise credentials_exception
-    user = get_user(fake_users_db, username)
+    user = await _get_user(db, email)
     if user is None or user.disabled:
         raise credentials_exception
     return user

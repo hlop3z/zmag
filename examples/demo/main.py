@@ -18,14 +18,15 @@ from zmag.db.session import DBLifespan, create_tables, DatabaseSession
 
 from zmag.security import (
     CurrentUser,
+    LoginForm,
     Token,
     User,
     authenticate_user,
-    fake_users_db,
     issue_access_token,
     set_refresh_cookie,
     validate_refresh_token,
 )
+from zmag.security.hashing import get_password_hash
 
 
 @asynccontextmanager
@@ -48,8 +49,12 @@ for r in framework.components.api.values():
 
 
 @app.post("/api/auth/login")
-def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+async def login(
+    db: DatabaseSession,
+    response: Response,
+    form_data: OAuth2PasswordRequestForm = Depends(),
+):
+    user = await authenticate_user(db, form_data.username, form_data.password)
 
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
@@ -66,15 +71,17 @@ def login(response: Response, form_data: OAuth2PasswordRequestForm = Depends()):
 
 
 @app.post("/api/auth/token")
-def login_for_access_token(
-    response: Response, form_data: OAuth2PasswordRequestForm = Depends()
+async def login_for_access_token(
+    db: DatabaseSession,
+    response: Response,
+    form_data: OAuth2PasswordRequestForm = Depends(),
 ):
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+    user = await authenticate_user(db, form_data.username, form_data.password)
 
     if not user:
         raise HTTPException(
             status_code=401,
-            detail="Incorrect username or password",
+            detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
@@ -103,6 +110,14 @@ async def read_users_me(current_user: CurrentUser) -> User:
     return current_user
 
 
+@app.get("/api/auth/register")
+async def create_user(db: DatabaseSession):
+    User = get_model("auth", "User")
+    user = User(email="john@doe.com", password=get_password_hash("secret"))
+    await User.orm.create(db, user.__dict__)
+    return
+
+
 # ---------------------------------------------------------------------------
 # APIs Handlers
 # ---------------------------------------------------------------------------
@@ -126,6 +141,7 @@ async def catch_all_public(
     db_model = get_model(_app, _model)
     crud_api = getattr(db_model, "CRUD", None)
 
+    print(f"APP: {_app} | {_model}")
     if not db_model or not crud_api:
         raise HTTPException(status_code=404, detail="Not Found")
 
